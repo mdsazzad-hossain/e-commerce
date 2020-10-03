@@ -20,6 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('phn',50);
             $table->string('address');
             $table->string('avatar')->nullable();
+            $table->decimal('e_money',8,2)->default(0.00);
+            $table->string('role')->default('user');
+            $table->boolean('status')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

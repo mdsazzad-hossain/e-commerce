@@ -15,31 +15,20 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 
-    // mix.styles([
-    //     'resources/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css',
-    //     'resources/assets/css/bootstrap.min.css',
-    //     'resources/assets/css/plugins/owl-carousel/owl.carousel.css',
-    //     'resources/assets/css/plugins/magnific-popup/magnific-popup.css',
-    //     'resources/assets/css/plugins/jquery.countdown.css',
-    //     // 'resources/assets/css/style.css',
-    //     // 'resources/assets/css/skins/skin-demo-13.css',
-    //     // 'resources/assets/css/demos/demo-13.css',
-    // ], 'public/css/app.css').version();
+    mix.styles([
+        'resources/plugins/fontawesome-free/css/all.min.css',
+        'resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css',
+        'resources/dist/css/adminlte.min.css',
+        'resources/icons.min.css',
+        'resources/plugins/datatables-bs4/css/dataTables.bootstrap4.css',
+    ], 'public/css/app.css').version();
 
     
-    // mix.scripts([
-    //     'resources/assets/js/jquery.min.js',
-    //     'resources/assets/js/bootstrap.bundle.min.js',
-    //     'resources/assets/js/jquery.hoverIntent.min.js',
-    //     'resources/assets/js/jquery.waypoints.min.js',
-    //     'resources/assets/js/superfish.min.js',
-    //     'resources/assets/js/owl.carousel.min.js',
-    //     'resources/assets/js/bootstrap-input-spinner.js',
-    //     'resources/assets/js/jquery.magnific-popup.min.js',
-    //     'resources/assets/js/jquery.plugin.min.js',
-    //     // 'resources/assets/js/jquery.countdown.min.js',
-    //     'resources/assets/js/main.js',
-    //     'resources/assets/js/demos/demo-13.js',
-    // ], 'public/js/app.js').version();
-
+    mix.scripts([
+        'resources/plugins/jquery/jquery.min.js',
+        'resources/plugins/bootstrap/js/bootstrap.bundle.min.js',
+        'resources/dist/js/adminlte.min.js',
+        'resources/plugins/datatables-bs4/js/dataTables.bootstrap4.js',
+        'resources/plugins/datatables/jquery.dataTables.js'
+    ], 'public/js/app.js').version();
     

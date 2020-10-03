@@ -14,9 +14,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('layouts.backend.auth.login');
 });
 
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/register', 'Backend\LoginController@register_index')->name('register');
+
+Route::group(["namespace"=>"Backend"],function() {
+    Route::get('/', 'LoginController@login_index')->name('login');
+    Route::get('/register', 'LoginController@register_index')->name('register');
+    
+    Route::post('/register-store', 'LoginController@store')->name('user.store');
+    Route::post('/login', 'LoginController@login')->name('user.login');
+    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('user-list', 'DashboardController@user_list')->name('user.list');
+    Route::get('user-role-create', 'RoleController@create')->name('user.role');
+    Route::post('user-role-store', 'RoleController@store')->name('role.store');
+});
