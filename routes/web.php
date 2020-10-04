@@ -30,6 +30,9 @@ Route::group(["namespace"=>"Backend"],function() {
     Route::post('/login', 'LoginController@login')->name('user.login');
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('user-list', 'DashboardController@user_list')->name('user.list');
-    Route::get('user-role-create', 'RoleController@create')->name('user.role');
-    Route::post('user-role-store', 'RoleController@store')->name('role.store');
+    Route::get('user-role', 'RoleController@create')->name('user.role');
+    Route::post('user-role-store', 'RoleController@store')->name('store.role');
+    Route::get('role-edit/{id}', 'RoleController@edit')->name('role.edit');
+    Route::post('role-update', 'RoleController@update')->name('update.role');
+    Route::post('role-delete/{id}', 'RoleController@destroy')->name('role.delete');
 });

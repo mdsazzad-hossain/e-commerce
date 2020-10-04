@@ -15,21 +15,33 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // public function searchUser(Request $request)
+    // {
+    //     $search = $request->get('name');
+    //     $data = auth()->user();
+    //     $search_user = User::where('name','LIKE','%'.$search.'%')->get();
+    //     if ($search_user) {
+    //         return response()->json([
+    //             'search_user'=>$search_user,
+    //         ],200);
+    //     }
+    //     return view('layouts.backend.user.role_list',[
+    //         'search_user'=>$search_user,
+    //         'data'=>$data,
+    //     ]);
+       
+    // }
+
     public function create()
     {
-        $users = User::all();
+        $users = User::select('id','name','role','status')->get();
         $data = auth()->user();
         return view('layouts.backend.user.role_list',[
             'users'=>$users,
-            'data'=>$data,
+            'data'=>$data
         ]);
     }
 
@@ -41,7 +53,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        return dd('ok');
+        User::where('name',$request->name)->update(['role'=>$request->role]);
+        return redirect()->back();
     }
 
     /**
@@ -55,27 +68,11 @@ class RoleController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        User::where('name',$request->editName)->update(['role'=>$request->editRole]);
+        return redirect()->back();
     }
 
     /**
@@ -84,8 +81,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $role = 'user';
+        $data = User::find($id);
+        $data->role = $role;
+        $data->save();
+        return redirect()->back();
     }
 }

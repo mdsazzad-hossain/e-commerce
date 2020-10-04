@@ -20,9 +20,10 @@
     </section>
     <section class="content">
         <div class="row">
-            <div class="card card-primary col-4" style="margin-left: 15px;
+            <div id="addRole" class="card card-primary col-4" style="margin-left: 15px;
                     padding-top: 8px;
                     height: 308px;
+                    display: block;
                 ">
                 <div class="card-header" style="background-color: #007bff;
                 color: #fff;">
@@ -36,17 +37,20 @@
                     <span style="color: #fff" aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form role="form" action="{{route('role.store')}}" method="post">
+              <form role="form" id="contact-form" action="{{route('store.role')}}" method="post">
+                  @csrf
                   <div class="card-body">
                     <div class="form-group">
-                      <label class="mr-sm-2" for="inlineFormCustomSelect">User Name</label>
+                      <label class="mr-sm-2" for="inlineFormCustomSelect"
+                          >Name</label
+                        >
                       <input
+                        id="name"
                         name="name"
                         type="text"
                         class="form-control"
-                        placeholder="Enter category name"
+                        placeholder="Enter user name"
                       />
-                      <has-error :form="form" field="name"></has-error>
                     </div>
                     <div class="form-row align-items-center">
                       <div class="col-auto my-1" style="width:100%">
@@ -66,6 +70,7 @@
                     </div>
                   </div>
                   <button
+                    id="submit"
                     style="width: 100%"
                     type="submit"
                     class="btn btn-primary"
@@ -73,7 +78,67 @@
                     Submit
                   </button>
                 </form>
-            </div>    
+            </div>   
+            <div id="editRole" class="card card-primary col-4" style="margin-left: 15px;
+                    padding-top: 8px;
+                    height: 308px;
+                    display: none;
+                ">
+                <div class="card-header" style="background-color: #007bff;
+                color: #fff;">
+                  <h3 class="card-title">Add New User Role</h3>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span style="color: #fff" aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              <form role="form" id="contact-form" action="{{route('update.role')}}" method="post">
+                  @csrf
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label class="mr-sm-2" for="inlineFormCustomSelect"
+                          >Name</label
+                        >
+                      <input
+                        readonly
+                        id="editName"
+                        name="editName"
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter user name"
+                      />
+                    </div>
+                    <div class="form-row align-items-center">
+                      <div class="col-auto my-1" style="width:100%">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                          >Select Role</label
+                        >
+                        <select
+                          id="editRole"
+                          style="width:100%;"
+                          name="editRole"
+                          class="custom-select mr-sm-2"
+                        >
+                          <option value="Super Admin" selected="selected">Super Admin</option>
+                          <option value="Admin">Admin</option>
+                          <option value="Vendor">Vendor</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    style="width: 100%"
+                    type="submit"
+                    class="btn btn-success"
+                  >
+                    Submit
+                  </button>
+                </form>
+            </div>  
             <div class="card col-7" style="margin-left: 70px;">
                 <div class="card-header">
                 <h3 class="card-title">DataTable with default features</h3>
@@ -90,19 +155,41 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @foreach ($users as $user)
+                    @if($user->role != 'user')
                     <tr role="row" class="odd">
-                    <td class="sorting_1">test</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>
-                        <button class="btn btn-primary">
-                            <i class="fa fa-eye"></i>
-                        </button>
-                        <button class="btn btn-danger">
+                      <td class="sorting_1">{{$user->name}}</td>
+                      <td>
+                        @if($user->role == 'Super Admin')
+                      <p class="badge badge-success">{{$user->role}}</p>
+                        @elseif($user->role == 'Admin')
+                        <p class="badge badge-warning">{{$user->role}}</p>
+                        @elseif($user->role == 'Vendor')
+                        <p class="badge badge-danger">{{$user->role}}</p>
+                        @endif
+                      </td>
+                      <td>
+                        @if($user->status == 0)
+                        <button class="badge badge-warning">Inactive</button>
+                        @else
+                        <button class="badge badge-success">Active</button>
+                        @endif
+                      </td>
+                      <td style="display: inline-flex;">
+                          <a style="margin-right: 5px;" href="#" class="btn btn-primary" onclick="showId({{$user}})">
+                            <i class="fa fa-edit"></i>
+                          </a>
+                        <form action="{{route('role.delete',$user->id)}}" method="post">
+                          @csrf
+                          <input type="text" name="role" value="user" hidden>
+                          <button type="submit" class="btn btn-danger">
                             <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
+                          </button>
+                        </form>
+                      </td>
                     </tr>
+                    @endif
+                    @endforeach
                 </tbody>
                     <tfoot>
                     <tr>
@@ -132,6 +219,46 @@
             "autoWidth": false,
         });
         });
-    </script>    
+    </script>
+      <script>
+        
+        function showId(user) {
+          if(document.getElementById("addRole"))
+          document.getElementById("addRole").style.display = "none";
+          document.getElementById("editRole").style.display = "block";
+          $('#editName').val(user.name);
+          $('#editRole').val(user.role);
+        }  
+      </script> 
+    {{-- <script type="text/javascript">
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+  
+      $('#contact-form').on('submit', function(event){
+          event.preventDefault();
+  
+          name = $('#name').val();
+  
+          $.ajax({
+            url: "search-user",
+            type: "POST",
+            data:{
+                name:name
+            },
+            success:function(response){
+              console.log(response.search_user);
+              $("#test").val(response.search_user)[0].name;
+              // response.search_user.forEach(ele => {
+              //   $('#test').val(ele.name);
+              // });
+              // $('#test').val(response.search_user.name);
+              $("#contact-form")[0].reset();
+            }
+           });
+          });
+        </script>     --}}
     @endsection
 @endsection

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <title>{{ config('app.name', 'E-commerce') }}</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="http://code.ionicframework.com/1.3.3/css/ionic.css"> --}}
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
