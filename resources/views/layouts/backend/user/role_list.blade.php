@@ -18,6 +18,7 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
+    <hr>
     <section class="content">
         <div class="row">
             <div id="addRole" class="card card-primary col-4" style="margin-left: 15px;
@@ -84,17 +85,18 @@
                     height: 308px;
                     display: none;
                 ">
-                <div class="card-header" style="background-color: #007bff;
-                color: #fff;">
-                  <h3 class="card-title">Add New User Role</h3>
-                  <button
-                    type="button"
+                <div class="card-header" style="color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+                box-shadow: none;">
+                  <h3 class="card-title">Update User Role</h3>
+                  <a
+                    href="#"
+                    onclick="closeForm()"
                     class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
+                    >
                     <span style="color: #fff" aria-hidden="true">&times;</span>
-                  </button>
+                  </a>
                 </div>
               <form role="form" id="contact-form" action="{{route('update.role')}}" method="post">
                   @csrf
@@ -228,6 +230,13 @@
           document.getElementById("editRole").style.display = "block";
           $('#editName').val(user.name);
           $('#editRole').val(user.role);
+        }
+        function closeForm(){
+          if( document.getElementById("editRole"))
+          document.getElementById("editRole").style.display = "none";
+          document.getElementById("addRole").style.display = "block";
+          $('#editName').val();
+          $('#editRole').val();
         }  
       </script> 
     {{-- <script type="text/javascript">

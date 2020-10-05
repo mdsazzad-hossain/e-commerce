@@ -24,4 +24,13 @@ class DashboardController extends Controller
            'data'=>$data,
        ]);
     }
+    public function vendor_list()
+    {
+       $users = User::all();
+       $data = auth()->user();
+       return view('layouts.backend.user.vendor_list',[
+           'users'=>$users,
+           'data'=>$data,
+       ]);
+    }
 }

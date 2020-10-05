@@ -117,7 +117,7 @@
         </div> 
         <div class="card col-7">
           <div class="card-header">
-            <h3 class="card-title">User List</h3>
+            <h3 class="card-title">Vendor List</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -133,6 +133,7 @@
               </thead>
               <tbody>
                 @foreach ($users as $user)
+                @if($user->role == 'Vendor')
                 <tr role="row" class="odd">
                   <td class="sorting_1">{{$user->name}}</td>
                   <td>{{$user->address}}</td>
@@ -147,6 +148,7 @@
                     </button>
                   </td>
                 </tr>
+                @endif
                 @endforeach
               </tbody>
               <tfoot>
@@ -254,38 +256,5 @@
           });  
         
       </script>
-      {{-- <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    
-        $('#contact-form').on('submit', function(event){
-            event.preventDefault();
-    
-            name = $('#name').val();
-            email =  $('#email').val();
-            phn =  $('#phn').val();
-            address =  $('#address').val();
-    
-            $.ajax({
-              url: "search-user",
-              type: "POST",
-              data:{
-                  name:name
-              },
-              success:function(response){
-                console.log(response.search_user);
-                $("#test").val(response.search_user)[0].name;
-                // response.search_user.forEach(ele => {
-                //   $('#test').val(ele.name);
-                // });
-                // $('#test').val(response.search_user.name);
-                $("#contact-form")[0].reset();
-              }
-            });
-          });
-      </script> --}}
     @endsection
 @endsection

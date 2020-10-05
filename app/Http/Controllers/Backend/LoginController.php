@@ -60,4 +60,23 @@ class LoginController extends Controller
 
         return redirect()->route('login');
     }
+
+    public function update(Request $request)
+    {
+        
+        $data = User::find($request->userId)->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'phn'=>$request->phn,
+            'address'=>$request->address
+        ]);
+        return redirect()->back();
+    }
+
+    public function destroy(Request $request)
+    {
+        
+        $data = User::find($request->id)->delete();
+        return redirect()->back();
+    }
 }

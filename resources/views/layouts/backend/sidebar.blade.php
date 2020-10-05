@@ -49,13 +49,49 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="pages/layout/boxed.html" class="nav-link">
+                  <a href="{{route('vendor.list')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Vendor List</p>
                   </a>
                 </li>
               </ul>
           </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Slide Management
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">6</span>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{route('banar.list')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Banar List</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-copy"></i>
+            <p>
+              Store Management
+              <i class="fas fa-angle-left right"></i>
+              <span class="badge badge-info right">6</span>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" style="display: none;">
+            <li class="nav-item">
+              <a href="{{route('categories')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Category List</p>
+              </a>
+            </li>
+          </ul>
+        </li>
           
         </ul>
       </nav>
