@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\ChildCategory;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class ChildCategoryController extends Controller
 {
     /**
@@ -16,8 +18,12 @@ class ChildCategoryController extends Controller
     public function index()
     {
         $data = auth()->user();
+        $cats = Category::all();
+        $childs = ChildCategory::latest()->with('get_category')->get();
         return view('layouts.backend.category.child_categories',[
-            'data'=>$data
+            'data'=>$data,
+            'cats'=>$cats,
+            'childs'=>$childs
         ]);
     }
 
@@ -39,7 +45,14 @@ class ChildCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_id' => 'required|string',
+            'child_name' => 'required|string',
+        ]);
+
+        ChildCategory::create($request->all());
+        toast('Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 
     /**
@@ -61,7 +74,7 @@ class ChildCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -71,9 +84,20 @@ class ChildCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // $request->validate([
+        //     'category_id' => 'required|string',
+        //     'child_name' => 'required|string',
+        // ]);
+
+        ChildCategory::find($request->id)->update([
+            'category_id'=> $request->edit_category_id,
+            'child_name'=> $request->edit_child_name
+        ]);
+
+        toast('Sub-Category updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +108,7 @@ class ChildCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Alert::warning('Opps',"you cant'n delete sub-category!");
+        return redirect()->back();
     }
 }

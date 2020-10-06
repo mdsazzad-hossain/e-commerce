@@ -2,6 +2,7 @@
 @include('layouts.backend.sidebar')
 
 
+
 @yield('content')
 
 

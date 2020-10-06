@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <title>{{ config('app.name', 'E-commerce') }}</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="http://code.ionicframework.com/1.3.3/css/ionic.css"> --}}
+    <link rel="stylesheet"http://code.ionicframework.com/1.3.3/css/ionic.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
+@include('sweetalert::alert')
 <div class="wrapper">
 
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -27,7 +28,7 @@
             <a href="#" class="nav-link">Contact</a>
           </li>
         </ul>
-    
+
         <!-- SEARCH FORM -->
         <form class="form-inline ml-3">
           <div class="input-group input-group-sm">
@@ -39,7 +40,7 @@
             </div>
           </div>
         </form>
-    
+
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
           <!-- Messages Dropdown Menu -->

@@ -20,7 +20,7 @@ mix.styles([
     'resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css',
     'resources/dist/css/adminlte.min.css',
     'resources/dist/css/dropzone.css',
-    'resources/icons.min.css',
+    // 'resources/icons.min.css',
     'resources/plugins/datatables-bs4/css/dataTables.bootstrap4.css',
 ], 'public/css/app.css').version();
 

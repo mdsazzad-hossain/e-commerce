@@ -6,8 +6,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <a href="#" class="btn btn-primary" >Sub Sub-Category</a>
-            
+          <a href="{{ route('sub.child.category') }}" class="btn btn-primary" >Sub Sub-Category</a>
+
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -23,7 +23,7 @@
         <div class="row">
             <div id="addChildCat" class="card card-primary col-4" style="margin-left: 15px;
                     padding-top: 8px;
-                    height: 230px;
+                    height: 315px;
                     display: block;
                 ">
                 <div class="card-header" style="background-color: #007bff;
@@ -38,34 +38,47 @@
                     <span style="color: #fff" aria-hidden="true">&times;</span>
                   </button>
                 </div>
-              <form role="form" id="contact-form">
+              <form role="form" id="contact-form" action="{{ route('child.add') }}" method="POST">
                   @csrf
                   <div class="card-body">
                     <div class="form-group">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                          >Select Category</label
+                        >
+                        <select class="form-control" name="category_id" id="category_id">
+                            @foreach ($cats as $cat)
+                            <option selected="selected" value="{{ $cat->id }}">
+                                {{ $cat->cat_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                       <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Category Name</label
+                          >Sub Category Name</label
                         >
                       <input
-                        id="cat_name"
-                        name="cat_name"
+                        id="child_name"
+                        name="child_name"
                         type="text"
                         class="form-control"
-                        placeholder="Enter category name"
+                        placeholder="Enter sub category name"
                       />
                     </div>
                   </div>
                   <button
                     id="submit"
+                    type="submit"
                     style="width: 100%"
                     class="btn btn-primary"
                   >
                     Submit
                   </button>
                 </form>
-            </div>   
+            </div>
             <div id="editChildCat" class="card card-primary col-4" style="margin-left: 15px;
                     padding-top: 8px;
-                    height: 230px;
+                    height: 315px;
                     display: none;
                 ">
                 <div class="card-header" style="color: #fff;
@@ -81,31 +94,45 @@
                     <span style="color: #fff" aria-hidden="true">&times;</span>
                   </a>
                 </div>
-              <form role="form" id="contact-form">
+              <form role="form" id="contact-form" action="{{ route('update.child') }}" method="POST">
                   @csrf
                   <div class="card-body">
+                      <input type="text" id="id" name="id" hidden>
+                    <div class="form-group">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                          >Select Category</label
+                        >
+                        <select class="form-control" name="edit_category_id" id="edit_category_id">
+                            @foreach ($cats as $cat)
+                            <option selected="selected" value="{{ $cat->id }}">
+                                {{ $cat->cat_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group">
                       <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Name</label
+                          >Sub Category Name</label
                         >
                       <input
-                        id="edit_cat_name"
-                        name="edit_cat_name"
+                        required
+                        id="edit_child_name"
+                        name="edit_child_name"
                         type="text"
                         class="form-control"
-                        placeholder="Enter category name"
+                        placeholder="Enter sub category name"
                       />
-                      <input type="text" id="cat_id" name="cat_id" hidden>
                     </div>
                   </div>
                   <button
+                    type="submit"
                     style="width: 100%"
                     class="btn btn-success"
                   >
                     Submit
                   </button>
                 </form>
-            </div>  
+            </div>
             <div class="card col-7" style="margin-left: 70px;">
                 <div class="card-header">
                 <h3 class="card-title">All Sub Categories is here</h3>
@@ -115,27 +142,45 @@
                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="example1_length"><label>Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div></div></div><div class="row"><div class="col-sm-12"><table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                     <thead>
                     <tr role="row">
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">Category Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">Status</th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 99px;">Action</th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Category
+                        </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Sub-Category
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
+                            Status
+                        </th>
+                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 99px;">
+                            Action
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
+                        @foreach ($childs as $child)
                             <tr role="row" class="odd">
-                                <td class="sorting_1">category</td>
+                                <td class="sorting_1">{{ $child->get_category->cat_name }}</td>
+                                <td class="sorting_1">{{ $child->child_name }}</td>
                                 <td>
+                                    @if($child->status == 0)
                                     <button class="badge badge-warning">Inactive</button>
+                                    @else
                                     <button class="badge badge-success">Active</button>
+                                    @endif
                                 </td>
                                 <td style="display: inline-flex;">
-                                    <button style="margin-right: 5px;" href="#" class="btn btn-primary">
+                                    <button onclick="editSubCat({{ $child }})" style="margin-right: 5px;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-danger">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                    <form action="{{ route('delete.child',$child->id) }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
@@ -149,38 +194,38 @@
                 </div>
             </div>
         </div>
-        
+
         </div>
 
     @section('js')
         <script>
             $(function () {
-            $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-            });
+                $('#example1').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                });
             });
         </script>
       <script>
-        
-        function editChildCat() {
+
+        function editSubCat(child){
           if(document.getElementById("addChildCat"))
           document.getElementById("addChildCat").style.display = "none";
           document.getElementById("editChildCat").style.display = "block";
-        //   $('#edit_cat_name').val(cat.cat_name);
-        //   $('#cat_id').val(cat.id);
+          $('#edit_category_id').val(child.get_category.id);
+          $('#edit_child_name').val(child.child_name);
+          $('#id').val(child.id);
         }
         function closeForm(){
           if( document.getElementById("editChildCat"))
           document.getElementById("editChildCat").style.display = "none";
           document.getElementById("addChildCat").style.display = "block";
         //   $('#edit_cat_name').val();
-        }  
+        }
 
         // $.ajaxSetup({
         //         headers: {
@@ -190,7 +235,7 @@
 
         // function addCategory(){
         //     cat_name = $('#cat_name').val();
-            
+
 
         //     $.ajax({
         //       url: "{{ route('category.add') }}",

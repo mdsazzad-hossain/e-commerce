@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -32,10 +33,12 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
-        }
+            toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        
+            return redirect()->route('dashboard');
+        };
+
+
     }
 
     public function store(Request $request)
@@ -56,14 +59,13 @@ class LoginController extends Controller
             'phn' => $request['phn'],
             'password' => Hash::make($data['password']),
         ]);
-        session()->flash('message', 'Registration Successfully');
-
+        toast('Info Toast','info');
         return redirect()->route('login');
     }
 
     public function update(Request $request)
     {
-        
+
         $data = User::find($request->userId)->update([
             'name'=>$request->name,
             'email'=>$request->email,
@@ -75,7 +77,7 @@ class LoginController extends Controller
 
     public function destroy(Request $request)
     {
-        
+
         $data = User::find($request->id)->delete();
         return redirect()->back();
     }

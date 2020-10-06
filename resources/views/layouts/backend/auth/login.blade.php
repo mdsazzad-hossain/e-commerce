@@ -10,19 +10,14 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  
+
   <link rel="stylesheet" href="{{ mix('css/app.css')}}">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-    @if(session()->has('message'))
-        <div class="btn btn-primary pull-right">
-            {{Session::get('message')}}
 
-        </div>
-    @endif
   <div class="login-logo">
     <a href="../../index2.html"><b>Admin</b>LTE</a>
   </div>

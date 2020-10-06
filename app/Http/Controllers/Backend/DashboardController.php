@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class DashboardController extends Controller
 {
     public function index()
     {
         $data = auth()->user();
+
         return view('layouts.backend.dashboard',[
             'data'=>$data
         ]);

@@ -18,6 +18,7 @@
 </div>
 
 <script src="{{ mix('js/app.js')}}"></script>
+<script src="http://code.ionicframework.com/1.3.3/js/ionic.min.js"></script>
 @yield('js')
 
 </body>

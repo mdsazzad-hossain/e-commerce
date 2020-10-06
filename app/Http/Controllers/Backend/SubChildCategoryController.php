@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\ChildCategory;
+use App\Models\SubChildCategory;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SubChildCategoryController extends Controller
 {
@@ -14,7 +18,14 @@ class SubChildCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $data = auth()->user();
+        $childs = ChildCategory::latest()->with('get_category')->get();
+        $sub_childs = SubChildCategory::latest()->with('get_child_category.get_category')->get();
+        return view('layouts.backend.category.sub_child',[
+            'data'=>$data,
+            'childs'=>$childs,
+            'sub_childs'=>$sub_childs
+        ]);
     }
 
     /**
@@ -35,7 +46,19 @@ class SubChildCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $catId = ChildCategory::where('id',$request->child_category_id)->get();
+        foreach ($catId as $key => $value) {
+            $id = $value->category_id;
+        }
+
+        SubChildCategory::create([
+            'category_id'=>$id,
+            'child_category_id'=>$request->child_category_id,
+            'sub_child_name'=>$request->sub_child_name
+        ]);
+
+        toast('Sub Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 
     /**
@@ -67,9 +90,21 @@ class SubChildCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $catId = ChildCategory::where('id',$request->edit_child_category_id)->get();
+        foreach ($catId as $key => $value) {
+            $id = $value->category_id;
+        }
+
+        SubChildCategory::find($request->id)->update([
+            'category_id'=>$id,
+            'child_category_id'=>$request->edit_child_category_id,
+            'sub_child_name'=>$request->edit_sub_child_name
+        ]);
+
+        toast('Sub Sub-Category updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 
     /**
@@ -80,6 +115,7 @@ class SubChildCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Alert::warning('Opps',"you cant'n delete sub sub-category!");
+        return redirect()->back();
     }
 }

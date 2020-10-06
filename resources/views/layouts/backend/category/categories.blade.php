@@ -7,7 +7,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
           <a href="{{route('child.category')}}" class="btn btn-primary" >Sub Category</a>
-            
+
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -63,7 +63,7 @@
                     Submit
                   </button>
                 </form>
-            </div>   
+            </div>
             <div id="editCat" class="card card-primary col-4" style="margin-left: 15px;
                     padding-top: 8px;
                     height: 230px;
@@ -107,7 +107,7 @@
                     Submit
                   </button>
                 </form>
-            </div>  
+            </div>
             <div class="card col-7" style="margin-left: 70px;">
                 <div class="card-header">
                 <h3 class="card-title">All Categories is here</h3>
@@ -157,25 +157,24 @@
                 </div>
             </div>
         </div>
-        
+
         </div>
 
     @section('js')
         <script>
             $(function () {
-            $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-            });
+                $('#example1').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                });
             });
         </script>
       <script>
-        
+
         function editCat(cat) {
           if(document.getElementById("addCat"))
           document.getElementById("addCat").style.display = "none";
@@ -188,17 +187,17 @@
           document.getElementById("editCat").style.display = "none";
           document.getElementById("addCat").style.display = "block";
           $('#edit_cat_name').val();
-        }  
+        }
 
         $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         function addCategory(){
             cat_name = $('#cat_name').val();
-            
+
 
             $.ajax({
               url: "{{ route('category.add') }}",
