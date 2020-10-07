@@ -6,10 +6,23 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{mix('css/app.css')}}">
     <title>{{ config('app.name', 'E-commerce') }}</title>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link rel="stylesheet"http://code.ionicframework.com/1.3.3/css/ionic.min.css">
+
+    <link rel="stylesheet" href="../../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="{{asset('backend/plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/jqvmap/jqvmap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/dist/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/dist/css/dropzone.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
+
 </head>
 <body class="hold-transition sidebar-mini">
 @include('sweetalert::alert')

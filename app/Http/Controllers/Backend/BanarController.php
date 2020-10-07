@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banar;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class BanarController extends Controller
 {
     /**
@@ -24,18 +26,22 @@ class BanarController extends Controller
 
     function upload(Request $request)
     {
-     $image = $request->file('file');
+        $image = $request->file('file');
 
-     $imageName = time() . '.' . $image->extension();
+        $imageName = $image->getClientOriginalName();
 
-     $image->move(public_path('images'), $imageName);
-
-     Banar::create([
-         'image'=>$imageName
-     ]);
-
-     return redirect()->back();
-
+        
+        if($imageName != null){
+            Banar::create([
+                'image'=>$imageName
+            ]);
+            toast('Banar create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            $image->move(public_path('images'), $imageName);
+        
+            return redirect()->back();
+    
+        }
+     
     }
 
     function fetch()
@@ -61,6 +67,9 @@ class BanarController extends Controller
         $data->delete();
 
         \File::delete(public_path('images/' . $request->image));
+        
+        toast('Banar deleted successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
         return redirect()->back();
     }
 }

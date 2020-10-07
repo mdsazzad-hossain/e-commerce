@@ -34,11 +34,10 @@
               
           <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-copy"></i>
+                <i class="nav-icon fas fa-star"></i>
                 <p>
                   User Management
                   <i class="fas fa-angle-left right"></i>
-                  <span class="badge badge-info right">6</span>
                 </p>
               </a>
               <ul class="nav nav-treeview" style="display: none;">
@@ -58,11 +57,10 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-star"></i>
               <p>
                 Slide Management
                 <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
               </p>
             </a>
             <ul class="nav nav-treeview" style="display: none;">
@@ -76,11 +74,10 @@
         </li>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-copy"></i>
+            <i class="nav-icon fas fa-star"></i>
             <p>
               Store Management
               <i class="fas fa-angle-left right"></i>
-              <span class="badge badge-info right">6</span>
             </p>
           </a>
           <ul class="nav nav-treeview" style="display: none;">
@@ -88,6 +85,29 @@
               <a href="{{route('categories')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Category List</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('child.category')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Sub Category List</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-star"></i>
+            <p>
+              Inventory Management
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" style="display: none;">
+            <li class="nav-item">
+              <a href="{{route('products')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Product List</p>
               </a>
             </li>
           </ul>

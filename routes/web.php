@@ -60,6 +60,22 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('sub-sub-category-create', 'SubChildCategoryController@store')->name('sub.child.add');
         Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
         Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
+        
+         //Brand
+        //  Route::get('products', 'ProductController@index')->name('products');
+         Route::post('brand-create', 'BrandController@store')->name('brand.add');
+         // Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
+         // Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
+        //product
+        Route::get('products', 'ProductController@index')->name('products');
+        Route::post('product-create', 'ProductController@store')->name('product.add');
+        // Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
+        // Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
+        //product
+        // Route::get('products', 'ProductController@index')->name('products');
+        Route::post('product-avatar-create', 'ProductAvatarController@store')->name('avatar.upload');
+        // Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
+        // Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
     });
 
 });

@@ -59,20 +59,22 @@
                     <form style="margin-bottom: 10px;
                         background-color: #ddd;
                         border: 2px dashed #767676;
-                        margin-top: 10px;" 
+                        margin-top: 10px;
+                        height:auto;" 
                         id="dropzoneForm" 
-                        class="dropzone" 
+                        class="dropzone"
+                        enctype="multipart/form-data" 
                         action="{{ route('banar.upload') }}">
                         @csrf
                     </form>
-                      <button
+                      {{-- <button
                         id="submit-all"
                         type="submit"
                         style="width: 100%;margin-bottom: 10px;"
                         class="btn btn-success"
                         >
                         Submit
-                        </button>
+                        </button> --}}
                   </div>
                   
                 </div>
@@ -180,7 +182,7 @@
             });
         }
       </script>
-      <script type="text/javascript">
+      {{-- <script type="text/javascript">
 
         Dropzone.options.dropzoneForm = {
           autoProcessQueue : false,
@@ -195,7 +197,7 @@
             });
       
             this.on("complete", function(){
-              if(this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0)
+              if(this.getQueuedFiles().length == 3 && this.getUploadingFiles().length == 0)
               {
                 var _this = this;
                 _this.removeAllFiles();
@@ -231,6 +233,27 @@
         //   })
         // });
       
-      </script>
+      </script> --}}
+      <script type="text/javascript">
+         Dropzone.options.dropzone =
+        {
+            maxFilesize: 1,
+            renameFile: function (file) {
+                var dt = new Date();
+                var time = dt.getTime();
+                return time + file.name;
+            },
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 60000,
+            success: function (file, response) {
+                window.location.reload();
+                console.log(response);
+            },
+            error: function (file, response) {
+                return false;
+            }
+        };
+        </script>
     @endsection
 @endsection
