@@ -15,8 +15,9 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('brand_id');
+            $table->foreignId('brand_id')->nullable()->constrained('brands');
             $table->string('product_name',150);
+            $table->string('slug',150);
             $table->string('product_code',50)->nullable();
             $table->string('color',50);
             $table->string('size',30);
@@ -29,7 +30,6 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->decimal('total_price',8,2)->default(0.00);
             $table->boolean('status')->default(1);
-            $table->foreign('brand_id')->references('id')->on('brands');
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ class Product extends Model
     //     'sale_price',
     // ];
         protected $guarded =[];
+        
     public function get_brand()
     {
         return $this->belongsTo(Brand::class,'brand_id');

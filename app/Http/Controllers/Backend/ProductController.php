@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductAvatar;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -59,6 +60,7 @@ class ProductController extends Controller
         Product::create([
             'brand_id'=>$request->brand_id,
             'product_name'=>$request->product_name,
+            'slug'=> $request->product_name,
             'product_code'=>$request->product_code,
             'color'=>$request->color,
             'size'=>$request->size,
@@ -92,9 +94,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($slug)
+    {   
+        $data = auth()->user();
+        $product = Product::where('product_name',$slug)->with('get_brand')->first();
+        $brands = Brand::all();
+        return view('layouts.backend.product.product_edit',[
+            'data'=>$data,
+            'product'=>$product,
+            'brands'=>$brands
+        ]);
     }
 
     /**
@@ -104,9 +113,31 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $data = Product::where('product_name',$slug)->first();
+        $cal = $request->discount*$request->sale_price;
+        $price = $cal/100;
+        $data->update([
+            'brand_id'=>$request->brand_id,
+            'product_name'=>$request->product_name,
+            'slug'=> $request->product_name,
+            'product_code'=>$request->product_code,
+            'color'=>$request->color,
+            'size'=>$request->size,
+            'qty'=>$request->qty,
+            'pur_price'=>$request->pur_price,
+            'sale_price'=>$price,
+            'promo_price'=>$request->promo_price,
+            'discount'=>$request->discount,
+            'e_money'=>$request->e_money,
+            'description'=>$request->description,
+            'total_price'=>$request->qty*$request->sale_price
+        ]);
+
+        toast('Product Updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return redirect()->back();
     }
 
     /**
@@ -117,6 +148,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::find($id)->delete();
+        
+        toast('Product deleted successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return redirect()->back();
     }
 }

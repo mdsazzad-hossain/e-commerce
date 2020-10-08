@@ -15,10 +15,10 @@ class CreateProductAvatarsTable extends Migration
     {
         Schema::create('product_avatars', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->string('avatar',100);
+            $table->foreignId('product_id')->nullable()->constrained('products');
+            $table->string('avatar');
+            $table->string('slug');
             $table->boolean('status')->default(1);
-            $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();
         });
     }

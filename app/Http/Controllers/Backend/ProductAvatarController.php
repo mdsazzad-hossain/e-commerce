@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductAvatar;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class ProductAvatarController extends Controller
 {
@@ -17,7 +18,7 @@ class ProductAvatarController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -41,21 +42,21 @@ class ProductAvatarController extends Controller
         $image = $request->file('file');
 
         $imageName = $image->getClientOriginalName();
-        if($imageName){
+        $random = Str::random(10);
+        $imgName = $random.$imageName;
+        if($imgName){
             $data = ProductAvatar::create([
                 'product_id'=>$request->product_id,
-                'avatar'=>$imageName
+                'avatar'=>$imgName,
+                'slug'=>Str::slug($imgName)
             ]);
             if($data){
-                $image->move(public_path('images'), $imageName);
+                $image->move(public_path('images'), $imgName);
     
                 return redirect()->back();
             }
         }
        
-        
-       
-    
     }
 
     /**
@@ -64,9 +65,15 @@ class ProductAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $data = auth()->user();
+        $data1 = Product::where('product_name',$slug)->first();  
+        $avatars = ProductAvatar::where('product_id',$data1->id)->with('get_product')->get();
+        return view('layouts.backend.product.avatars',[
+            'avatars'=>$avatars,
+            'data'=>$data
+        ]);
     }
 
     /**
@@ -87,9 +94,25 @@ class ProductAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+        $image = $request->file('file');
+
+        $imageName = $image->getClientOriginalName();
+        $random = Str::random(10);
+        $imgName = $random.$imageName;
+        if($imgName){
+            $data = ProductAvatar::find($request->id)->update([
+                'avatar'=>$imgName,
+                'slug'=>Str::slug($imgName)
+            ]);
+            if($data){
+                $image->move(public_path('images'), $imgName);
+    
+                return redirect()->back();
+            }
+        }
     }
 
     /**
@@ -100,6 +123,10 @@ class ProductAvatarController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $id = ProductAvatar::find($id)->delete();
+        
+        toast('Product Image Deleted Successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return redirect()->back();
     }
 }

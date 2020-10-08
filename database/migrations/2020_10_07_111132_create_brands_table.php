@@ -15,15 +15,13 @@ class CreateBrandsTable extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('child_category_id');
-            $table->unsignedBigInteger('sub_child_category_id');
+            $table->foreignId('category_id')->nullable()->constrained('categories');
+            $table->foreignId('child_category_id')->nullable()->constrained('child_categories');
+            $table->foreignId('sub_child_category_id')->nullable()->constrained('sub_child_categories');
             $table->string('brand_name',100);
+            $table->string('slug',100);
             $table->text('br_description',)->nullable();
             $table->boolean('status')->default(1);
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('child_category_id')->references('id')->on('child_categories');
-            $table->foreign('sub_child_category_id')->references('id')->on('sub_child_categories');
             $table->timestamps();
             
         });

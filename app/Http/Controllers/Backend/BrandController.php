@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Brand;
+use Illuminate\Support\Str;
 
 class BrandController extends Controller
 {
@@ -37,14 +38,33 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->category_id && $request->child_category_id && $request->sub_child_category_id) {
+            Brand::create([
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_category_id'=>$request->sub_child_category_id,
+                'brand_name'=>$request->brand_name,
+                'slug'=> Str::slug($request->brand_name),
+                'slug'=>$request->brand_name,
+                'br_description'=>$request->br_description
+            ]);
+        }elseif($request->category_id && !$request->child_category_id && !$request->sub_child_category_id){
+            Brand::create([
+                'category_id'=>$request->category_id,
+                'brand_name'=>$request->brand_name,
+                'slug'=> Str::slug($request->brand_name),
+                'br_description'=>$request->br_description
+            ]);
+        }elseif($request->category_id && $request->child_category_id && !$request->sub_child_category_id){
+            Brand::create([
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'brand_name'=>$request->brand_name,
+                'slug'=> Str::slug($request->brand_name),
+                'br_description'=>$request->br_description
+            ]);
+        }
         
-        Brand::create([
-            'category_id'=>$request->category_id,
-            'child_category_id'=>$request->child_category_id,
-            'sub_child_category_id'=>$request->sub_child_category_id,
-            'brand_name'=>$request->brand_name,
-            'br_description'=>$request->br_description
-        ]);
 
         toast('Brand Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 

@@ -67,6 +67,7 @@
                             >Select Category</label
                             >
                             <select class="form-control" name="category_id" id="category_id">
+                                <option value="" selected="selected">select</option>
                                 @foreach ($categories as $cat)
                                 <option value="{{ $cat->id }}">
                                     {{ $cat->cat_name }}
@@ -79,6 +80,7 @@
                             >Select SubCategory</label
                             >
                             <select class="form-control" name="child_category_id" id="child_category_id">
+                                <option value="" selected="selected">select</option>
                                 @foreach ($childs as $sub_cat)
                                 <option value="{{ $sub_cat->id }}">
                                     {{ $sub_cat->child_name }}
@@ -91,6 +93,7 @@
                             >Select Sub SubCategory</label
                             >
                             <select class="form-control" name="sub_child_category_id" id="sub_child_category_id">
+                                <option value="" selected="selected">select</option>
                                 @foreach ($sub_childs as $sub_child)
                                 <option value="{{ $sub_child->id }}">
                                     {{ $sub_child->sub_child_name }}
@@ -419,12 +422,13 @@
                                     @else
                                     <button class="badge badge-success">Active</button>
                                     @endif
+                                <a href="{{route('product.avatars',$pro->slug)}}" class="badge badge-info">Images</a>
                                 </td>
                                 <td style="display: inline-flex;">
-                                    <button onclick="editProduct()" style="margin-right: 5px;" class="btn btn-primary">
+                                    <a href="{{route('product.edit',$pro->slug)}}" style="margin-right: 5px;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
-                                    </button>
-                                    <form action="#" method="POST">
+                                    </a>
+                                <form action="{{route('product.delete',$pro->id)}}" method="POST">
                                         @csrf
                                         <button class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
@@ -447,7 +451,6 @@
                 </div>
             </div>
         </div>
-
         </div>
 
     @section('js')
@@ -592,10 +595,9 @@
            },
            acceptedFiles: ".jpeg,.jpg,.png,.gif",
            addRemoveLinks: true,
-           timeout: 60000,
+           timeout: 30000,
            success: function (file, response) {
                window.location.reload();
-               console.log(response);
            },
            error: function (file, response) {
                return false;
