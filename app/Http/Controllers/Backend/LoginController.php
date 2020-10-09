@@ -10,7 +10,8 @@ use session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserVerification;
 class LoginController extends Controller
 {
     public function register_index()
@@ -52,15 +53,23 @@ class LoginController extends Controller
 
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'address' => $request['address'],
             'phn' => $request['phn'],
             'password' => Hash::make($data['password']),
         ]);
+
+        Mail::to($user->email)->send(new UserVerification($user));
+
         toast('Info Toast','info');
         return redirect()->route('login');
+    }
+
+    public function user_verify($email)
+    {
+        return dd($email);
     }
 
     public function update(Request $request)
@@ -80,5 +89,14 @@ class LoginController extends Controller
 
         $data = User::find($request->id)->delete();
         return redirect()->back();
+    }
+
+    public function logout()
+    {
+
+        Auth::logout();
+        toast('Logout successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return view('layouts.backend.auth.login');
     }
 }

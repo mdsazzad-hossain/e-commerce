@@ -53,9 +53,12 @@
             </div>
           </div>
         </form>
-
+        <a class="btn btn-danger" href="{{ route('logout') }}">
+            <i class="fa fa-logout"></i>
+        </a>
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+
           <!-- Messages Dropdown Menu -->
           <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">

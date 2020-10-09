@@ -6,8 +6,22 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <div>
-                  <button class="btn btn-primary" onclick="showForm()">Add Banar</button>
+              <div style="    width: 35%;
+                padding: 10px;
+                background-color: white;
+                border: 1px solid #ddd;
+                box-shadow: 1px 1px #ddd;
+                border-radius: 5px;display: inline-flex;">
+                    <button class="btn btn-primary" onclick="showForm()" style="padding: 10px;">
+                        <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;"
+                        class="fa fa-plus" style="margin-right: 5px;"></i>
+                    </button>
+                    <p style="margin-left: 5px;
+                    font-weight: 700;
+                    margin-bottom: 0px;">Add Banar
+                        <span style="float: left;
+                        margin-left: 15px;" class="badge badge-warning">0/0</span>
+                    </p>
               </div>
             </div>
             <div class="col-sm-6">
@@ -60,10 +74,10 @@
                         background-color: #ddd;
                         border: 2px dashed #767676;
                         margin-top: 10px;
-                        height:auto;" 
-                        id="dropzoneForm" 
+                        height:auto;"
+                        id="dropzoneForm"
                         class="dropzone"
-                        enctype="multipart/form-data" 
+                        enctype="multipart/form-data"
                         action="{{ route('banar.upload') }}">
                         @csrf
                     </form>
@@ -76,10 +90,10 @@
                         Submit
                         </button> --}}
                   </div>
-                  
+
                 </div>
-                
-        </div> 
+
+        </div>
         <div class="card col-7">
           <div class="card-header">
             <h3 class="card-title">Banar List</h3>
@@ -96,7 +110,7 @@
               </thead>
               <tbody>
                 @foreach ($banars as $banar)
-                
+
                 <tr>
                     <td>
                         <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $banar->image) }}" />
@@ -187,15 +201,15 @@
         Dropzone.options.dropzoneForm = {
           autoProcessQueue : false,
           acceptedFiles : ".png,.jpg,.gif,.bmp,.jpeg",
-      
+
           init:function(){
             var submitButton = document.querySelector("#submit-all");
             myDropzone = this;
-      
+
             submitButton.addEventListener('click', function(){
               myDropzone.processQueue();
             });
-      
+
             this.on("complete", function(){
               if(this.getQueuedFiles().length == 3 && this.getUploadingFiles().length == 0)
               {
@@ -204,13 +218,13 @@
               }
               load_images();
             });
-      
+
           }
-      
+
         };
-      
+
         load_images();
-      
+
         function load_images()
         {
           $.ajax({
@@ -221,7 +235,7 @@
             }
           })
         }
-      
+
         // $(document).on('click', '.remove_image', function(){
         //   var name = $(this).attr('id');
         //   $.ajax({
@@ -232,7 +246,7 @@
         //     }
         //   })
         // });
-      
+
       </script> --}}
       <script type="text/javascript">
          Dropzone.options.dropzone =

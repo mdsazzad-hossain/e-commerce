@@ -28,10 +28,12 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('/register', 'LoginController@register_index')->name('register');
         Route::post('/register-store', 'LoginController@store')->name('user.store');
         Route::post('/login', 'LoginController@login')->name('user.login');
+        Route::get('/verify/{email}', 'LoginController@user_verify')->name('verify');
     });
 
 
     Route::group(['middleware' => 'auth'], function () {
+        Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::get('dashboard', 'DashboardController@index')->name('dashboard');
         Route::get('user-list', 'DashboardController@user_list')->name('user.list');
         Route::get('vendor-list', 'DashboardController@vendor_list')->name('vendor.list');
@@ -60,7 +62,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('sub-sub-category-create', 'SubChildCategoryController@store')->name('sub.child.add');
         Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
         Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
-        
+
          //Brand
         //  Route::get('products', 'ProductController@index')->name('products');
          Route::post('brand-create', 'BrandController@store')->name('brand.add');
