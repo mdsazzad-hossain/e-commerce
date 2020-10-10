@@ -10,14 +10,19 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="{{ mix('css/app.css')}}">
+  <link rel="stylesheet" href="../../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+  <link rel="stylesheet" href="{{asset('backend/plugins/fontawesome-free/css/all.min.css')}}">
+  <link rel="stylesheet" href="{{asset('backend/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{asset('backend/dist/css/adminlte.min.css')}}">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition register-page">
+  @include('sweetalert::alert')
 <div class="register-box">
   <div class="register-logo">
-    <b>Admin</b>Login
+    <b>Admin</b>Register
   </div>
 
   <div class="card">
@@ -96,7 +101,9 @@
   </div>
 </div>
 
-<script src="{{ mix('js/app.js')}}"></script>
+<script src="{{ asset('backend/dist/js/adminlte.js')}}"></script>
+<script src="{{ asset('backend/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ asset('backend/plugins/jquery/jquery.min.js')}}"></script>
 </body>
 
 <!-- Mirrored from adminlte.io/themes/dev/AdminLTE/pages/examples/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 27 Sep 2020 10:25:30 GMT -->

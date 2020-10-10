@@ -9,8 +9,10 @@
 <body>
     <div>
         <h3>{{ $user->name }}</h3>
-        <p>Thanks for registration</p>
-        <a href="{{ route('verify',$user->email) }}">{{ route('verify',$user->email) }}</a>
+        <p>Thanks for registration <br>
+            Please Verify your account for complete registration.Please click here...
+        </p>
+        <a href="{{ route('verify',$user->verification_token) }}">Click{{ route('verify',$user->verification_token) }}</a>
     </div>
 </body>
 </html>

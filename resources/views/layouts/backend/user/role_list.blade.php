@@ -125,9 +125,11 @@
                           name="editRole"
                           class="custom-select mr-sm-2"
                         >
-                          <option value="Super Admin" selected="selected">Super Admin</option>
+                          <option value="" selected="selected" disabled hidden>Select Role</option>
+                          <option value="Super Admin">Super Admin</option>
                           <option value="Admin">Admin</option>
                           <option value="Vendor">Vendor</option>
+                          <option value="Sub Vendor">Sub Vendor</option>
                         </select>
                       </div>
                     </div>

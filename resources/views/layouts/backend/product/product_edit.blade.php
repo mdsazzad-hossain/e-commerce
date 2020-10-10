@@ -166,7 +166,7 @@
                         </div>
                     </div>
                     <div class="form-group row col-12">
-                        <div class="form-group col-3">
+                        <div class="form-group col-4">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Discount Price</label
                                 >
@@ -180,7 +180,7 @@
                                 placeholder="product discount"
                             />
                         </div>
-                        <div class="form-group col-3">
+                        <div class="form-group col-4">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >E-Money</label
                                 >
@@ -194,7 +194,24 @@
                                 placeholder="product e_money"
                             />
                         </div>
-                        <div class="col-6">
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                            >Select Position</label
+                            >
+                            <select class="form-control" name="position" id="position">
+                                <option value="{{$product->position}}">{{$product->position}}</option>
+                                <option value="flash sale">flash sale</option>
+                                <option value="vendor">vendor</option>
+                                <option value="upcoming product">upcoming product</option>
+                                <option value="just for you">just for you</option>
+                                <option value="own mall">own mall</option>
+                                <option value="global product">global product</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row col-12">
+                        <div class="col-12">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                             >Product Description</label
                             >

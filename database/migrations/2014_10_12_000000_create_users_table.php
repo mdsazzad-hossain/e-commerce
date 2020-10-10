@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->decimal('e_money',8,2)->default(0.00);
             $table->string('role')->default('user');
             $table->boolean('status')->default(false);
+            $table->string('verification_token')->nullable();
+            $table->boolean('verified')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

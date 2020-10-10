@@ -28,7 +28,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('/register', 'LoginController@register_index')->name('register');
         Route::post('/register-store', 'LoginController@store')->name('user.store');
         Route::post('/login', 'LoginController@login')->name('user.login');
-        Route::get('/verify/{email}', 'LoginController@user_verify')->name('verify');
+        Route::get('/verify/{token}', 'LoginController@user_verify')->name('verify');
     });
 
 
@@ -82,6 +82,14 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('product-avatar-create', 'ProductAvatarController@store')->name('avatar.upload');
         Route::post('product-avatar-update', 'ProductAvatarController@update')->name('avatar.update');
         Route::post('product-avatar-delete/{id}', 'ProductAvatarController@destroy')->name('avatar.delete');
+
+         //ads manager
+        Route::get('ads', 'AdManagerController@index')->name('ads');
+        Route::get('all-ads', 'AdManagerController@get_ads')->name('ads-all');
+        Route::post('update-ads', 'AdManagerController@update')->name('ads.update');
+        Route::post('ads-create', 'AdManagerController@store')->name('ads.upload');
+        // Route::post('product-avatar-update', 'ProductAvatarController@update')->name('avatar.update');
+        Route::post('ads-delete/{id}', 'AdManagerController@destroy')->name('ads.delete');
     });
 
 });

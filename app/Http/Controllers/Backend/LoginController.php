@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserVerification;
+use Illuminate\Support\Str;
+
 class LoginController extends Controller
 {
     public function register_index()
@@ -31,12 +33,20 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password','verified');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([
+            'email'=>$request->email, 
+            'password'=>$request->password,
+            'verified'=> 1
+        ])) {
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
             return redirect()->route('dashboard');
+        }else{
+            Alert::warning('Your Account Not Verified.Please check you mail.','warning');
+
+            return redirect()->back();
         };
 
 
@@ -59,17 +69,26 @@ class LoginController extends Controller
             'address' => $request['address'],
             'phn' => $request['phn'],
             'password' => Hash::make($data['password']),
+            'verification_token'=> Str::random(32), 
         ]);
 
         Mail::to($user->email)->send(new UserVerification($user));
 
-        toast('Info Toast','info');
+        toast('Registration successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
         return redirect()->route('login');
     }
 
-    public function user_verify($email)
+    public function user_verify($token)
     {
-        return dd($email);
+        User::where('verification_token',$token)->update([
+            'verification_token'=>'',
+            'verified'=>1
+            ]);
+
+        toast('Account Verified Successfully.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        
+        return redirect()->route('login');
     }
 
     public function update(Request $request)
@@ -97,6 +116,6 @@ class LoginController extends Controller
         Auth::logout();
         toast('Logout successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        return view('layouts.backend.auth.login');
+        return redirect()->route('login');
     }
 }
