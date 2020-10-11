@@ -33,19 +33,47 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // $credentials = $request->only('email', 'password','verified');
-
+        
+        
         if (Auth::attempt([
             'email'=>$request->email, 
             'password'=>$request->password,
-            'verified'=> 1
+            'verified'=> 1,
+            'role'=> 'super_admin'
         ])) {
+
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
             return redirect()->route('dashboard');
-        }else{
-            Alert::warning('Your Account Not Verified.Please check you mail.','warning');
+        }elseif (Auth::attempt([
+            'email'=>$request->email, 
+            'password'=>$request->password,
+            'verified'=> 1,
+            'role'=> 'admin'
+        ])) {
 
+            toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->route('dashboard');
+        }elseif (Auth::attempt([
+            'email'=>$request->email, 
+            'password'=>$request->password,
+            'verified'=> 1,
+            'role'=> 'vendor'
+        ])) {
+
+            toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->route('dashboard');
+        }elseif (Auth::attempt([
+            'email'=>$request->email, 
+            'password'=>$request->password,
+            'verified'=> 1,
+            'role'=> 'sub-vendor'
+        ])) {
+
+            toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->route('dashboard');
+        }
+        else{
+            Alert::warning('Opps!','Access Denied.');
             return redirect()->back();
         };
 
@@ -74,7 +102,7 @@ class LoginController extends Controller
 
         Mail::to($user->email)->send(new UserVerification($user));
 
-        toast('Registration successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        Alert::success('success','Registration successfull.Please check your email for account verification.');
 
         return redirect()->route('login');
     }

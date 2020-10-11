@@ -128,6 +128,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 219px;">Address</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">Email</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 139px;">Phone</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 139px;">Status</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 99px;">Action</th>
                 </tr>
               </thead>
@@ -137,6 +138,13 @@
                   <td class="sorting_1">{{$user->name}}</td>
                   <td>{{$user->address}}</td>
                   <td>{{$user->email}}</td>
+                  <td>
+                    @if ($user->verified == 0)
+                        <p class="badge badge-warning">Not Verified</p>
+                    @else
+                        <p class="badge badge-success">Verified</p>
+                    @endif
+                  </td>
                   <td>{{$user->phn}}</td>
                   <td style="display: inline-flex;">
                       <button style="margin-right: 5px;" class="btn btn-primary" onclick="updateUser({{$user}})">

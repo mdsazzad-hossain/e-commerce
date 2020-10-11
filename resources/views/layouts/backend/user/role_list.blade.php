@@ -126,10 +126,10 @@
                           class="custom-select mr-sm-2"
                         >
                           <option value="" selected="selected" disabled hidden>Select Role</option>
-                          <option value="Super Admin">Super Admin</option>
-                          <option value="Admin">Admin</option>
-                          <option value="Vendor">Vendor</option>
-                          <option value="Sub Vendor">Sub Vendor</option>
+                          <option value="super_admin">super_admin</option>
+                          <option value="admin">admin</option>
+                          <option value="vendor">vendor</option>
+                          <option value="sub_vendor">sub_vendor</option>
                         </select>
                       </div>
                     </div>

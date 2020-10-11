@@ -10,10 +10,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
         </div>
         <div class="info">
           <a href="#" class="d-block">{{$data->name}}</a>
+          <span class="badge badge-warning">{{$data->role}}</span>
         </div>
       </div>
 
@@ -31,6 +32,7 @@
                 </p>
               </a>
           </li>
+          @if ($data->role == 'super_admin')
               
           <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
@@ -71,7 +73,7 @@
                 </a>
               </li>
             </ul>
-        </li>
+          </li>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-star"></i>
@@ -95,6 +97,9 @@
             </li>
           </ul>
         </li>
+        @endif
+        
+        @if($data->role == 'vendor' || $data->role == 'super_admin')
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-star"></i>
@@ -129,7 +134,7 @@
             </li>
           </ul>
         </li>
-          
+        @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

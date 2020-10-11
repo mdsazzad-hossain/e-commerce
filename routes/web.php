@@ -23,7 +23,7 @@ Route::get('/', function () {
 // Route::get('/register', 'Backend\LoginController@register_index')->name('register');
 
 Route::group(["namespace"=>"Backend"],function() {
-    Route::group(['middleware' => 'guest'], function () {
+    Route::group(['middleware' =>'guest'], function () {
         Route::get('/admin', 'LoginController@login_index')->name('login');
         Route::get('/register', 'LoginController@register_index')->name('register');
         Route::post('/register-store', 'LoginController@store')->name('user.store');
@@ -32,7 +32,7 @@ Route::group(["namespace"=>"Backend"],function() {
     });
 
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['auth','user.role']], function () {
         Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::get('dashboard', 'DashboardController@index')->name('dashboard');
         Route::get('user-list', 'DashboardController@user_list')->name('user.list');
