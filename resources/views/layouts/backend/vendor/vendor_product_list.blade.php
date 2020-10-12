@@ -66,7 +66,7 @@
                 @include('layouts.backend.vendor.add_vendor_brand')
                   <div class="card-body row col-4 offset-4" id="vendorlogoInfo" style="display: none;">
                     <div class="form-group">
-                        <form  role="form" action="{{route('vendor.add')}}" method="POST" id="dropzoneForm" 
+                        <form  role="form" action="{{route('vendor.add')}}" method="POST" id="dropzoneForm"
                             class="dropzone" style="margin-bottom: 10px;
                             background-color: #ddd;
                             border: 2px dashed #767676;
@@ -88,8 +88,8 @@
                         </form>
                     </div>
                 </div>
-                  
-                
+
+
             <form id="productInfo" action="#" method="POST" style="display: none;">
                 @csrf
                 <div class="card-body row col-12">
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     <div class="row col-12">
-                    
+
                         <div class="form-group col-3">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Quantity</label
@@ -230,16 +230,16 @@
                     </button>
                 </form>
                 <div id="productAvatarInfo" class="card-body row col-12" style="display: none;">
-                    
+
                     <div class="form-group">
                         <form style="margin-bottom: 10px;
                             background-color: #ddd;
                             border: 2px dashed #767676;
                             margin-top: 10px;
-                            height:auto;" 
-                            id="dropzone" 
+                            height:auto;"
+                            id="dropzone"
                             class="dropzone"
-                            enctype="multipart/form-data" 
+                            enctype="multipart/form-data"
                             action="#" method="POST">
                             @csrf
                             <div class="form-group col-12">
@@ -256,12 +256,12 @@
                             </div>
                         </form>
                     </div>
-                    
+
                 </div>
 
             </div>
-            <div id="editProductForm" class="card card-primary col-8 offset-2" 
-            
+            <div id="editProductForm" class="card card-primary col-8 offset-2"
+
                 style="padding-top: 8px;
                     border: 1px solid #ddd;
                     padding-bottom: 8px;
@@ -320,6 +320,7 @@
                   </button>
                 </form>
             </div>
+
             <div id="product_table" class="card col-12" style="border: 1px solid #ddd;display:block;">
                 <div class="card-header">
                 <h3 class="card-title">All Products is here</h3>
@@ -359,8 +360,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                            
-                        
+
+
                             <tr role="row" class="odd">
                                 <td class="sorting_1">test</td>
                                 <td class="sorting_1">test</td>
@@ -416,6 +417,22 @@
             });
         </script>
       <script>
+          function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#category-img-tag').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#logo").change(function(){
+                readURL(this);
+            });
+
           function formClose(){
             document.getElementById("addProductForm").style.display = "none";
             document.getElementById("product_table").style.display = "block";
@@ -479,7 +496,7 @@
         //   $('#edit_sub_child_name').val();
         }
 
-        
+
       </script>
       <script type="text/javascript">
         Dropzone.options.dropzoneForm =
@@ -527,7 +544,7 @@
         //    window.location.reload();
         //   }
 
-        
+
 
         }
        </script>

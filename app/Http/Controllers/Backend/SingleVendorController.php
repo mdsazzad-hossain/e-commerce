@@ -39,9 +39,7 @@ class SingleVendorController extends Controller
      */
     public function store(Request $request)
     {
-        $image = $request->file('file');
-
-        $imageName = $image->getClientOriginalName();
+        $imageName = $request->logo;
         $random = Str::random(10);
         $imgName = $random.$imageName;
         if($imgName){
@@ -53,9 +51,9 @@ class SingleVendorController extends Controller
                 'address'=>$request->address
             ]);
             if($data){
-                $image->move(public_path('images'), $imgName);
+                $imageName->move(public_path('images'), $imgName);
                 toast('Vendor brand create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                
+
                 return redirect()->back();
             }
         }
