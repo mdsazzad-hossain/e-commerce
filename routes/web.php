@@ -90,6 +90,14 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('ads-create', 'AdManagerController@store')->name('ads.upload');
         // Route::post('product-avatar-update', 'ProductAvatarController@update')->name('avatar.update');
         Route::post('ads-delete/{id}', 'AdManagerController@destroy')->name('ads.delete');
+
+        //vendor
+        Route::get('verdor-product-list', 'VendorController@index')->name('vendor.products');
+        Route::post('vendor-create', 'VendorController@store')->name('vendor.add');
+        Route::post('vendor-brand-create', 'SingleVendorController@store')->name('vendor.brand.add');
+        // Route::post('ads-create', 'AdManagerController@store')->name('ads.upload');
+        // Route::post('product-avatar-update', 'ProductAvatarController@update')->name('avatar.update');
+        // Route::post('ads-delete/{id}', 'AdManagerController@destroy')->name('ads.delete');
     });
 
 });
