@@ -45,14 +45,14 @@ class VendorController extends Controller
     {
         Vendor::where('id',$request->id)->update(['status'=>1]);
         $vendors = Vendor::latest()->get();
-        toast('Vendor approve successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();           
+        toast('Vendor approve successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         return redirect()->back();
     }
     public function disable(Request $request)
     {
         Vendor::where('id',$request->id)->update(['status'=>0]);
         toast('Vendor disable successfully','success')
-        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();           
+        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         return response()->json([
 
         ],200);
@@ -67,23 +67,24 @@ class VendorController extends Controller
     public function store(Request $request)
     {
 
-        $imageName = $request->get('vendor_logo'); 
-        $random = Str::random(10);
-        $imgName = $random.$imageName;
-        // $img = Image::make($request->vendor_logo);
+        $image = $request->file('vendor_logo');
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        $img = Image::make($request->file('vendor_logo'))->fit(100,100);
+        $upload_path1 = public_path()."/images/";
 
-        if($imgName){
+
+        if($new_name){
             $data = Vendor::create([
                 'user_id'=>auth()->user()->id,
                 'brand_name'=>$request->brand_name,
-                'logo'=>$imgName,
+                'logo'=>$new_name,
                 'slug'=>$request->brand_name
             ]);
             if($data){
-                // $imageName->move(public_path('images'), $imgName);
+                $img->save($upload_path1.$new_name);
 
                 toast('Vendor Create successfully','success')
-                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();           
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
                 return redirect()->back();
             }
         }

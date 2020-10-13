@@ -65,7 +65,7 @@
                 <hr>
                 @include('layouts.backend.vendor.add_vendor_brand')
                 <div class="card-body row col-4 offset-4" id="vendorlogoInfo" style="display: none;border: 1px solid #ddd;">
-                    <form  role="form" action="{{route('vendor.add')}}" method="POST">
+                    <form  role="form" method="POST" id="upload_form" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
@@ -102,7 +102,7 @@
 
 
                 <form id="productInfo" action="{{route('vendor.product.store')}}" method="POST" style="display: none;">
-                @csrf
+                 @csrf
                   <div class="card-body row col-12">
                     <div class="form-group col-6">
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
@@ -387,8 +387,8 @@
                     <tbody>
 
                         @foreach ($vendor_products as $pro)
-                            
-                        
+
+
                             <tr role="row" class="odd">
                                 <td class="sorting_1">{{$pro->product_name}}</td>
                                 <td class="sorting_1">{{$pro->color}}</td>
@@ -582,5 +582,31 @@
             };
         }
        </script>
+       <script>
+        $(document).ready(function(){
+
+         $('#upload_form').on('submit', function(event){
+          event.preventDefault();
+          $.ajax({
+           url:"{{ route('vendor.add') }}",
+           method:"POST",
+           data:new FormData(this),
+           dataType:'JSON',
+           contentType: false,
+           cache: false,
+           processData: false,
+           success:function(data)
+           {
+            window.location.reload();
+            // $('#message').css('display', 'block');
+            // $('#message').html(data.message);
+            // $('#message').addClass(data.class_name);
+            // $('#uploaded_image').html(data.uploaded_image);
+           }
+          })
+         });
+
+        });
+        </script>
     @endsection
 @endsection
