@@ -4,7 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Vendor;
+use App\Models\SingleVendor;
+use App\Models\VendorProduct;
+use App\Models\VendorProductAvatar;
+use Image;
 class VendorProductAvatarController extends Controller
 {
     /**
@@ -35,7 +42,23 @@ class VendorProductAvatarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $image = $request->file('file');
+
+        $imageName = $image->getClientOriginalName();
+        $random = Str::random(10);
+        $imgName = $random.$imageName;
+        if($imgName){
+            $data = VendorProductAvatar::create([
+                'vendor_product_id'=>$request->vendor_product_id,
+                'avatar'=>$imgName,
+                'slug'=>$imgName
+            ]);
+            if($data){
+                $image->move(public_path('images'), $imgName);
+    
+                return redirect()->back();
+            }
+        }
     }
 
     /**

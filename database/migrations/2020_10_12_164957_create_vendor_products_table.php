@@ -17,8 +17,6 @@ class CreateVendorProductsTable extends Migration
             $table->id();
             $table->foreignId('single_vendor_id')->nullable()->constrained('single_vendors');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
-            $table->string('cat_name',150)->nullable();
-            $table->string('banar')->nullable();
             $table->string('product_name',150);
             $table->string('slug',150);
             $table->string('product_code',50)->nullable();

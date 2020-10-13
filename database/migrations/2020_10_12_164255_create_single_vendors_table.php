@@ -18,6 +18,8 @@ class CreateSingleVendorsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
             $table->string('brand_name',100);
+            $table->string('cat_name',150)->nullable();
+            $table->string('banar')->nullable();
             $table->string('logo',100);
             $table->string('address')->nullable();
             $table->boolean('status')->default(0);

@@ -40,22 +40,28 @@ class SingleVendorController extends Controller
     public function store(Request $request)
     {
         $imageName = $request->logo;
+        $banarName = $request->banar;
         $random = Str::random(10);
+        $random1 = Str::random(10);
         $imgName = $random.$imageName;
-        if($imgName){
-            $data = SingleVendor::create([
-                'user_id'=>auth()->user()->id,
-                'vendor_id'=>$request->vendor_id,
-                'brand_name'=>$request->brand_name,
-                'logo'=>$imgName,
-                'address'=>$request->address
-            ]);
-            if($data){
-                $imageName->move(public_path('images'), $imgName);
-                toast('Vendor brand create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        $imgName1 = $random1.$banarName;
 
-                return redirect()->back();
-            }
+        $data = SingleVendor::create([
+            'user_id'=>auth()->user()->id,
+            'vendor_id'=>$request->vendor_id,
+            'brand_name'=>$request->brand_name,
+            'cat_name'=>$request->cat_name,
+            'logo'=>$imgName,
+            'banar'=>$imgName1,
+            'address'=>$request->address
+        ]);
+        if($data){
+            // $imageName->move(public_path('images'), $imgName);
+            // $banarName->move(public_path('images'), $imgName1);
+
+            toast('Vendor brand create successfully','success')
+            ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->back();
         }
     }
 

@@ -64,45 +64,70 @@
                 </div>
                 <hr>
                 @include('layouts.backend.vendor.add_vendor_brand')
-                  <div class="card-body row col-4 offset-4" id="vendorlogoInfo" style="display: none;">
-                    <div class="form-group">
-                        <form  role="form" action="{{route('vendor.add')}}" method="POST" id="dropzoneForm"
-                            class="dropzone" style="margin-bottom: 10px;
-                            background-color: #ddd;
-                            border: 2px dashed #767676;
-                            margin-top: 10px;
-                            height:auto;">
-                            @csrf
-                            <div class="form-group">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                    >Brand Name</label
-                                    >
-                                <input
-                                    id="brand_name"
-                                    name="brand_name"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Enter brand name"
-                                />
+                <div class="card-body row col-4 offset-4" id="vendorlogoInfo" style="display: none;border: 1px solid #ddd;">
+                    <form  role="form" action="{{route('vendor.add')}}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                >Brand Name</label
+                                >
+                            <input
+                                id="brand_name"
+                                name="brand_name"
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter brand name"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="image" class="mr-sm-2">logo</label>
+                            <div style="height: 100px;
+                                border: dashed 1.5px blue;
+                                background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                width: 40% !important;
+                                cursor: pointer;">
+                            <input style="opacity: 0;
+                                height: 100px;
+                                cursor: pointer;
+                                padding: 0px;" id="vendor_logo" type="file" class="form-control" name="vendor_logo">
+                            <img src="#" id="vendor-logo-img" style="height: 100px;
+                                width: 100% !important;
+                                cursor: pointer;
+                                margin-top: -134px;"/>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%" type="submit">Submit</button>
+                    </form>
                 </div>
 
 
-            <form id="productInfo" action="#" method="POST" style="display: none;">
+                <form id="productInfo" action="{{route('vendor.product.store')}}" method="POST" style="display: none;">
                 @csrf
-                <div class="card-body row col-12">
-                    <div class="form-group col-12">
+                  <div class="card-body row col-12">
+                    <div class="form-group col-6">
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
-                        >Select Brand</label
+                        >Select Vendor</label
                         >
-                        <select class="form-control" name="brand_id" id="brand_id">
-                            {{-- @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}">
-                                {{ $brand->brand_name }}
+                        <select class="form-control" name="vendor_id" id="vendor_id">
+                            <option value="" selected="selected">select</option>
+                            @foreach ($vendors as $ven)
+                            <option value="{{ $ven->id }}">
+                                {{ $ven->brand_name }}
                             </option>
-                            @endforeach --}}
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                        >Select Single Vendor</label
+                        >
+                        <select class="form-control" name="single_vendor_id" id="single_vendor_id">
+                            <option value="" selected="selected">select</option>
+                            @foreach ($single_ven as $item)
+                            <option value="{{ $item->id }}">
+                                {{ $item->brand_name }}
+                            </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="row col-12">
@@ -240,18 +265,18 @@
                             id="dropzone"
                             class="dropzone"
                             enctype="multipart/form-data"
-                            action="#" method="POST">
+                            action="{{route('vendor.product.avatar')}}" method="POST">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Select Product</label
                                 >
-                                <select class="form-control" name="product_id" id="product_id">
-                                    {{-- @foreach ($products as $product)
-                                    <option value="{{ $product->id }}">
-                                        {{ $product->product_name }}
-                                    </option>
-                                    @endforeach --}}
+                                <select class="form-control" name="vendor_product_id" id="vendor_product_id">
+                                    @foreach ($vendor_products as $product)
+                                        <option value="{{ $product->id }}">
+                                            {{ $product->product_name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </form>
@@ -361,18 +386,22 @@
                     </thead>
                     <tbody>
 
-
+                        @foreach ($vendor_products as $pro)
+                            
+                        
                             <tr role="row" class="odd">
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
-                                <td class="sorting_1">test</td>
+                                <td class="sorting_1">{{$pro->product_name}}</td>
+                                <td class="sorting_1">{{$pro->color}}</td>
+                                <td class="sorting_1">{{$pro->size}}</td>
+                                <td class="sorting_1">{{$pro->qty}}</td>
+                                <td class="sorting_1">{{$pro->pur_price}}</td>
+                                <td class="sorting_1">{{$pro->sale_price}}</td>
                                 <td>
+                                    @if ($pro->status == 0)
                                     <button class="badge badge-warning">Inactive</button>
+                                    @else
                                     <button class="badge badge-success">Active</button>
+                                    @endif
                                 <a href="#" class="badge badge-info">Images</a>
                                 </td>
                                 <td style="display: inline-flex;">
@@ -387,6 +416,7 @@
                                     </form>
                                 </td>
                             </tr>
+                        @endforeach
                     </tbody>
                     {{-- <tfoot>
                     <tr>
@@ -422,7 +452,7 @@
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        $('#category-img-tag').attr('src', e.target.result);
+                        $('#logo-img').attr('src', e.target.result);
                     }
 
                     reader.readAsDataURL(input.files[0]);
@@ -431,6 +461,38 @@
 
             $("#logo").change(function(){
                 readURL(this);
+            });
+
+            function banarUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#banar-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#banar").change(function(){
+                banarUrl(this);
+            });
+
+            function vendorLogoUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#vendor-logo-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#vendor_logo").change(function(){
+                vendorLogoUrl(this);
             });
 
           function formClose(){
@@ -490,7 +552,8 @@
         function addProductAvatar(){
           if( document.getElementById("productInfo"))
           document.getElementById("productInfo").style.display = "none";
-          document.getElementById("brandInfo").style.display = "none";
+          document.getElementById("addBrandForm").style.display = "none";
+          document.getElementById("vendorlogoInfo").style.display = "none";
           document.getElementById("productAvatarInfo").style.display = "block";
         //   $('#edit_child_category_id').val();
         //   $('#edit_sub_child_name').val();
@@ -499,53 +562,24 @@
 
       </script>
       <script type="text/javascript">
-        Dropzone.options.dropzoneForm =
-       {
-           maxFiles : 1,
-           renameFile: function (file) {
-               var dt = new Date();
-               var time = dt.getTime();
-               return time + file.name;
-           },
-           acceptedFiles: ".jpeg,.jpg,.png,.gif",
-           addRemoveLinks: true,
-           timeout: 30000,
-           accept: function (file, done) {
-               window.location.reload();
-           },
-           error: function (file, response) {
-               return false;
-           }
-       };
-
-        // Dropzone.options.dropzoneForm = {
-        //   autoProcessQueue : false,
-        //   maxFiles : 1,
-        //   acceptedFiles : ".png,.jpg,.gif,.bmp,.jpeg",
-
-        //   init:function(){
-        //     var submitButton = document.querySelector("#submit-all");
-        //     myDropzone = this;
-
-        //     submitButton.addEventListener('click', function(){
-        //       myDropzone.processQueue();
-        //     });
-
-        //     this.on("complete", function(){
-        //       if(this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0)
-        //       {
-        //         var _this = this;
-        //         _this.removeAllFiles();
-        //       }
-        //     });
-
-        //   }
-        //   accept: function(file, done) {
-        //    window.location.reload();
-        //   }
-
-
-
+            Dropzone.options.dropzone=
+            {
+                maxFiles : 4,
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                addRemoveLinks: true,
+                timeout: 30000,
+                accept: function (file, done) {
+                    window.location.reload();
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
         }
        </script>
     @endsection

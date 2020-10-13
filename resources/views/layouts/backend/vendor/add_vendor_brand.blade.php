@@ -9,11 +9,11 @@
                 >
                 <select class="form-control" name="vendor_id" id="vendor_id">
                     <option value="" selected="selected">select</option>
-                    {{-- @foreach ($categories as $cat)
-                    <option value="{{ $cat->id }}">
-                        {{ $cat->cat_name }}
+                    @foreach ($vendors as $ven)
+                    <option value="{{ $ven->id }}">
+                        {{ $ven->brand_name }}
                     </option>
-                    @endforeach --}}
+                    @endforeach
                 </select>
             </div>
 
@@ -29,35 +29,52 @@
                   placeholder="Enter brand name"
               />
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-3">
             <label for="image" class="col-form-label">logo</label>
-            <div style="height: 180px;
+            <div style="height: 100px;
+                border: dashed 1.5px blue;
+                background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                width: 60% !important;
+                cursor: pointer;">
+              <input style="opacity: 0;
+              height: 100px;
+              cursor: pointer;
+              padding: 0px;" id="logo" type="file" class="form-control" name="logo">
+              <img src="#" id="logo-img" style="height: 100px;
+              width: 100% !important;
+              cursor: pointer;
+              margin-top: -134px;"/>
+            </div>
+          </div>
+          <div class="form-group col-3" style="margin-left: -45px;
+          margin-right: 45px;">
+            <label for="image" class="col-form-label">Banar</label>
+            <div style="height: 100px;
                 border: dashed 1.5px blue;
                 background-image: repeating-linear-gradient(45deg, black, transparent 100px);
                 width: 100% !important;
                 cursor: pointer;">
               <input style="opacity: 0;
-              height: 180px;
-              width: 100%;
-              cursor: pointer;" id="logo" type="file" class="form-control" name="logo">
-              <img src="#" id="category-img-tag" style="height: 180px;
-              border: dashed 1.5px blue;
-              background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+              height: 100px;
+              cursor: pointer;
+              padding: 0px;" id="banar" type="file" class="form-control" name="banar">
+              <img src="#" id="banar-img" style="height: 100px;
               width: 100% !important;
               cursor: pointer;
-              margin-top: -212px;"/>
+              margin-top: -134px;"/>
             </div>
           </div>
-          <div class="form-group col-7 offset-1">
+          <div class="form-group col-6">
             <label class="mr-sm-2" for="inlineFormCustomSelect"
                 >Address</label
                 >
-            <input
+            <textarea
+                style="min-height: 106px;"
                 name="address"
                 type="text"
                 class="form-control"
                 placeholder="Enter address"
-            />
+            ></textarea>
         </div>
       </div>
         <button style="width: 100%" class="btn btn-primary" id="submit-all">Submit</button>

@@ -115,6 +115,23 @@
                 <p>Product List</p>
               </a>
             </li>
+          </ul>
+        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-star"></i>
+            <p>
+              Vendor
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" style="display: none;">
+            <li class="nav-item">
+              <a href="{{route('vendors')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Vendor List</p>
+              </a>
+            </li>
             <li class="nav-item">
             <a href="{{route('vendor.products')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
