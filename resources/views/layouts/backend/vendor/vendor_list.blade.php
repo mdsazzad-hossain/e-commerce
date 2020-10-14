@@ -11,18 +11,23 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-3">
-            <button class="btn btn-primary" onclick="showProductForm()">
-              <i class="fa fa-plus"></i>
-              Add Product
-            </button>
-
-          </div>
-          <div class="col-sm-3">
-            <button class="btn btn-primary" onclick="showPendingRequest()">
-              <i class="fa fa-plus"></i>
-              Vendor Request
-            </button>
-
+            <div style="width: 80%;
+                    padding: 10px;
+                    background-color: white;
+                    border: 1px solid #ddd;
+                    box-shadow: 1px 1px #ddd;
+                    border-radius: 5px;display: inline-flex;">
+                    <button class="btn btn-primary" onclick="showPendingRequest()" style="padding: 10px;">
+                        <i class="fa fa-plus" style="margin-right: 5px;font-size: 25px;margin-left: 5px;"></i>
+                        
+                    </button>
+                    <p style="margin-left: 5px;
+                    font-weight: 700;
+                    margin-bottom: 0px;">Vendor Request
+                        <span style="float: left;
+                        margin-left: 15px;" class="badge badge-warning">{{$count}}</span>
+                    </p>
+            </div>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -36,7 +41,66 @@
     <hr>
     <section class="content">
         <div class="row">
-            <div id="new_vendor_table" class="card col-12" style="border: 1px solid #ddd;display:none;">
+            <div class="card-body col-4" id="vendorlogoInfo" style="display: none;border: 1px solid rgb(221, 221, 221);
+            height: 350px;
+            background-color: #fff;">
+                <div class="card-header" style="color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+                box-shadow: none;">
+                  <h3 class="card-title">Update Vendor Info</h3>
+                  
+                </div>
+                <form  role="form" method="POST" id="edit_vendor" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                            >Brand Name</label
+                            >
+                        <input
+                            id="brand_name"
+                            name="brand_name"
+                            type="text"
+                            class="form-control"
+                            placeholder="Enter brand name"
+                        />
+                    </div>
+                    <div class="row col-12">
+                        <div class="form-group col-6">
+                            <label for="image" class="mr-sm-2">logo</label>
+                            <div style="height: 100px;
+                                border: dashed 1.5px blue;
+                                background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                width: 100% !important;
+                                cursor: pointer;">
+                            <input style="opacity: 0;
+                                height: 100px;
+                                cursor: pointer;
+                                padding: 0px;" id="logo" type="file" class="form-control" name="logo">
+                            <img src="" id="vendor-logo-img" style="height: 100px;
+                                width: 100% !important;
+                                cursor: pointer;
+                                margin-top: -134px;"/>
+                                <input type="text" id="slug" name="slug" hidden>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                            >Vendor Type</label
+                            >
+                            <select class="form-control" name="multi_vendor" id="multi_vendor">
+                                    <option value="" selected="selected" hidden>Select</option>
+                                    <option value="1">Group</option>
+                                    <option value="0">Single</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success" style="width: 100%" type="submit">Submit</button>
+                </form>
+            </div>
+            <div id="new_vendor_table" class="card col-7 offset-1" style="border: 1px solid #ddd;display:none;">
                 <div class="card-header">
                     <h3 class="card-title">Pending Request</h3>
                     <button onclick="closeTable()" style="float: right;">x</button>
@@ -70,29 +134,31 @@
                             @if($ven->status == 0)
                             <tr role="row" class="odd">
                                 <td class="sorting_1">{{$ven->brand_name}}</td>
-                                <td class="sorting_1">{{$ven->logo}}</td>
+                                <td class="sorting_1">
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $ven->logo) }}" />
+
+                                </td>
                                 <td>
                                     @if ($ven->status == 0)
                                     <input hidden type="text" id="id" name="id">
-                                    <button onclick="approveVendor({{$ven}})" class="badge badge-warning">Inactive</button>
-                                    @else
-                                    <button class="badge badge-success">Active</button>
+                                    <p style="cursor: pointer;" onclick="approveVendor({{$ven}})" class="badge badge-warning">Pending</p>
+                                    
                                     @endif
                                 </td>
                                 <td>
                                     @if ($ven->multi_vendor == 0)
-                                    <button class="badge badge-warning">Group</button>
+                                    <p class="badge badge-warning">Single</p>
                                     @else
-                                    <button class="badge badge-success">Single</button>
+                                    <p class="badge badge-success">Group</p>
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">
-                                    <a href="#" style="margin-right: 5px;" class="btn btn-primary">
+                                    <p onclick="editVendorReq({{$ven}})" style="margin-right: 5px;cursor: pointer;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
-                                    </a>
-                                <form action="#" method="POST">
+                                    </p>
+                                    <form action="{{route('req.vendor.delete',$ven->slug)}}" method="POST">
                                         @csrf
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger" type="submit">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
@@ -147,16 +213,19 @@
                             @if($ven->status == 1)
                             <tr role="row" class="odd">
                                 <td class="sorting_1">{{$ven->brand_name}}</td>
-                                <td class="sorting_1">{{$ven->logo}}</td>
+                                <td class="sorting_1">
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $ven->logo) }}" />
+
+                                </td>
                                 <td>
-                                    <button onclick="disableVendor({{$ven}})" class="badge badge-success">Active</button>
+                                    <p style="cursor: pointer;" onclick="disableVendor({{$ven}})" class="badge badge-success">Approved</p>
                                     
                                 </td>
                                 <td>
                                     @if ($ven->multi_vendor == 0)
-                                    <button class="badge badge-warning">Group</button>
+                                    <p class="badge badge-warning">Single</p>
                                     @else
-                                    <button class="badge badge-success">Single</button>
+                                    <p class="badge badge-success">Group</p>
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">
@@ -203,14 +272,37 @@
             });
         </script>
       <script>
+          function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
+                    reader.onload = function (e) {
+                        $('#vendor-logo-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#logo").change(function(){
+                readURL(this);
+            });
+
+        function editVendorReq(ven){
+            $('#brand_name').val(ven.brand_name);
+            $('#status').val(ven.multi_vendor);
+            $('#slug').val(ven.slug);
+            document.getElementById("vendor-logo-img").src = "{{ asset('/images/') }}/"+ven.logo;
+        }
         function showPendingRequest(){
             document.getElementById("vendor_table").style.display = "none";
-            document.getElementById("new_vendor_table").style.display = "block";
+            var newstl = document.getElementById("new_vendor_table").style.display = "block";
+            var newstl = document.getElementById("vendorlogoInfo").style.display = "block";
         }
         function closeTable(){
             document.getElementById("vendor_table").style.display = "block";
             document.getElementById("new_vendor_table").style.display = "none";
+            document.getElementById("vendorlogoInfo").style.display = "none";
         }
         function approveVendor(ven){
             id = ven.id;
@@ -227,12 +319,7 @@
                 id:id
               },
               success:function(response){
-                  setTimeout(() => {
-                    document.getElementById("msg").style.display = "block";
-                      
-                  }, 3000);
-                    document.getElementById("msg").style.display = "none";
-                //   window.location.reload();
+                  window.location.reload();
               }
             });
         }
@@ -255,7 +342,41 @@
               }
             });
         }
+        $(document).ready(function(){
+
+            $('#edit_vendor').on('submit', function(event){
+                event.preventDefault();
+                    $.ajax({
+                        url:"{{ route('vendor.update') }}",
+                        method:"POST",
+                        data:new FormData(this),
+                        dataType:'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success:function(response)
+                        {
+                            window.location.reload();
+                        }
+                    })
+                });
+
+            });
       </script>
       
+    @endsection
+    @section('css')
+        <style>
+            /* .table-visible{
+                display:block !important;
+                max-width: 100% !important;
+            }
+            .table-new-style{
+                max-width: 60% !important;
+                transition: .3s;
+                margin-left: 40%;
+            } */
+            
+        </style>
     @endsection
 @endsection

@@ -67,9 +67,15 @@ class VendorProductAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showAvatar($slug)
     {
-        //
+        $data = auth()->user();
+        $product = VendorProduct::where('product_name',$slug)->first();
+        $images = VendorProductAvatar::where('vendor_product_id',$product->id)->with('get_vendor_product')->get();
+        return view('layouts.backend.vendor.productAvatar',[
+            'data'=>$data,
+            'images'=>$images
+        ]);
     }
 
     /**
@@ -90,9 +96,33 @@ class VendorProductAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+        $image = $request->file('avatar');
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        $img = Image::make($request->file('avatar'))->fit(203,203);
+        $upload_path1 = public_path()."/images/";
+
+        $exist = VendorProductAvatar::where('slug',$request->slug)->first();
+        \File::delete(public_path('images/' . $exist->avatar));
+
+        if($new_name){
+            $data = VendorProductAvatar::where('slug',$request->slug)->update([
+                'avatar'=>$new_name,
+                'slug'=>$new_name
+            ]);
+            if($data){
+                $img->save($upload_path1.$new_name);
+    
+                toast('Product Image Update Successfully','success')
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
+            }
+        }
+        
     }
 
     /**
@@ -101,8 +131,14 @@ class VendorProductAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        $data = VendorProductAvatar::where('slug',$slug)->first();
+        $data->delete();
+        \File::delete(public_path('images/' . $data->avatar));
+
+        toast('Product Image Delete Successfully','success')
+        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 }

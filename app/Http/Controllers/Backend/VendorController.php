@@ -36,9 +36,12 @@ class VendorController extends Controller
     {
         $data = auth()->user();
         $vendors = Vendor::latest()->limit(10)->get();
+        $count = Vendor::where('status',0)->count();
+
         return view('layouts.backend.vendor.vendor_list',[
             'data'=>$data,
-            'vendors'=>$vendors
+            'vendors'=>$vendors,
+            'count'=>$count
         ]);
     }
     public function approve(Request $request)
@@ -46,7 +49,9 @@ class VendorController extends Controller
         Vendor::where('id',$request->id)->update(['status'=>1]);
         $vendors = Vendor::latest()->get();
         toast('Vendor approve successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        return redirect()->back();
+        return response()->json([
+            'message'=>'success'
+        ],200);
     }
     public function disable(Request $request)
     {
@@ -54,7 +59,7 @@ class VendorController extends Controller
         toast('Vendor disable successfully','success')
         ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         return response()->json([
-
+            'message'=>'success'
         ],200);
     }
 
@@ -78,14 +83,17 @@ class VendorController extends Controller
                 'user_id'=>auth()->user()->id,
                 'brand_name'=>$request->brand_name,
                 'logo'=>$new_name,
-                'slug'=>$request->brand_name
+                'slug'=>$request->brand_name,
+                'multi_vendor'=>$request->status,
             ]);
             if($data){
                 $img->save($upload_path1.$new_name);
 
                 toast('Vendor Create successfully','success')
                 ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                return redirect()->back();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
             }
         }
     }
@@ -119,9 +127,33 @@ class VendorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+        $image = $request->file('logo');
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        $img = Image::make($request->file('logo'))->fit(103,24);
+        $upload_path1 = public_path()."/images/";
+
+        $exist = Vendor::where('slug',$request->slug)->first();
+        \File::delete(public_path('images/' . $exist->logo));
+
+        $data = Vendor::where('slug',$request->slug)->update([
+            'brand_name'=>$request->brand_name,
+            'multi_vendor'=>$request->multi_vendor,
+            'logo'=>$new_name,
+            'slug'=>$request->brand_name,
+        ]);
+        if($data){
+            $img->save($upload_path1.$new_name);
+
+            toast('Vendor Updated successfully','success')
+            ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return response()->json([
+                'message'=>'success'
+            ],200);
+        }
+        
     }
 
     /**
@@ -130,8 +162,12 @@ class VendorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        $id = Vendor::where('slug',$slug)->first();
+        $id->delete();
+        toast('Vendor Delete successfully','success')
+        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        return redirect()->back();
     }
 }

@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{asset('backend/plugins/daterangepicker/daterangepicker.css')}}">
     <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
     <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
-
+    @yield('css')
 </head>
 <body class="hold-transition sidebar-mini">
 @include('sweetalert::alert')

@@ -79,23 +79,37 @@
                                 placeholder="Enter brand name"
                             />
                         </div>
-                        <div class="form-group">
-                            <label for="image" class="mr-sm-2">logo</label>
-                            <div style="height: 100px;
-                                border: dashed 1.5px blue;
-                                background-image: repeating-linear-gradient(45deg, black, transparent 100px);
-                                width: 40% !important;
-                                cursor: pointer;">
-                            <input style="opacity: 0;
-                                height: 100px;
-                                cursor: pointer;
-                                padding: 0px;" id="vendor_logo" type="file" class="form-control" name="vendor_logo">
-                            <img src="#" id="vendor-logo-img" style="height: 100px;
-                                width: 100% !important;
-                                cursor: pointer;
-                                margin-top: -134px;"/>
+                        <div class="row col-12">
+                            <div class="form-group col-6">
+                                <label for="image" class="mr-sm-2">logo</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 100% !important;
+                                    cursor: pointer;">
+                                <input style="opacity: 0;
+                                    height: 100px;
+                                    cursor: pointer;
+                                    padding: 0px;" id="vendor_logo" type="file" class="form-control" name="vendor_logo">
+                                <img src="#" id="vendor-logo-img" style="height: 100px;
+                                    width: 100% !important;
+                                    cursor: pointer;
+                                    margin-top: -134px;"/>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                >Vendor Type</label
+                                >
+                                <select class="form-control" name="status" id="status">
+                                        <option value="" selected="selected" hidden>Select</option>
+                                        <option value="1">Group</option>
+                                        <option value="0">Single</option>
+                                </select>
                             </div>
                         </div>
+                        
                         <button class="btn btn-primary" style="width: 100%" type="submit">Submit</button>
                     </form>
                 </div>
@@ -402,7 +416,8 @@
                                     @else
                                     <button class="badge badge-success">Active</button>
                                     @endif
-                                <a href="#" class="badge badge-info">Images</a>
+                                    <a href="{{route('vendor.product.avatars',$pro->slug)}}" class="badge badge-info">Images</a>
+
                                 </td>
                                 <td style="display: inline-flex;">
                                     <a href="#" style="margin-right: 5px;" class="btn btn-primary">
@@ -595,18 +610,37 @@
            contentType: false,
            cache: false,
            processData: false,
-           success:function(data)
+           success:function(response)
            {
             window.location.reload();
-            // $('#message').css('display', 'block');
-            // $('#message').html(data.message);
-            // $('#message').addClass(data.class_name);
-            // $('#uploaded_image').html(data.uploaded_image);
            }
           })
          });
 
         });
+
+        $(document).ready(function(){
+
+            $('#singleVendor').on('submit', function(event){
+                event.preventDefault();
+                $.ajax({
+                    url:"{{ route('vendor.brand.add') }}",
+                    method:"POST",
+                    data:new FormData(this),
+                    dataType:'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success:function(response)
+                    {
+                        window.location.reload();
+                    }
+                })
+            });
+
+        });
+
+        
         </script>
     @endsection
 @endsection

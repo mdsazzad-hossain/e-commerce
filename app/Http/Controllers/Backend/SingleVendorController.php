@@ -8,6 +8,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SingleVendor;
+use Image;
 
 class SingleVendorController extends Controller
 {
@@ -39,30 +40,66 @@ class SingleVendorController extends Controller
      */
     public function store(Request $request)
     {
-        $imageName = $request->logo;
-        $banarName = $request->banar;
-        $random = Str::random(10);
-        $random1 = Str::random(10);
-        $imgName = $random.$imageName;
-        $imgName1 = $random1.$banarName;
+        if($request->file('logo') && $request->file('banar')){
 
-        $data = SingleVendor::create([
-            'user_id'=>auth()->user()->id,
-            'vendor_id'=>$request->vendor_id,
-            'brand_name'=>$request->brand_name,
-            'cat_name'=>$request->cat_name,
-            'logo'=>$imgName,
-            'banar'=>$imgName1,
-            'address'=>$request->address
-        ]);
-        if($data){
-            // $imageName->move(public_path('images'), $imgName);
-            // $banarName->move(public_path('images'), $imgName1);
+            $image = $request->file('logo');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('logo'))->fit(105,24);
+            $upload_path = public_path()."/images/";
 
-            toast('Vendor brand create successfully','success')
-            ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->back();
-        }
+            $image1 = $request->file('banar');
+            $new_name1 = rand() . '.' . $image1->getClientOriginalExtension();
+            $img1 = Image::make($request->file('banar'))->fit(1920,170);
+            $upload_path1 = public_path()."/images/";
+
+            $data = SingleVendor::create([
+                'user_id'=>auth()->user()->id,
+                'vendor_id'=>$request->vendor_id,
+                'brand_name'=>$request->brand_name,
+                'cat_name'=>$request->cat_name,
+                'logo'=>$new_name,
+                'banar'=>$new_name1,
+                'address'=>$request->address
+            ]);
+            if($data){
+                $img->save($upload_path.$new_name);
+                $img1->save($upload_path1.$new_name1);
+    
+                toast('Vendor brand create successfully','success')
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
+            }
+        }elseif(!$request->file('logo') && $request->file('banar')){
+
+            $image1 = $request->file('banar');
+            $new_name1 = rand() . '.' . $image1->getClientOriginalExtension();
+            $img1 = Image::make($request->file('banar'))->fit(1920,170);
+            $upload_path1 = public_path()."/images/";
+
+            $data = SingleVendor::create([
+                'user_id'=>auth()->user()->id,
+                'vendor_id'=>$request->vendor_id,
+                'brand_name'=>$request->brand_name,
+                'cat_name'=>$request->cat_name,
+                'logo'=>'',
+                'banar'=>$new_name1,
+                'address'=>$request->address
+            ]);
+            if($data){
+                // $img->save($upload_path.$new_name);
+                $img1->save($upload_path1.$new_name1);
+    
+                toast('Vendor brand create successfully','success')
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
+            }
+        }   
+
+        
     }
 
     /**

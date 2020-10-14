@@ -1,5 +1,5 @@
 <div class="card-body row col-12" id="addBrandForm" style="display: none;">
-    <form action="{{ route('vendor.brand.add')}}" method="POST">
+    <form method="POST" id="singleVendor" enctype="multipart/form-data">
         @csrf
 
       <div class="row col-12">
@@ -77,6 +77,6 @@
             ></textarea>
         </div>
       </div>
-        <button style="width: 100%" class="btn btn-primary" id="submit-all">Submit</button>
+        <button style="width: 100%" class="btn btn-primary" type="submit" id="submit-all">Submit</button>
     </form>
 </div>

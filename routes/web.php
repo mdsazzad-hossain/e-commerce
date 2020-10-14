@@ -93,6 +93,8 @@ Route::group(["namespace"=>"Backend"],function() {
 
         //vendor
         Route::get('vendors', 'VendorController@vendor_index')->name('vendors');
+        Route::post('vendor-update', 'VendorController@update')->name('vendor.update');
+        Route::post('vendor-delete/{slug}', 'VendorController@destroy')->name('req.vendor.delete');
         Route::post('approve-vendor', 'VendorController@approve')->name('approve.vendor');
         Route::post('disable-vendor', 'VendorController@disable')->name('disable.vendor');
         Route::get('verdor-product-list', 'VendorController@index')->name('vendor.products');
@@ -100,7 +102,9 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('vendor-brand-create', 'SingleVendorController@store')->name('vendor.brand.add');
         Route::post('vendor-product-store', 'VendorProductController@store')->name('vendor.product.store');
         Route::post('vendor-product-avatar', 'VendorProductAvatarController@store')->name('vendor.product.avatar');
-        // Route::post('ads-delete/{id}', 'AdManagerController@destroy')->name('ads.delete');
+        Route::get('vendor-product-avatars/{slug}', 'VendorProductAvatarController@showAvatar')->name('vendor.product.avatars');
+        Route::post('vendor-product-avatar/update', 'VendorProductAvatarController@update')->name('vendor.product.avatar.update');
+        Route::post('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
     });
     
 });
