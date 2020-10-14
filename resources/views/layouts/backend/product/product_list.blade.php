@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <div class="row col-12">
-                    
+
                         <div class="form-group col-3">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Quantity</label
@@ -276,17 +276,9 @@
                     </button>
                 </form>
                 <div id="productAvatarInfo" class="card-body row col-12" style="display: none;">
-                    
+
                     <div class="form-group">
-                        <form style="margin-bottom: 10px;
-                            background-color: #ddd;
-                            border: 2px dashed #767676;
-                            margin-top: 10px;
-                            height:auto;" 
-                            id="dropzoneForm" 
-                            class="dropzone"
-                            enctype="multipart/form-data" 
-                            action="{{ route('avatar.upload') }}" method="POST">
+                        <form enctype="multipart/form-data" id="avatarUpload" method="POST">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
@@ -300,14 +292,84 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="row col-12">
+                                <div class="form-group col-3">
+                                    <label for="image" class="col-form-label">Front Side Image</label>
+                                    <div style="height: 100px;
+                                        border: dashed 1.5px blue;
+                                        background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                        width: 60% !important;
+                                        cursor: pointer;">
+                                      <input style="opacity: 0;
+                                      height: 100px;
+                                      cursor: pointer;
+                                      padding: 0px;" id="front" type="file" class="form-control" name="front">
+                                      <img src="#" id="front-img" style="height: 100px;
+                                      width: 100% !important;
+                                      cursor: pointer;
+                                      margin-top: -134px;"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group col-3">
+                                    <label for="image" class="col-form-label">Back Side Image</label>
+                                    <div style="height: 100px;
+                                        border: dashed 1.5px blue;
+                                        background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                        width: 60% !important;
+                                        cursor: pointer;">
+                                      <input style="opacity: 0;
+                                      height: 100px;
+                                      cursor: pointer;
+                                      padding: 0px;" id="back" type="file" class="form-control" name="back">
+                                      <img src="#" id="back-img" style="height: 100px;
+                                      width: 100% !important;
+                                      cursor: pointer;
+                                      margin-top: -134px;"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group col-3">
+                                    <label for="image" class="col-form-label">Left Side Image</label>
+                                    <div style="height: 100px;
+                                        border: dashed 1.5px blue;
+                                        background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                        width: 60% !important;
+                                        cursor: pointer;">
+                                      <input style="opacity: 0;
+                                      height: 100px;
+                                      cursor: pointer;
+                                      padding: 0px;" id="left" type="file" class="form-control" name="left">
+                                      <img src="#" id="left-img" style="height: 100px;
+                                      width: 100% !important;
+                                      cursor: pointer;
+                                      margin-top: -134px;"/>
+                                    </div>
+                                  </div>
+                                  <div class="form-group col-3">
+                                    <label for="image" class="col-form-label">Right Side Image</label>
+                                    <div style="height: 100px;
+                                        border: dashed 1.5px blue;
+                                        background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                        width: 60% !important;
+                                        cursor: pointer;">
+                                      <input style="opacity: 0;
+                                      height: 100px;
+                                      cursor: pointer;
+                                      padding: 0px;" id="right" type="file" class="form-control" name="right">
+                                      <img src="#" id="right-img" style="height: 100px;
+                                      width: 100% !important;
+                                      cursor: pointer;
+                                      margin-top: -134px;"/>
+                                    </div>
+                                  </div>
+                            </div>
                         </form>
                     </div>
-                    
+
                 </div>
 
             </div>
-            <div id="editProductForm" class="card card-primary col-8 offset-2" 
-            
+            <div id="editProductForm" class="card card-primary col-8 offset-2"
+
                 style="padding-top: 8px;
                     border: 1px solid #ddd;
                     padding-bottom: 8px;
@@ -406,8 +468,8 @@
                     </thead>
                     <tbody>
                         @foreach ($products as $pro)
-                            
-                        
+
+
                             <tr role="row" class="odd">
                                 <td class="sorting_1">{{$pro->product_name}}</td>
                                 <td class="sorting_1">{{$pro->color}}</td>
@@ -467,6 +529,83 @@
             });
         </script>
       <script>
+          function frontUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#front-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function backUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#back-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function leftUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#left-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function rightUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#right-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#front").change(function(){
+                frontUrl(this);
+            });
+            $("#back").change(function(){
+                backUrl(this);
+            });
+            $("#left").change(function(){
+                leftUrl(this);
+            });
+            $("#right").change(function(){
+                rightUrl(this);
+            });
+            $(document).ready(function(){
+
+                $('#avatarUpload').on('submit', function(event){
+                    event.preventDefault();
+                    $.ajax({
+                        url:"{{ route('avatar.upload') }}",
+                        method:"POST",
+                        data:new FormData(this),
+                        dataType:'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success:function(response)
+                        {
+                            window.location.reload();
+                        }
+                    })
+                });
+
+            });
+
           function formClose(){
             document.getElementById("addProductForm").style.display = "none";
             document.getElementById("product_table").style.display = "block";
@@ -518,91 +657,6 @@
         //   $('#edit_sub_child_name').val();
         }
 
-        // $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-
-        // function addCategory(){
-        //     cat_name = $('#cat_name').val();
-
-
-        //     $.ajax({
-        //       url: "{{ route('category.add') }}",
-        //       type: "POST",
-        //       data:{
-        //         cat_name:cat_name
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
-
-        // function updateCat(){
-        //     cat_id = $('#cat_id').val();
-        //     edit_cat_name = $('#edit_cat_name').val();
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-
-        //     $.ajax({
-        //       url: "{{ route('category.update') }}",
-        //       type: "POST",
-        //       data:{
-        //         edit_cat_name:edit_cat_name,
-        //         cat_id:cat_id
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
-        // function deleteCat(cat){
-        //     id = cat.id;
-        //     status = cat.status;
-        //     console.log(id);
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-
-        //     $.ajax({
-        //       url: "{{ route('category.delete') }}",
-        //       type: "POST",
-        //       data:{
-        //         id:id,
-        //         status:status
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
       </script>
-      <script type="text/javascript">
-        Dropzone.options.dropzone =
-       {
-           maxFilesize: 1,
-           renameFile: function (file) {
-               var dt = new Date();
-               var time = dt.getTime();
-               return time + file.name;
-           },
-           acceptedFiles: ".jpeg,.jpg,.png,.gif",
-           addRemoveLinks: true,
-           timeout: 30000,
-           success: function (file, response) {
-               window.location.reload();
-           },
-           error: function (file, response) {
-               return false;
-           }
-       };
-       </script>
     @endsection
 @endsection

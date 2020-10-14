@@ -16,7 +16,10 @@ class CreateProductAvatarsTable extends Migration
         Schema::create('product_avatars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->nullable()->constrained('products');
-            $table->string('avatar');
+            $table->string('front');
+            $table->string('back')->nullable();
+            $table->string('left')->nullable();
+            $table->string('right')->nullable();
             $table->string('slug');
             $table->boolean('status')->default(1);
             $table->timestamps();

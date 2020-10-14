@@ -12,11 +12,7 @@ use Image;
 
 class VendorProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $data = auth()->user();
@@ -66,10 +62,10 @@ class VendorProductController extends Controller
         return redirect()->back();
     }
 
-    
+
     public function show($id)
     {
-        
+
     }
 
     /**
