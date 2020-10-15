@@ -132,7 +132,8 @@ class ProductController extends Controller
             'discount'=>$request->discount,
             'e_money'=>$request->e_money,
             'description'=>$request->description,
-            'total_price'=>$request->qty*$request->sale_price
+            'total_price'=>$request->qty*$request->sale_price,
+            'position'=>$request->position
         ]);
 
         toast('Product Updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
@@ -140,12 +141,7 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         Product::find($id)->delete();

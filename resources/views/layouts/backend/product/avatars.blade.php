@@ -24,14 +24,16 @@
     <hr>
     <section class="content">
         <div class="row">
-            <div id="editproductAvatarInfo" class="card card-primary col-4" style="padding-top: 8px;
+            <div id="editproductAvatarInfo" class="card card-primary col-8 offset-2" style="padding-top: 8px;
                     border: 1px solid #ddd;
                     padding-bottom: 8px;
                     display: none;
-                    height:225px;
+                    height:258px;
                 ">
-                <div class="card-header" style="background-color: #007bff;
-                color: #fff;">
+                <div class="card-header" style="color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+                box-shadow: none;">
                   <h3 class="card-title">Update Product Image</h3>
                   <button
                     onclick="formClose()"
@@ -43,21 +45,85 @@
                 </div>
                     
                 <div class="form-group" id="showAvatarForm">
-                    <form style="margin-bottom: 10px;
-                        background-color: #ddd;
-                        border: 2px dashed #767676;
-                        margin-top: 10px;
-                        height:auto;" 
-                        id="dropzoneForm" 
-                        class="dropzone"
-                        enctype="multipart/form-data" 
-                        action="{{ route('avatar.update') }}" method="POST">
+                    <form id="update_avatar" enctype="multipart/form-data" method="POST">
                         @csrf
-                        <input type="text" id="id" name="id" hidden>
+                        <input type="text" id="slug" name="slug" hidden>
+                        <div class="row col-12">
+                            <div class="form-group col-3">
+                                <label for="image" class="col-form-label">Front Side Image</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 60% !important;
+                                    cursor: pointer;">
+                                  <input style="opacity: 0;
+                                  height: 100px;
+                                  cursor: pointer;
+                                  padding: 0px;" id="front" type="file" class="form-control" name="front">
+                                  <img src="" id="front-img" style="height: 100px;
+                                  width: 100% !important;
+                                  cursor: pointer;
+                                  margin-top: -134px;"/>
+                                </div>
+                              </div>
+                              <div class="form-group col-3">
+                                <label for="image" class="col-form-label">Back Side Image</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 60% !important;
+                                    cursor: pointer;">
+                                  <input style="opacity: 0;
+                                  height: 100px;
+                                  cursor: pointer;
+                                  padding: 0px;" id="back" type="file" class="form-control" name="back">
+                                  <img src="" id="back-img" style="height: 100px;
+                                  width: 100% !important;
+                                  cursor: pointer;
+                                  margin-top: -134px;"/>
+                                </div>
+                              </div>
+                              <div class="form-group col-3">
+                                <label for="image" class="col-form-label">Left Side Image</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 60% !important;
+                                    cursor: pointer;">
+                                  <input style="opacity: 0;
+                                  height: 100px;
+                                  cursor: pointer;
+                                  padding: 0px;" id="left" type="file" class="form-control" name="left">
+                                  <img src="" id="left-img" style="height: 100px;
+                                  width: 100% !important;
+                                  cursor: pointer;
+                                  margin-top: -134px;"/>
+                                </div>
+                              </div>
+                              <div class="form-group col-3">
+                                <label for="image" class="col-form-label">Right Side Image</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 60% !important;
+                                    cursor: pointer;">
+                                  <input style="opacity: 0;
+                                  height: 100px;
+                                  cursor: pointer;
+                                  padding: 0px;" id="right" type="file" class="form-control" name="right">
+                                  <img src="" id="right-img" style="height: 100px;
+                                  width: 100% !important;
+                                  cursor: pointer;
+                                  margin-top: -134px;"/>
+                                </div>
+                              </div>
+                        </div>
+                        <button class="btn btn-success" style="width: 100%;" type="submit">Submit</button>
+
                     </form>
                 </div>
             </div>
-            <div id="product_table" class="card col-7 offset-1" style="border: 1px solid #ddd;display:block;">
+            <div id="product_table" class="card col-10 offset-1" style="border: 1px solid #ddd;display:block;">
                 <div class="card-header">
                     <h3 class="card-title">All Products is here</h3>
                 </div>
@@ -70,7 +136,16 @@
                             Product Name
                         </th>
                         <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Image
+                            Front Image
+                        </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Back Image
+                        </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Left Image
+                        </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Right Image
                         </th>
                         
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
@@ -89,7 +164,16 @@
                                     <td class="sorting_1">{{$avtr->get_product->product_name}}</td>
                                 @endif
                                 <td class="sorting_1">
-                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $avtr->avatar) }}" />
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $avtr->front) }}" />
+                                </td>
+                                <td class="sorting_1">
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $avtr->back) }}" />
+                                </td>
+                                <td class="sorting_1">
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $avtr->left) }}" />
+                                </td>
+                                <td class="sorting_1">
+                                    <img style="height: 50px;width: 120px;" src="{{ asset('/images/' . $avtr->right) }}" />
                                 </td>
                                 <td>
                                     @if($avtr->status == 0)
@@ -99,7 +183,7 @@
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">
-                                    <button onclick="editProductAvatar({{$avtr->id}})" style="margin-right: 5px;" class="btn btn-primary">
+                                    <button onclick="editProductAvatar({{$avtr}})" style="margin-right: 5px;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                 <form action="{{route('avatar.delete',$avtr->id)}}" method="POST">
@@ -143,129 +227,107 @@
         </script>
       <script>
           
-        function editProductAvatar(id){
-          if(document.getElementById("editproductAvatarInfo"))
-          document.getElementById("editproductAvatarInfo").style.display = "block";
-          $('#id').val(id);
-        }
-        function formClose(){
-          if( document.getElementById("editproductAvatarInfo"))
-          document.getElementById("editproductAvatarInfo").style.display = "none";
-          $('#id').val();
-        }
+            function editProductAvatar(avtr){
+                
+                document.getElementById("editproductAvatarInfo").style.display = "block";
+                document.getElementById("product_table").style.display = "none";
+                $('#slug').val(avtr.slug);
+                document.getElementById("front-img").src = "{{ asset('/images/') }}/"+avtr.front;
+                document.getElementById("back-img").src = "{{ asset('/images/') }}/"+avtr.back;
+                document.getElementById("left-img").src = "{{ asset('/images/') }}/"+avtr.left;
+                document.getElementById("right-img").src = "{{ asset('/images/') }}/"+avtr.right;
+            }
+            function formClose(){
+            if( document.getElementById("editproductAvatarInfo"))
+            document.getElementById("editproductAvatarInfo").style.display = "none";
+            document.getElementById("product_table").style.display = "block";
 
-        function addProduct(){
-          if(document.getElementById("brandInfo"))
-          document.getElementById("productInfo").style.display = "block";
-          document.getElementById("brandInfo").style.display = "none";
-          document.getElementById("productAvatarInfo").style.display = "none";
-        //   $('#edit_child_category_id').val(item.get_child_category.id);
-        //   $('#edit_sub_child_name').val(item.sub_child_name);
-        //   $('#id').val(item.id);
-        }
-        function addBrand(){
-          if( document.getElementById("productInfo"))
-          document.getElementById("productInfo").style.display = "none";
-          document.getElementById("productAvatarInfo").style.display = "none";
-          document.getElementById("brandInfo").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
-        }
+            $('#id').val();
+            }
 
-        function addProductAvatar(){
-          if( document.getElementById("productInfo"))
-          document.getElementById("productInfo").style.display = "none";
-          document.getElementById("brandInfo").style.display = "none";
-          document.getElementById("productAvatarInfo").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
-        }
+            
 
-        // $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
+            function frontUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-        // function addCategory(){
-        //     cat_name = $('#cat_name').val();
+                    reader.onload = function (e) {
+                        $('#front-img').attr('src', e.target.result);
+                    }
 
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function backUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-        //     $.ajax({
-        //       url: "{{ route('category.add') }}",
-        //       type: "POST",
-        //       data:{
-        //         cat_name:cat_name
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
+                    reader.onload = function (e) {
+                        $('#back-img').attr('src', e.target.result);
+                    }
 
-        // function updateCat(){
-        //     cat_id = $('#cat_id').val();
-        //     edit_cat_name = $('#edit_cat_name').val();
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function leftUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-        //     $.ajax({
-        //       url: "{{ route('category.update') }}",
-        //       type: "POST",
-        //       data:{
-        //         edit_cat_name:edit_cat_name,
-        //         cat_id:cat_id
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
-        // function deleteCat(cat){
-        //     id = cat.id;
-        //     status = cat.status;
-        //     console.log(id);
-        //     $.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
+                    reader.onload = function (e) {
+                        $('#left-img').attr('src', e.target.result);
+                    }
 
-        //     $.ajax({
-        //       url: "{{ route('category.delete') }}",
-        //       type: "POST",
-        //       data:{
-        //         id:id,
-        //         status:status
-        //       },
-        //       success:function(response){
-        //           window.location.reload();
-        //       }
-        //     });
-        // }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function rightUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#right-img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#front").change(function(){
+                frontUrl(this);
+            });
+            $("#back").change(function(){
+                backUrl(this);
+            });
+            $("#left").change(function(){
+                leftUrl(this);
+            });
+            $("#right").change(function(){
+                rightUrl(this);
+            });
+            
+
+            $(document).ready(function(){
+
+                $('#update_avatar').on('submit', function(event){
+                    event.preventDefault();
+                    
+                    $.ajax({
+                        url:"{{ route('avatar.update') }}",
+                        method:"POST",
+                        data:new FormData(this),
+                        dataType:'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+
+                        success:function(response)
+                        {
+                            
+                            window.location.reload();
+                        }
+                    })
+                });
+
+            });
       </script>
-      <script type="text/javascript">
-        Dropzone.options.dropzone =
-       {
-           maxFilesize: 1,
-           renameFile: function (file) {
-               var dt = new Date();
-               var time = dt.getTime();
-               return time + file.name;
-           },
-           acceptedFiles: ".jpeg,.jpg,.png,.gif",
-           addRemoveLinks: true,
-           timeout: 30000,
-           success: function (file, response) {
-               window.location.reload();
-           },
-           error: function (file, response) {
-               return false;
-           }
-       };
-       </script>
     @endsection
 @endsection

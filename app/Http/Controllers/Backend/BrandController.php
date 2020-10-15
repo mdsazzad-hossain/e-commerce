@@ -44,7 +44,7 @@ class BrandController extends Controller
                 'child_category_id'=>$request->child_category_id,
                 'sub_child_category_id'=>$request->sub_child_category_id,
                 'brand_name'=>$request->brand_name,
-                'slug'=> Str::slug($request->brand_name),
+                'slug'=> $request->brand_name,
                 'slug'=>$request->brand_name,
                 'br_description'=>$request->br_description
             ]);
@@ -52,7 +52,7 @@ class BrandController extends Controller
             Brand::create([
                 'category_id'=>$request->category_id,
                 'brand_name'=>$request->brand_name,
-                'slug'=> Str::slug($request->brand_name),
+                'slug'=> $request->brand_name,
                 'br_description'=>$request->br_description
             ]);
         }elseif($request->category_id && $request->child_category_id && !$request->sub_child_category_id){
@@ -60,7 +60,7 @@ class BrandController extends Controller
                 'category_id'=>$request->category_id,
                 'child_category_id'=>$request->child_category_id,
                 'brand_name'=>$request->brand_name,
-                'slug'=> Str::slug($request->brand_name),
+                'slug'=> $request->brand_name,
                 'br_description'=>$request->br_description
             ]);
         }

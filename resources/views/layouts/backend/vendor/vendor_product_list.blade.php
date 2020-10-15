@@ -5,13 +5,27 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <button class="btn btn-primary" onclick="showProductForm()">
-              <i class="fa fa-plus"></i>
-              Add Product
-            </button>
+          <div class="col-sm-3">
+            <div style="width: 80%;
+                    padding: 10px;
+                    background-color: white;
+                    border: 1px solid #ddd;
+                    box-shadow: 1px 1px #ddd;
+                    border-radius: 5px;display: inline-flex;">
+                    <button class="btn btn-primary" onclick="showProductForm()" style="padding: 10px;">
+                        <i class="fa fa-plus" style="margin-right: 5px;font-size: 25px;margin-left: 5px;"></i>
+                        
+                    </button>
+                    <p style="margin-left: 5px;
+                    font-weight: 700;
+                    margin-bottom: 0px;">Add Product
+                        <span style="float: left;
+                        margin-left: 15px;" class="badge badge-warning">0/0</span>
+                    </p>
+            </div>
 
           </div>
+          
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -271,22 +285,33 @@
                 <div id="productAvatarInfo" class="card-body row col-12" style="display: none;">
 
                     <div class="form-group">
+                        <input type="text" id="single_error" name="single_error" readonly style="display:none;border: none;
+                        width: 22%;
+                        background-color: #f15353;
+                        color: #fff;
+                        font-size: 10px; margin-top:2px;">
                         <form id="imageUpload" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Select Product</label
                                 >
-                                <select class="form-control" name="vendor_product_id" id="vendor_product_id">
+                                <select class="form-control" name="vendor_product_name" id="vendor_product_name">
+                                    <option value="" selected="selected" hidden>select product name</option>
                                     @foreach ($vendor_products as $product)
                                         <option value="{{ $product->id }}">
                                             {{ $product->product_name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                <input style="display:none;border: none;
+                                width: 22%;
+                                background-color: #f15353;
+                                color: #fff;
+                                font-size: 10px; margin-top:2px;" type="text" id="error" name="error" readonly>
                             </div>
                             <div class="row col-12">
-                                <div class="form-group col-3">
+                                  <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Front Side Image</label>
                                     <div style="height: 100px;
                                         border: dashed 1.5px blue;
@@ -299,9 +324,13 @@
                                       padding: 0px;" id="front" type="file" class="form-control" name="front">
                                       <img src="#" id="front-img" style="height: 100px;
                                       width: 100% !important;
-                                      cursor: pointer;
-                                      margin-top: -134px;"/>
+                                      cursor: pointer;margin-top: -134px;"/>
                                     </div>
+                                    <input style="display:none;border: none;
+                                        width: 75%;
+                                        background-color:#f15353;;
+                                        color: #fff;
+                                        font-size: 10px;margin-top:2px;" type="text" id="frontError" name="frontError" readonly>
                                   </div>
                                   <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Back Side Image</label>
@@ -355,6 +384,7 @@
                                     </div>
                                   </div>
                             </div>
+                            <button class="btn btn-primary" style="width:100%" type="submit">Submit</button>
                         </form>
                     </div>
 
@@ -593,8 +623,24 @@
                         cache: false,
                         processData: false,
                         success:function(response)
-                        {
-                            window.location.reload();
+                        {   if(response.errors){
+                                if(response.errors[0] && !response.errors[1]){
+                                    $('#single_error').val( response.errors[0]);
+                                    document.getElementById("single_error").style.display = "block";
+                                    setTimeout('$("#single_error").hide()',6000);
+                                
+                                }else{
+                                    $('#error').val( response.errors[0]);
+                                    $('#frontError').val( response.errors[1]);
+                                    document.getElementById("error").style.display = "block";
+                                    document.getElementById("frontError").style.display = "block";
+                                    setTimeout('$("#frontError").hide()',6000);
+                                    setTimeout('$("#error").hide()',6000);
+                                }
+                            }else{
+                                window.location.reload();
+
+                            }
                         }
                     })
                 });

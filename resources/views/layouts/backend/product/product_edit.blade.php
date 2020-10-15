@@ -43,7 +43,7 @@
                         >Select Brand</label
                         >
                         <select class="form-control" name="brand_id" id="brand_id" required>
-                        <option disabled value="{{$product->get_brand->brand_name}}" selected="selected">{{$product->get_brand->brand_name}}</option>
+                        <option value="{{$product->get_brand->brand_name}}" selected="selected" hidden>{{$product->get_brand->brand_name}}</option>
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}">
                                     {{ $brand->brand_name }}
@@ -199,7 +199,8 @@
                             >Select Position</label
                             >
                             <select class="form-control" name="position" id="position">
-                                <option value="{{$product->position}}">{{$product->position}}</option>
+                                <option value="" selected="selected" hidden>select view position</option>
+                                {{-- <option value="{{$product->position}}">{{$product->position}}</option> --}}
                                 <option value="flash sale">flash sale</option>
                                 <option value="vendor">vendor</option>
                                 <option value="upcoming product">upcoming product</option>

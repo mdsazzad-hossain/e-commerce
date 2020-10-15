@@ -128,7 +128,6 @@
                     </div>
                   </div>
                   <button
-                        id="submit"
                         type="submit"
                         style="width: 100%"
                         class="btn btn-primary"
@@ -144,6 +143,7 @@
                         >Select Brand</label
                         >
                         <select class="form-control" name="brand_id" id="brand_id">
+                            <option value="" selected="selected" hidden>select brand name</option>
                             @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}">
                                 {{ $brand->brand_name }}
@@ -278,13 +278,19 @@
                 <div id="productAvatarInfo" class="card-body row col-12" style="display: none;">
 
                     <div class="form-group">
-                        <form enctype="multipart/form-data" id="avatarUpload" method="POST">
+                        <input type="text" id="single_error" name="single_error" readonly style="display:none;border: none;
+                        width: 22%;
+                        background-color: #f15353;
+                        color: #fff;
+                        font-size: 10px; margin-top:2px;">
+                        <form  id="avatarUpload" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Select Product</label
                                 >
-                                <select class="form-control" name="product_id" id="product_id">
+                                <select class="form-control" name="prod_name" id="prod_name">
+                                    <option value="" selected="selected" hidden>select product name</option>
                                     @foreach ($products as $product)
                                     <option value="{{ $product->id }}">
                                         {{ $product->product_name }}
@@ -292,6 +298,11 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <input style="display:none;border: none;
+                                width: 22%;
+                                background-color: #f15353;
+                                color: #fff;
+                                font-size: 10px; margin-top:2px;" type="text" id="error" name="error" readonly>
                             <div class="row col-12">
                                 <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Front Side Image</label>
@@ -309,6 +320,11 @@
                                       cursor: pointer;
                                       margin-top: -134px;"/>
                                     </div>
+                                    <input style="display:none;border: none;
+                                        width: 75%;
+                                        background-color:#f15353;;
+                                        color: #fff;
+                                        font-size: 10px;margin-top:2px;" type="text" id="frontError" name="frontError" readonly>
                                   </div>
                                   <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Back Side Image</label>
@@ -362,6 +378,8 @@
                                     </div>
                                   </div>
                             </div>
+                            <button class="btn btn-primary" style="width: 100%;" type="submit">Submit</button>
+
                         </form>
                     </div>
 
@@ -585,6 +603,7 @@
             $("#right").change(function(){
                 rightUrl(this);
             });
+
             $(document).ready(function(){
 
                 $('#avatarUpload').on('submit', function(event){
@@ -599,7 +618,24 @@
                         processData: false,
                         success:function(response)
                         {
-                            window.location.reload();
+                            if(response.errors){
+                                if(response.errors[0] && !response.errors[1]){
+                                    $('#single_error').val( response.errors[0]);
+                                    document.getElementById("single_error").style.display = "block";
+                                    setTimeout('$("#single_error").hide()',6000);
+                                
+                                }else{
+                                    $('#error').val( response.errors[0]);
+                                    $('#frontError').val( response.errors[1]);
+                                    document.getElementById("error").style.display = "block";
+                                    document.getElementById("frontError").style.display = "block";
+                                    setTimeout('$("#frontError").hide()',6000);
+                                    setTimeout('$("#error").hide()',6000);
+                                }
+                            }else{
+                                window.location.reload();
+
+                            }
                         }
                     })
                 });
