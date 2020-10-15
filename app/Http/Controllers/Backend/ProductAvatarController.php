@@ -20,7 +20,10 @@ class ProductAvatarController extends Controller
      */
     public function index()
     {
-
+        $data = ProductAvatar::select('product_id')->get();
+        return response()->json([
+            'data'=>$data
+        ],200);
     }
 
     /**
@@ -46,7 +49,7 @@ class ProductAvatarController extends Controller
             'prod_name' => 'required',
             'front' => 'required'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'errors'=> $validator->messages()->all()
@@ -79,53 +82,135 @@ class ProductAvatarController extends Controller
                 }
             }else{
 
-                $image = $request->file('front');
-                $new_name = rand() . '.' . $image->getClientOriginalExtension();
-                $img = Image::make($request->file('front'))->fit(203,203);
-                $upload_path = public_path()."/images/";
 
-                $image2 = $request->file('back');
-                $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-                $img2 = Image::make($request->file('back'))->fit(203,203);
-                $upload_path2 = public_path()."/images/";
+            }
+        }elseif($request->file('front') != null && $request->file('back') != null &&
+        $request->file('left') != null && $request->file('right') != null)
+        {
+            $image = $request->file('front');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('front'))->fit(203,203);
+            $upload_path = public_path()."/images/";
 
-                $image3 = $request->file('left');
-                $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-                $img3 = Image::make($request->file('left'))->fit(203,203);
-                $upload_path3 = public_path()."/images/";
+            $image2 = $request->file('back');
+            $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
+            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $upload_path2 = public_path()."/images/";
 
-                $image4 = $request->file('right');
-                $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
-                $img4 = Image::make($request->file('right'))->fit(203,203);
-                $upload_path4 = public_path()."/images/";
+            $image3 = $request->file('left');
+            $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
+            $img3 = Image::make($request->file('left'))->fit(203,203);
+            $upload_path3 = public_path()."/images/";
 
-                if($new_name && $new_name2 && $new_name3 && $new_name4){
-                    $data = ProductAvatar::create([
-                        'product_id'=>$request->prod_name,
-                        'front'=>$new_name,
-                        'back'=>$new_name2,
-                        'left'=>$new_name3,
-                        'right'=>$new_name4,
-                        'slug'=>$new_name
-                    ]);
-                    if($data){
-                        $img->save($upload_path.$new_name);
-                        $img2->save($upload_path2.$new_name2);
-                        $img3->save($upload_path3.$new_name3);
-                        $img4->save($upload_path4.$new_name4);
+            $image4 = $request->file('right');
+            $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
+            $img4 = Image::make($request->file('right'))->fit(203,203);
+            $upload_path4 = public_path()."/images/";
 
-                        toast('Product image upload successfully','success')
-                        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                        return response()->json([
-                            'message'=>'success'
-                        ],200);
-                    }
+            if($new_name && $new_name2 && $new_name3 && $new_name4){
+                $data = ProductAvatar::create([
+                    'product_id'=>$request->prod_name,
+                    'front'=>$new_name,
+                    'back'=>$new_name2,
+                    'left'=>$new_name3,
+                    'right'=>$new_name4,
+                    'slug'=>$new_name
+                ]);
+                if($data){
+                    $img->save($upload_path.$new_name);
+                    $img2->save($upload_path2.$new_name2);
+                    $img3->save($upload_path3.$new_name3);
+                    $img4->save($upload_path4.$new_name4);
+
+                    toast('Product image upload successfully','success')
+                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
+                }
+            }
+        }elseif($request->file('front') != null && $request->file('back') != null &&
+        $request->file('left') != null && $request->file('right') == null)
+        {
+            $image = $request->file('front');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('front'))->fit(203,203);
+            $upload_path = public_path()."/images/";
+
+            $image2 = $request->file('back');
+            $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
+            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $upload_path2 = public_path()."/images/";
+
+            $image3 = $request->file('left');
+            $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
+            $img3 = Image::make($request->file('left'))->fit(203,203);
+            $upload_path3 = public_path()."/images/";
+
+            if($new_name && $new_name2){
+                $data = ProductAvatar::create([
+                    'product_id'=>$request->prod_name,
+                    'front'=>$new_name,
+                    'back'=>$new_name2,
+                    'left'=>$new_name3,
+                    'right'=>'',
+                    'slug'=>$new_name
+                ]);
+                if($data){
+                    $img->save($upload_path.$new_name);
+                    $img2->save($upload_path2.$new_name2);
+                    $img3->save($upload_path3.$new_name3);
+
+                    toast('Product image upload successfully','success')
+                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
+                }
+            }
+        }elseif($request->file('front') != null && $request->file('back') != null &&
+        $request->file('left') == null && $request->file('right') == null)
+        {
+            $image = $request->file('front');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('front'))->fit(203,203);
+            $upload_path = public_path()."/images/";
+
+            $image2 = $request->file('back');
+            $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
+            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $upload_path2 = public_path()."/images/";
+
+            if($new_name && $new_name2){
+                $data = ProductAvatar::create([
+                    'product_id'=>$request->prod_name,
+                    'front'=>$new_name,
+                    'back'=>$new_name2,
+                    'left'=>'',
+                    'right'=>'',
+                    'slug'=>$new_name
+                ]);
+                if($data){
+                    $img->save($upload_path.$new_name);
+                    $img2->save($upload_path2.$new_name2);
+
+                    toast('Product image upload successfully','success')
+                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
                 }
             }
         }
+        else{
+            Alert::error('Opps...','Data entry wrong.');
+            return response()->json([
+                'message'=>'success'
+            ],200);
+        }
     }
 
-    
+
     public function show($slug)
     {
         $data = auth()->user();
@@ -137,21 +222,21 @@ class ProductAvatarController extends Controller
         ]);
     }
 
-    
+
     public function edit($id)
     {
         //
     }
 
-    
+
     public function update(Request $request)
     {
 
         $data = ProductAvatar::where('slug',$request->slug)->first();
-        
+
         if($request->file('front') != null && $request->file('back') != null &&
         $request->file('left') != null && $request->file('right') != null
-        ){           
+        ){
 
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
@@ -209,7 +294,7 @@ class ProductAvatarController extends Controller
         }
     }
 
-   
+
     public function destroy($id)
     {
         $id = ProductAvatar::find($id)->delete();

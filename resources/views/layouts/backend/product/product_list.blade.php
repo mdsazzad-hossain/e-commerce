@@ -142,7 +142,7 @@
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
                         >Select Brand</label
                         >
-                        <select class="form-control" name="brand_id" id="brand_id">
+                        <select class="form-control" onclick="getId()" name="brand_id" id="brand_id">
                             <option value="" selected="selected" hidden>select brand name</option>
                             @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}">
@@ -283,13 +283,18 @@
                         background-color: #f15353;
                         color: #fff;
                         font-size: 10px; margin-top:2px;">
+                        <p id="stayImageWarning" style="background-color: rgb(241, 230, 83);
+                        color: #000;
+                        font-weight: 700;
+                        width: 33%;
+                        padding: 5px;">This product images already uploaded.</p>
                         <form  id="avatarUpload" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Select Product</label
                                 >
-                                <select class="form-control" name="prod_name" id="prod_name">
+                                <select class="form-control" onclick="getId()" name="prod_name" id="prod_name">
                                     <option value="" selected="selected" hidden>select product name</option>
                                     @foreach ($products as $product)
                                     <option value="{{ $product->id }}">
@@ -303,7 +308,7 @@
                                 background-color: #f15353;
                                 color: #fff;
                                 font-size: 10px; margin-top:2px;" type="text" id="error" name="error" readonly>
-                            <div class="row col-12">
+                            <div class="row col-12" id="imgField">
                                 <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Front Side Image</label>
                                     <div style="height: 100px;
@@ -378,7 +383,7 @@
                                     </div>
                                   </div>
                             </div>
-                            <button class="btn btn-primary" style="width: 100%;" type="submit">Submit</button>
+                            <button id="submitData" class="btn btn-primary" style="width: 100%;" type="submit">Submit</button>
 
                         </form>
                     </div>
@@ -547,6 +552,33 @@
             });
         </script>
       <script>
+          function getId(){
+
+              $.ajax({
+                    url:"{{ route('avatars') }}",
+                    method:"get",
+                    dataType:'JSON',
+                    success:function(response)
+                    {
+                        response.data.forEach(element => {
+
+                            if(element.product_id == $("#prod_name").val()){
+                                $("#imgField").hide();
+                                $("#submitData").hide();
+                                setTimeout(() => {
+                                    $("#stayImageWarning").show();
+
+                                },100);
+                            }else{
+                                $("#imgField").show();
+                                $("#submitData").show();
+                                $("#stayImageWarning").hide();
+                            }
+                        });
+
+                    }
+                })
+          }
           function frontUrl(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
@@ -608,6 +640,7 @@
 
                 $('#avatarUpload').on('submit', function(event){
                     event.preventDefault();
+                    document.getElementById("submitData").disabled = true;
                     $.ajax({
                         url:"{{ route('avatar.upload') }}",
                         method:"POST",
@@ -622,15 +655,23 @@
                                 if(response.errors[0] && !response.errors[1]){
                                     $('#single_error').val( response.errors[0]);
                                     document.getElementById("single_error").style.display = "block";
-                                    setTimeout('$("#single_error").hide()',6000);
-                                
+                                    setTimeout(()=>{
+                                        $("#single_error").hide();
+                                        document.getElementById("submitData").disabled = false;
+                                    },5000);
+
                                 }else{
                                     $('#error').val( response.errors[0]);
                                     $('#frontError').val( response.errors[1]);
                                     document.getElementById("error").style.display = "block";
                                     document.getElementById("frontError").style.display = "block";
-                                    setTimeout('$("#frontError").hide()',6000);
-                                    setTimeout('$("#error").hide()',6000);
+                                    // setTimeout('$("#frontError").hide()',6000);
+                                    // setTimeout('$("#error").hide()',6000);
+                                    setTimeout(()=>{
+                                        $("#error").hide();
+                                        $("#frontError").hide();
+                                        document.getElementById("submitData").disabled = false;
+                                    },5000);
                                 }
                             }else{
                                 window.location.reload();

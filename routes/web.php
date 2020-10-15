@@ -77,7 +77,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('product-delete/{id}', 'ProductController@destroy')->name('product.delete');
 
         //product avatars
-        // Route::get('products/avatars', 'ProductAvatarController@index')->name('avatars');
+        Route::get('products/avatars', 'ProductAvatarController@index')->name('avatars');
         Route::get('products/avatars/{slug}', 'ProductAvatarController@show')->name('product.avatars');
         Route::post('product-avatar-create', 'ProductAvatarController@store')->name('avatar.upload');
         Route::post('product-avatar-update', 'ProductAvatarController@update')->name('avatar.update');
@@ -106,7 +106,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('vendor-product-avatar/update', 'VendorProductAvatarController@update')->name('vendor.product.avatar.update');
         Route::post('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
     });
-    
+
 });
 
 // Route::group(['namespace' => 'Frontend'], function () {

@@ -43,7 +43,7 @@
                     <span style="color: #fff" aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                    
+
                 <div class="form-group" id="showAvatarForm">
                     <form id="update_avatar" enctype="multipart/form-data" method="POST">
                         @csrf
@@ -118,7 +118,7 @@
                                 </div>
                               </div>
                         </div>
-                        <button class="btn btn-success" style="width: 100%;" type="submit">Submit</button>
+                        <button id="submitData" class="btn btn-success" style="width: 100%;" type="submit">Submit</button>
 
                     </form>
                 </div>
@@ -147,7 +147,7 @@
                         <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
                             Right Image
                         </th>
-                        
+
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
                             Status
                         </th>
@@ -160,7 +160,7 @@
                         @foreach ($avatars as $avtr)
                             <tr role="row" class="odd">
                                 @if ($avtr->product_id == $avtr->get_product->id)
-                                
+
                                     <td class="sorting_1">{{$avtr->get_product->product_name}}</td>
                                 @endif
                                 <td class="sorting_1">
@@ -177,9 +177,9 @@
                                 </td>
                                 <td>
                                     @if($avtr->status == 0)
-                                    <button class="badge badge-warning">Inactive</button>
+                                    <p class="badge badge-warning">Inactive</p>
                                     @else
-                                    <button class="badge badge-success">Active</button>
+                                    <p class="badge badge-success">Active</p>
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">
@@ -226,9 +226,9 @@
             });
         </script>
       <script>
-          
+
             function editProductAvatar(avtr){
-                
+
                 document.getElementById("editproductAvatarInfo").style.display = "block";
                 document.getElementById("product_table").style.display = "none";
                 $('#slug').val(avtr.slug);
@@ -245,7 +245,7 @@
             $('#id').val();
             }
 
-            
+
 
             function frontUrl(input) {
                 if (input.files && input.files[0]) {
@@ -303,13 +303,15 @@
             $("#right").change(function(){
                 rightUrl(this);
             });
-            
 
+            function myFunction() {
+                document.getElementById("submitData").disabled = true;
+            }
             $(document).ready(function(){
+                myFunction();
 
                 $('#update_avatar').on('submit', function(event){
                     event.preventDefault();
-                    
                     $.ajax({
                         url:"{{ route('avatar.update') }}",
                         method:"POST",
@@ -321,7 +323,7 @@
 
                         success:function(response)
                         {
-                            
+
                             window.location.reload();
                         }
                     })
