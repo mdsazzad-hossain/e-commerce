@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="{{asset('backend/plugins/daterangepicker/daterangepicker.css')}}">
     <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
     <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+
     @yield('css')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -53,7 +56,7 @@
             </div>
           </div>
         </form>
-        
+
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
 
@@ -151,7 +154,7 @@
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>
-          </li>  
+          </li>
           <li class="nav-item">
             <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i class="fas fa-th-large"></i></a>
           </li>

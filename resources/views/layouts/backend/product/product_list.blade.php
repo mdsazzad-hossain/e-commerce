@@ -287,6 +287,7 @@
                         color: #000;
                         font-weight: 700;
                         width: 33%;
+                        display:none;
                         padding: 5px;">This product images already uploaded.</p>
                         <form  id="avatarUpload" method="POST" enctype="multipart/form-data">
                             @csrf

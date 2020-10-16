@@ -14,7 +14,7 @@
                     border-radius: 5px;display: inline-flex;">
                     <button class="btn btn-primary" onclick="showProductForm()" style="padding: 10px;">
                         <i class="fa fa-plus" style="margin-right: 5px;font-size: 25px;margin-left: 5px;"></i>
-                        
+
                     </button>
                     <p style="margin-left: 5px;
                     font-weight: 700;
@@ -25,7 +25,7 @@
             </div>
 
           </div>
-          
+
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -137,11 +137,13 @@
                         >Select Vendor</label
                         >
                         <select class="form-control" name="vendor_id" id="vendor_id">
-                            <option value="" selected="selected">select</option>
+                            <option value="" selected="selected" hidden>select</option>
                             @foreach ($vendors as $ven)
+                            @if($ven->status == 1)
                             <option value="{{ $ven->id }}">
                                 {{ $ven->brand_name }}
                             </option>
+                            @endif
                             @endforeach
                         </select>
                     </div>
@@ -150,7 +152,7 @@
                         >Select Single Vendor</label
                         >
                         <select class="form-control" name="single_vendor_id" id="single_vendor_id">
-                            <option value="" selected="selected">select</option>
+                            <option value="" selected="selected" hidden>select</option>
                             @foreach ($single_ven as $item)
                             <option value="{{ $item->id }}">
                                 {{ $item->brand_name }}
@@ -290,13 +292,19 @@
                         background-color: #f15353;
                         color: #fff;
                         font-size: 10px; margin-top:2px;">
+                        <p id="stayImageWarning" style="background-color: rgb(241, 230, 83);
+                        color: #000;
+                        font-weight: 700;
+                        width: 33%;
+                        display:none;
+                        padding: 5px;">This product images already uploaded.</p>
                         <form id="imageUpload" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group col-12">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Select Product</label
                                 >
-                                <select class="form-control" name="vendor_product_name" id="vendor_product_name">
+                                <select class="form-control" onclick="getId()" name="vendor_product_name" id="vendor_product_name">
                                     <option value="" selected="selected" hidden>select product name</option>
                                     @foreach ($vendor_products as $product)
                                         <option value="{{ $product->id }}">
@@ -310,7 +318,7 @@
                                 color: #fff;
                                 font-size: 10px; margin-top:2px;" type="text" id="error" name="error" readonly>
                             </div>
-                            <div class="row col-12">
+                            <div class="row col-12" id="imgField">
                                   <div class="form-group col-3">
                                     <label for="image" class="col-form-label">Front Side Image</label>
                                     <div style="height: 100px;
@@ -384,7 +392,7 @@
                                     </div>
                                   </div>
                             </div>
-                            <button class="btn btn-primary" style="width:100%" type="submit">Submit</button>
+                            <button id="submitData" class="btn btn-primary" style="width:100%" type="submit">Submit</button>
                         </form>
                     </div>
 
@@ -458,7 +466,28 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="example1_length"><label>Show <select name="example1_length" aria-controls="example1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label></div></div></div><div class="row"><div class="col-sm-12"><table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="dataTables_length" id="example1_length">
+                                <label>Show
+                                    <select name="example1_length" aria-controls="example1" class="custom-select custom-select-sm form-control form-control-sm">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select> entries</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="example1_filter" class="dataTables_filter">
+                                    <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                     <thead>
                     <tr role="row">
                         <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
@@ -541,19 +570,35 @@
         </div>
 
     @section('js')
-        <script>
-            $(function () {
-                $('#example1').DataTable({
-                    "paging": true,
-                    "lengthChange": false,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                });
-            });
-        </script>
+
       <script>
+            function getId(){
+
+                $.ajax({
+                    url:"{{ route('avatar.index') }}",
+                    method:"get",
+                    dataType:'JSON',
+                    success:function(response)
+                    {
+                        response.data.forEach(element => {
+
+                            if(element.vendor_product_id == $("#vendor_product_name").val()){
+                                $("#imgField").hide();
+                                $("#submitData").hide();
+                                setTimeout(() => {
+                                    $("#stayImageWarning").show();
+
+                                },100);
+                            }else{
+                                $("#imgField").show();
+                                $("#submitData").show();
+                                $("#stayImageWarning").hide();
+                            }
+                        });
+
+                    }
+                })
+            }
             function frontUrl(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
@@ -614,6 +659,7 @@
 
                 $('#imageUpload').on('submit', function(event){
                     event.preventDefault();
+                    $("#submitData").prop('disabled',true);
                     $.ajax({
                         url:"{{ route('vendor.product.avatar') }}",
                         method:"POST",
@@ -628,7 +674,7 @@
                                     $('#single_error').val( response.errors[0]);
                                     document.getElementById("single_error").style.display = "block";
                                     setTimeout('$("#single_error").hide()',6000);
-                                
+
                                 }else{
                                     $('#error').val( response.errors[0]);
                                     $('#frontError').val( response.errors[1]);

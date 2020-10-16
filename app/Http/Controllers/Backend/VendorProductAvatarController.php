@@ -23,7 +23,10 @@ class VendorProductAvatarController extends Controller
      */
     public function index()
     {
-        //
+        $data = VendorProductAvatar::select('vendor_product_id')->get();
+        return response()->json([
+            'data'=>$data
+        ],200);
     }
 
     /**
@@ -36,7 +39,7 @@ class VendorProductAvatarController extends Controller
         //
     }
 
-    
+
     public function store(Request $request)
     {
 
@@ -44,7 +47,7 @@ class VendorProductAvatarController extends Controller
             'vendor_product_name' => 'required',
             'front' => 'required'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'errors'=> $validator->messages()->all()
@@ -123,7 +126,7 @@ class VendorProductAvatarController extends Controller
         }
     }
 
-    
+
     public function showAvatar($slug)
     {
         $data = auth()->user();
@@ -135,21 +138,21 @@ class VendorProductAvatarController extends Controller
         ]);
     }
 
-    
+
     public function edit($id)
     {
         //
     }
 
-    
+
     public function update(Request $request)
     {
 
         $data = VendorProductAvatar::where('slug',$request->slug)->first();
-        
+
         if($request->file('front') != null && $request->file('back') != null &&
             $request->file('left') != null && $request->file('right') != null
-        ){           
+        ){
 
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
@@ -206,8 +209,8 @@ class VendorProductAvatarController extends Controller
             ],200);
         }
 
-            
-        
+
+
 
     }
 

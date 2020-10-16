@@ -101,7 +101,9 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('vendor-create', 'VendorController@store')->name('vendor.add');
         Route::post('vendor-brand-create', 'SingleVendorController@store')->name('vendor.brand.add');
         Route::post('vendor-product-store', 'VendorProductController@store')->name('vendor.product.store');
+        //vendor product avatar
         Route::post('vendor-product-avatar', 'VendorProductAvatarController@store')->name('vendor.product.avatar');
+        Route::get('vendor-product-avatars', 'VendorProductAvatarController@index')->name('avatar.index');
         Route::get('vendor-product-avatars/{slug}', 'VendorProductAvatarController@showAvatar')->name('vendor.product.avatars');
         Route::post('vendor-product-avatar/update', 'VendorProductAvatarController@update')->name('vendor.product.avatar.update');
         Route::post('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
