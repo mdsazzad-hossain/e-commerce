@@ -44,10 +44,12 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('role-edit/{id}', 'RoleController@edit')->name('role.edit');
         Route::post('role-update', 'RoleController@update')->name('update.role');
         Route::post('role-delete/{id}', 'RoleController@destroy')->name('role.delete');
+        //banar
         Route::get('banar-list', 'BanarController@index')->name('banar.list');
+        Route::post('banar-update', 'BanarController@update')->name('banar.update');
         Route::post('banar-upload', 'BanarController@upload')->name('banar.upload');
-        Route::get('dropzone/fetch', 'BanarController@fetch')->name('dropzone.fetch');
         Route::post('delete-banar', 'BanarController@delete')->name('dropzone.delete');
+        //category
         Route::get('categories', 'CategoryController@index')->name('categories');
         Route::post('create-category', 'CategoryController@store')->name('category.add');
         Route::post('update-category', 'CategoryController@update')->name('category.update');

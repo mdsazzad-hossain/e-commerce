@@ -6,7 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Banar extends Model
 {
-    protected $fillable = [
-        'image'
-    ];
+    protected $guarded = [];
 }

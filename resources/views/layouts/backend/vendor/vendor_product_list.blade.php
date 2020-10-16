@@ -531,6 +531,7 @@
                                 <td class="sorting_1">{{$pro->qty}}</td>
                                 <td class="sorting_1">{{$pro->pur_price}}</td>
                                 <td class="sorting_1">{{$pro->sale_price}}</td>
+                                <td class="sorting_1">{{$pro->promo_price}}</td>
                                 <td>
                                     @if ($pro->status == 0)
                                     <button class="badge badge-warning">Inactive</button>
