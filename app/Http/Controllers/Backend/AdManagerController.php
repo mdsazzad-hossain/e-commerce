@@ -8,6 +8,8 @@ use App\User;
 use App\Models\AdManager;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Image;
 
 class AdManagerController extends Controller
 {
@@ -28,10 +30,12 @@ class AdManagerController extends Controller
     public function get_ads()
     {
         $ads = AdManager::all();
+        $position = AdManager::select('id','position')->get();
         $data = auth()->user();
         return response()->json([
             'data'=>$data,
-            'ads'=>$ads
+            'ads'=>$ads,
+            'position'=>$position
         ],200);
     }
     /**
@@ -52,40 +56,111 @@ class AdManagerController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'avatar' => 'required',
-        //     'position' => 'required'
-        // ]);
-        
-        $image = $request->file('file');
-            
-        $imageName = $image->getClientOriginalName();
-        $random = Str::random(10);
-        $imgName = $random.$imageName;
-        if($imgName != null && $request->position != null){
-            $data = AdManager::create([
-                'avatar'=>$imgName,
-                'slug'=>$imgName,
-                'position'=>$request->position
-            ]);
-            if($data != null){
-                $image->move(public_path('images'), $imgName);
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required'
 
-                toast('Ads create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                
+        ]);
+
+        $position = AdManager::select('id','position')->get();
+        foreach ($position as $key => $value) {
+            if($request->position == $value->position){
                 return response()->json([
-                    'status'=>200
-                ],200);
+                    'match'=> $value
+                ]);
+            }else{
+                if ($validator->fails()) {
+                    return response()->json([
+                        'errors'=> $validator->messages()->all()
+                    ]);
+                }elseif($request->file('avatar') != null)
+                {
+                    if($request->position == "top"){
+                        $image = $request->file('avatar');
+                        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                        $img = Image::make($request->file('avatar'))->fit(1168,78);
+                        $upload_path = public_path()."/images/";
+        
+                        if($new_name){
+                            $data = AdManager::create([
+                                'avatar'=>$new_name,
+                                'position'=>$request->position,
+                                'slug'=>$new_name
+                            ]);
+                            if($data){
+                                $img->save($upload_path.$new_name);
+        
+                                toast('Ads upload successfully','success')
+                                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                                return response()->json([
+                                    'message'=>'success'
+                                ],200);
+                            }
+                        }else{
+        
+        
+                        }
+                    }elseif($request->position == "popup"){
+                        $image = $request->file('avatar');
+                        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                        $img = Image::make($request->file('avatar'))->fit(396,420);
+                        $upload_path = public_path()."/images/";
+        
+                        if($new_name){
+                            $data = AdManager::create([
+                                'avatar'=>$new_name,
+                                'position'=>$request->position,
+                                'slug'=>$new_name
+                            ]);
+                            if($data){
+                                $img->save($upload_path.$new_name);
+        
+                                toast('Ads upload successfully','success')
+                                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                                return response()->json([
+                                    'message'=>'success'
+                                ],200);
+                            }
+                        }else{
+        
+        
+                        }
+                    }else{
+                        $image = $request->file('avatar');
+                        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                        $img = Image::make($request->file('avatar'))->fit(574,160);
+                        $upload_path = public_path()."/images/";
+        
+                        if($new_name){
+                            $data = AdManager::create([
+                                'avatar'=>$new_name,
+                                'position'=>$request->position,
+                                'slug'=>$new_name
+                            ]);
+                            if($data){
+                                $img->save($upload_path.$new_name);
+        
+                                toast('Ads upload successfully','success')
+                                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                                return response()->json([
+                                    'message'=>'success'
+                                ],200);
+                            }
+                        }else{
+        
+        
+                        }
+                    }
+                    
+                }else{
+                    Alert::error('Opps...', 'Please fillup all field');
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
+                }
             }
-           
-    
-        }else{
-
-           Alert::warning('Opps!Please Fillup ALL Field.','warning');
-           return response()->json([
-               'status'=>500
-           ],500);
         }
+
+        
     }
 
     /**
@@ -120,34 +195,98 @@ class AdManagerController extends Controller
     public function update(Request $request)
     {
         
-        $image = $request->file('file');
-            
-        $imageName = $image->getClientOriginalName();
-        $random = Str::random(10);
-        $imgName = $random.$imageName;
-        if($imgName != null && $request->position != null){
-            $data = AdManager::where('id',$request->id)->update([
-                'avatar'=>$imgName,
-                'slug'=>$imgName,
-                'position'=>$request->position
+        $ad = AdManager::where('slug',$request->slug)->first();
+
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required'
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors'=> $validator->messages()->all()
             ]);
-            if($data != null){
-                $image->move(public_path('images'), $imgName);
+        }elseif($request->file('avatar') != null)
+        {
+            if($request->position == "top"){
+                $image = $request->file('avatar');
+                $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                $img = Image::make($request->file('avatar'))->fit(1168,78);
+                $upload_path = public_path()."/images/";
+                \File::delete(public_path('images/' . $ad->avatar));
+                if($new_name){
+                    $data = $ad->update([
+                        'avatar'=>$new_name,
+                        'slug'=>$new_name
+                    ]);
+                    if($data){
+                        $img->save($upload_path.$new_name);
 
-                toast('Ads updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                
-                return response()->json([
-                    'status'=>200
-                ],200);
+                        toast('Ads update successfully','success')
+                        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                        return response()->json([
+                            'message'=>'success'
+                        ],200);
+                    }
+                }else{
+
+
+                }
+            }elseif($request->position == "popup"){
+                $image = $request->file('avatar');
+                $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                $img = Image::make($request->file('avatar'))->fit(396,420);
+                $upload_path = public_path()."/images/";
+                \File::delete(public_path('images/' . $ad->avatar));
+                if($new_name){
+                    $data = $ad->update([
+                        'avatar'=>$new_name,
+                        'slug'=>$new_name
+                    ]);
+                    if($data){
+                        $img->save($upload_path.$new_name);
+
+                        toast('Ads update successfully','success')
+                        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                        return response()->json([
+                            'message'=>'success'
+                        ],200);
+                    }
+                }else{
+
+
+                }
+            }else{
+                $image = $request->file('avatar');
+                $new_name = rand() . '.' . $image->getClientOriginalExtension();
+                $img = Image::make($request->file('avatar'))->fit(574,160);
+                $upload_path = public_path()."/images/";
+                \File::delete(public_path('images/' . $ad->avatar));
+                if($new_name){
+                    $data = $ad->update([
+                        'avatar'=>$new_name,
+                        'slug'=>$new_name
+                    ]);
+                    if($data){
+                        $img->save($upload_path.$new_name);
+
+                        toast('Ads update successfully','success')
+                        ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                        return response()->json([
+                            'message'=>'success'
+                        ],200);
+                    }
+                }else{
+
+
+                }
             }
-           
-    
+            
         }else{
-
-           Alert::warning('Opps!Please Fillup ALL Field.','warning');
-           return response()->json([
-               'status'=>500
-           ],500);
+            Alert::error('Opps...', 'Please fillup all field');
+            return response()->json([
+                'message'=>'success'
+            ],200);
         }
     }
 
@@ -159,7 +298,9 @@ class AdManagerController extends Controller
      */
     public function destroy($id)
     {
-        AdManager::find($id)->delete();
+        $id = AdManager::find($id);
+        \File::delete(public_path('images/' . $id->avatar));
+        $id->delete();
 
         toast('Ads delete successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
                 

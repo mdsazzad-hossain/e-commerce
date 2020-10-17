@@ -39,13 +39,16 @@
     <div class="page-wrapper">
 
         <div class="top-notice text-white bg-dark" id="newsletter-headadd">
+            @foreach ($ads as $ad)
+            @if($ad->position == "top")
             <div class="container text-center">
 
-                <img src="img/ad-1.jpg">
+                <img src="{{ asset('/images/' . $ad->avatar) }}">
 
                 <button onclick="closeAdd()" title="Close (Esc)" type="button" class="mfp-close"></button>
             </div>
-
+            @endif
+            @endforeach
         </div>
         <header class="header header-10 header-intro-clearance">
             <div class="header-top">
@@ -102,7 +105,7 @@
             </div>
             <!-- End .header-top -->
 
-
+            
             <div class="sticky-wrapper"><div class="header-bottom sticky-header">
                 <div class="container">
                     <div class="header-left">
@@ -112,13 +115,14 @@
 
                                 <img src="assets/images/demos/demo-13/logo.png" alt="Molla Logo" width="105" height="25">
                             </a>
-
+                            
 
                             <div class="dropdown-menu show">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows sf-js-enabled" style="touch-action: pan-y;">
+                                        @foreach ($categories as $cat)
                                         <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">Electronics</a>
+                                            <a class="sf-with-ul" href="#">{{$cat->cat_name}}</a>
 
                                             <div class="megamenu" style="display: none;">
                                                 <div class="row no-gutters">
@@ -126,51 +130,19 @@
                                                         <div class="menu-col">
                                                             <div class="row">
                                                                 <div class="col-md-6">
-                                                                    <div class="menu-title">Laptops &amp; Computers</div>
+                                                                    @foreach ($cat->get_child_category as $child)
+                                                                    <div class="menu-title">{{$child->child_name}}</div>
                                                                     <!-- End .menu-title -->
+                                                                    
                                                                     <ul>
-                                                                        <li><a href="#">Desktop Computers</a></li>
-                                                                        <li><a href="#">Monitors</a></li>
-                                                                        <li><a href="#">Laptops</a></li>
-                                                                        <li><a href="#">iPad &amp; Tablets</a></li>
-                                                                        <li><a href="#">Hard Drives &amp; Storage</a></li>
-                                                                        <li><a href="#">Printers &amp; Supplies</a></li>
-                                                                        <li><a href="#">Computer Accessories</a></li>
+                                                                        @foreach ($child->get_sub_child_category as $sub_child)
+                                                                            
+                                                                        <li><a href="#">{{$sub_child->sub_child_name}}</a></li>
+                                                                        @endforeach
                                                                     </ul>
-
-                                                                    <div class="menu-title">TV &amp; Video</div>
-                                                                    <!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">TVs</a></li>
-                                                                        <li><a href="#">Home Audio Speakers</a></li>
-                                                                        <li><a href="#">Projectors</a></li>
-                                                                        <li><a href="#">Media Streaming Devices</a></li>
-                                                                    </ul>
+                                                                    @endforeach
                                                                 </div>
-                                                                <!-- End .col-md-6 -->
-
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Cell Phones</div>
-                                                                    <!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Carrier Phones</a></li>
-                                                                        <li><a href="#">Unlocked Phones</a></li>
-                                                                        <li><a href="#">Phone &amp; Cellphone Cases</a></li>
-                                                                        <li><a href="#">Cellphone Chargers </a></li>
-                                                                    </ul>
-
-                                                                    <div class="menu-title">Digital Cameras</div>
-                                                                    <!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Digital SLR Cameras</a></li>
-                                                                        <li><a href="#">Sports &amp; Action Cameras</a></li>
-                                                                        <li><a href="#">Camcorders</a></li>
-                                                                        <li><a href="#">Camera Lenses</a></li>
-                                                                        <li><a href="#">Photo Printer</a></li>
-                                                                        <li><a href="#">Digital Memory Cards</a></li>
-                                                                        <li><a href="#">Camera Bags, Backpacks &amp; Cases</a></li>
-                                                                    </ul>
-                                                                </div>
+                                                                
                                                                 <!-- End .col-md-6 -->
                                                             </div>
                                                             <!-- End .row -->
@@ -193,6 +165,7 @@
                                             </div>
                                             <!-- End .megamenu -->
                                         </li>
+                                        @endforeach
                                         <li class="megamenu-container">
                                             <a class="sf-with-ul" href="#">Furniture</a>
 

@@ -23,8 +23,17 @@ class BanarController extends Controller
         $banars = Banar::all();
         return view('layouts.backend.slide.slide_list',[
             'data'=>$data,
-            'banars'=>$banars,
+            'banars'=>$banars
         ]);
+        
+    }
+
+    public function index_banar()
+    {
+        $id = Banar::select('id')->get();
+        return response()->json([
+            'id'=>$id
+        ],200);
     }
 
     function upload(Request $request)
@@ -72,22 +81,22 @@ class BanarController extends Controller
         {
             $image = $request->file('image');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('image'))->fit(203,203);
+            $img = Image::make($request->file('image'))->fit(1349,375);
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('image1');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('image1'))->fit(203,203);
+            $img2 = Image::make($request->file('image1'))->fit(1349,375);
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('image2');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('image2'))->fit(203,203);
+            $img3 = Image::make($request->file('image2'))->fit(1349,375);
             $upload_path3 = public_path()."/images/";
 
             $image4 = $request->file('image3');
             $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
-            $img4 = Image::make($request->file('image3'))->fit(203,203);
+            $img4 = Image::make($request->file('image3'))->fit(1349,375);
             $upload_path4 = public_path()."/images/";
 
             if($new_name && $new_name2 && $new_name3 && $new_name4){
@@ -116,17 +125,17 @@ class BanarController extends Controller
         {
             $image = $request->file('image');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('image'))->fit(203,203);
+            $img = Image::make($request->file('image'))->fit(1349,375);
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('image1');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('image1'))->fit(203,203);
+            $img2 = Image::make($request->file('image1'))->fit(1349,375);
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('image2');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('image2'))->fit(203,203);
+            $img3 = Image::make($request->file('image2'))->fit(1349,375);
             $upload_path3 = public_path()."/images/";
 
             if($new_name && $new_name2){
@@ -154,12 +163,12 @@ class BanarController extends Controller
         {
             $image = $request->file('image');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('image'))->fit(203,203);
+            $img = Image::make($request->file('image'))->fit(1349,375);
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('image1');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('image1'))->fit(203,203);
+            $img2 = Image::make($request->file('image1'))->fit(1349,375);
             $upload_path2 = public_path()."/images/";
 
             if($new_name && $new_name2){
@@ -201,22 +210,22 @@ class BanarController extends Controller
 
             $image = $request->file('image');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('image'))->fit(203,203);
+            $img = Image::make($request->file('image'))->fit(1349,375);
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('image1');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('image1'))->fit(203,203);
+            $img2 = Image::make($request->file('image1'))->fit(1349,375);
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('image2');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('image2'))->fit(203,203);
+            $img3 = Image::make($request->file('image2'))->fit(1349,375);
             $upload_path3 = public_path()."/images/";
 
             $image4 = $request->file('image3');
             $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
-            $img4 = Image::make($request->file('image3'))->fit(203,203);
+            $img4 = Image::make($request->file('image3'))->fit(1349,375);
             $upload_path4 = public_path()."/images/";
 
             \File::delete(public_path('images/' . $banar->image));
@@ -261,6 +270,9 @@ class BanarController extends Controller
         $data->delete();
 
         \File::delete(public_path('images/' . $request->image));
+        \File::delete(public_path('images/' . $request->image1));
+        \File::delete(public_path('images/' . $request->image2));
+        \File::delete(public_path('images/' . $request->image3));
 
         toast('Banar deleted successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 

@@ -13,14 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.frontend.home');
-});
+// Route::get('/', function () {
+//     return view('layouts.frontend.home');
+// });
 
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/register', 'Backend\LoginController@register_index')->name('register');
+
+Route::group(["namespace"=>"Frontend"],function() {
+    Route::get('/', 'HomeController@index')->name('home');
+});
 
 Route::group(["namespace"=>"Backend"],function() {
     Route::group(['middleware' =>'guest'], function () {
@@ -46,9 +50,10 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('role-delete/{id}', 'RoleController@destroy')->name('role.delete');
         //banar
         Route::get('banar-list', 'BanarController@index')->name('banar.list');
+        Route::get('banar', 'BanarController@index_banar')->name('banar');
         Route::post('banar-update', 'BanarController@update')->name('banar.update');
         Route::post('banar-upload', 'BanarController@upload')->name('banar.upload');
-        Route::post('delete-banar', 'BanarController@delete')->name('dropzone.delete');
+        Route::post('delete-banar', 'BanarController@delete')->name('banar.delete');
         //category
         Route::get('categories', 'CategoryController@index')->name('categories');
         Route::post('create-category', 'CategoryController@store')->name('category.add');

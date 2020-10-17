@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Banar;
+use App\Models\Category;
+use App\Models\ChildCategory;
+use App\Models\SubChildCategory;
+use App\Models\Product;
+use App\Models\AdManager;
 class HomeController extends Controller
 {
     /**
@@ -14,7 +19,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.frontend.home');
+        $banars = Banar::select('id','image','image1','image2','image3')->first();
+        $categories = Category::with('get_child_category')->get();
+        $products = Product::with('get_brand','get_product_avatars')->get();
+        $ads = AdManager::all();
+        
+        return view('layouts.frontend.home',[
+            'banars'=>$banars,
+            'categories'=>$categories,
+            'products'=>$products,
+            'ads'=>$ads
+        ]);
     }
 
     /**
