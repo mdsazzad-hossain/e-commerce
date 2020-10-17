@@ -292,7 +292,7 @@
         $("#avatar").change(function() {
             avatarUrl(this);
         });
-        
+
         function uploadAd() {
             $("#submit").prop('disabled', true);
             $.ajaxSetup({
@@ -315,28 +315,30 @@
 
                     setTimeout(() => {
                       $("#posError").css('display','none');
-                      
+
                     }, 5000);
                   }else{
-                    if (response.errors) {
-                        if (response.errors[0]) {
-                            $('#avatarError').val(response.errors[0]);
-                            document.getElementById("avatarError").style.display = "block";
-                            setTimeout('$("#avatarError").hide()', 6000);
-
-                        } else {
-                            $('#avatarError').val(response.errors[1]);
-                            document.getElementById("avatarError").style.display = "block";
-                            setTimeout('$("#avatarError").hide()', 6000);
-
-
-                        }
-                    } else {
-                        window.location.reload();
-
-                    }
+                    window.location.reload();
                   }
+
                 }
+                // if (response.errors) {
+                //         if (response.errors[0]) {
+                //             $('#avatarError').val(response.errors[0]);
+                //             document.getElementById("avatarError").style.display = "block";
+                //             setTimeout('$("#avatarError").hide()', 6000);
+
+                //         } else {
+                //             $('#avatarError').val(response.errors[1]);
+                //             document.getElementById("avatarError").style.display = "block";
+                //             setTimeout('$("#avatarError").hide()', 6000);
+                //         }
+                //     } else {
+                //         console.log(response.match);
+                //         // window.location.reload();
+
+                //     }
+                // }
             })
         };
 

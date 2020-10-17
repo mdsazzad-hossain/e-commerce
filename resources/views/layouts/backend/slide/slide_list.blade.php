@@ -481,14 +481,14 @@
                             document.getElementById("imageError").style.display = "block";
                             setTimeout('$("#imageError").hide()', 6000);
 
-                        } else {
+                        }else{
                             $('#imageError').val(response.errors[1]);
                             document.getElementById("imageError").style.display = "block";
                             setTimeout('$("#imageError").hide()', 6000);
 
 
                         }
-                    } else {
+                    }else{
                         window.location.reload();
 
                     }
