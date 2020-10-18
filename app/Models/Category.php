@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
 
-    protected $fillable=[
-        'cat_name'
-    ];
+    protected $guarded=[];
     
     public function get_child_category()
     {

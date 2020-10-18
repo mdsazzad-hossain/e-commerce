@@ -57,29 +57,30 @@ class AdManagerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'position' => 'required',
             'avatar' => 'required'
 
         ]);
 
-        $position = AdManager::where('position',$request->position)->first();
-
-        if($position){
+        
+        if ($validator->fails()) {
             return response()->json([
-                'match'=> $position
+                'errors'=> $validator->messages()->all()
             ]);
         }else{
-            if ($validator->fails()) {
+            $position = AdManager::where('position',$request->position)->first();
+
+            if($position){
                 return response()->json([
-                    'errors'=> $validator->messages()->all()
+                    'match'=> $position
                 ]);
-            }elseif($request->file('avatar') != null)
-            {
+            }else{
                 if($request->position == "top"){
                     $image = $request->file('avatar');
                     $new_name = rand() . '.' . $image->getClientOriginalExtension();
                     $img = Image::make($request->file('avatar'))->fit(1168,78);
                     $upload_path = public_path()."/images/";
-
+    
                     if($new_name){
                         $data = AdManager::create([
                             'avatar'=>$new_name,
@@ -88,23 +89,23 @@ class AdManagerController extends Controller
                         ]);
                         if($data){
                             $img->save($upload_path.$new_name);
-
+    
                             toast('Ads upload successfully','success')
                             ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
                             return response()->json([
                                 'message'=>'success'
-                            ],200);
+                            ]);
                         }
                     }else{
-
-
+    
+    
                     }
                 }elseif($request->position == "popup"){
                     $image = $request->file('avatar');
                     $new_name = rand() . '.' . $image->getClientOriginalExtension();
                     $img = Image::make($request->file('avatar'))->fit(396,420);
                     $upload_path = public_path()."/images/";
-
+    
                     if($new_name){
                         $data = AdManager::create([
                             'avatar'=>$new_name,
@@ -113,23 +114,23 @@ class AdManagerController extends Controller
                         ]);
                         if($data){
                             $img->save($upload_path.$new_name);
-
+    
                             toast('Ads upload successfully','success')
                             ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
                             return response()->json([
                                 'message'=>'success'
-                            ],200);
+                            ]);
                         }
                     }else{
-
-
+    
+    
                     }
                 }else{
                     $image = $request->file('avatar');
                     $new_name = rand() . '.' . $image->getClientOriginalExtension();
                     $img = Image::make($request->file('avatar'))->fit(574,160);
                     $upload_path = public_path()."/images/";
-
+    
                     if($new_name){
                         $data = AdManager::create([
                             'avatar'=>$new_name,
@@ -138,26 +139,23 @@ class AdManagerController extends Controller
                         ]);
                         if($data){
                             $img->save($upload_path.$new_name);
-
+    
                             toast('Ads upload successfully','success')
                             ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
                             return response()->json([
-                                'message'=>'success'
-                            ],200);
+                                'status'=>200
+                            ]);
                         }
                     }else{
-
-
+    
+    
                     }
                 }
-
-            }else{
-                Alert::error('Opps...', 'Please fillup all field');
-                return response()->json([
-                    'message'=>'success'
-                ],200);
             }
+            
+
         }
+        
 
     }
 

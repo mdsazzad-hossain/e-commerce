@@ -10,6 +10,7 @@ use App\Models\ChildCategory;
 use App\Models\SubChildCategory;
 use App\Models\Product;
 use App\Models\AdManager;
+use App\Models\Vendor;
 class HomeController extends Controller
 {
     /**
@@ -23,12 +24,14 @@ class HomeController extends Controller
         $categories = Category::with('get_child_category')->get();
         $products = Product::with('get_brand','get_product_avatars')->get();
         $ads = AdManager::all();
+        $vendors = Vendor::all();
         
         return view('layouts.frontend.home',[
             'banars'=>$banars,
             'categories'=>$categories,
             'products'=>$products,
-            'ads'=>$ads
+            'ads'=>$ads,
+            'vendors'=>$vendors
         ]);
     }
 

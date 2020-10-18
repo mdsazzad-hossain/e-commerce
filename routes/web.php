@@ -59,6 +59,8 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('create-category', 'CategoryController@store')->name('category.add');
         Route::post('update-category', 'CategoryController@update')->name('category.update');
         Route::post('delete-category', 'CategoryController@destroy')->name('category.delete');
+        Route::post('active-category', 'CategoryController@active')->name('category.active');
+        Route::post('inactive-category', 'CategoryController@inactive')->name('category.inactive');
         //sub cat
         Route::get('sub-categories', 'ChildCategoryController@index')->name('child.category');
         Route::post('sub-category-create', 'ChildCategoryController@store')->name('child.add');

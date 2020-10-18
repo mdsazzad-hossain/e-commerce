@@ -55,11 +55,12 @@
                         float: left;
                         margin-right:70px;
                     ">
-                    <div class="card-header" style="color: #fff;
+                    <div class="card-header" id="cardHeader" style="color: #fff;
                       background-color: #007bff;
                       border-color: #007bff;
                       box-shadow: none;">
                         <h3 class="card-title">Add Ads Image</h3>
+                        <h3 class="card-title" style="display: none;" id="cardTitle">Update Ads Image</h3>
                         <button onclick="closeForm()" class="close">
                             <span style="color: #fff" aria-hidden="true">&times;</span>
                         </button>
@@ -89,6 +90,11 @@
                                     margin-top: 2px;
                                     font-size: 12px;
                                     width: 56%;">Position already in database.</p>
+                                    <p id="posError1" style="display: none;background-color: #e68888;
+                                    color: #fff;
+                                    margin-top: 2px;
+                                    font-size: 12px;
+                                    width: 56%;">Position field is required.</p>
                                 </div>
                                 <div class="form-group">
                                     <label for="image" class="col-form-label">Ad Image</label>
@@ -105,16 +111,15 @@
                                           width: 100% !important;
                                           cursor: pointer;margin-top: -134px;" />
                                     </div>
-                                    <input style="display:none;border: none;
-                                    width: 75%;
-                                    background-color:#f15353;;
+                                    <p id="imageError" style="display: none;background-color: #e68888;
                                     color: #fff;
-                                    font-size: 10px;margin-top:2px;" type="text" id="avatarError" name="avatarError"
-                                        readonly>
+                                    margin-top: 2px;
+                                    font-size: 12px;
+                                    width: 56%;">Image field is required.</p>
                                 </div>
                                 <button type="button" onclick="uploadAd()" class="btn btn-primary" style="width: 100%"
                                     id="submit">Submit</button>
-                                <button type="button" onclick="updateAd()" class="btn btn-primary" style="width: 100%"
+                                <button type="button" onclick="updateAd()" class="btn btn-success" style="width: 100%"
                                     id="update">Submit</button>
 
                             </form>
@@ -255,22 +260,34 @@
             $("#adUpdate").attr('id', 'adUpload');
             $("#update").hide();
             $("#submit").show();
+            $("#cardTitle").hide();
+            
             document.getElementById("loading").style.display = "none";
             document.getElementById("adsForm").style.display = "block";
             $('#divHide').show();
         }
 
         function closeForm() {
-            if (document.getElementById("adsForm"))
-                document.getElementById("adsForm").style.display = "none";
+            $("#avatar-img").attr('src', "#");
+            document.getElementById("adsForm").style.display = "none";
             document.getElementById("loading").style.display = "block";
-
+            $('#slug').val();
+            $('#position').val();
+            $('#divHide').show();
         }
 
         function editAds(ad) {
             $("#adUpload").attr('id', 'adUpdate');
             $("#submit").hide();
             $("#update").show();
+            $("#cardTitle").show();
+            $("#cardHeader").css({
+                'color': '#fff',
+                'background-color': '#28a745',
+                'border-color': '#28a745',
+                'box-shadow': 'none',
+            });
+            $("#avatar-img").attr('src', "{{ asset('/images/') }}/" + ad.avatar);
             document.getElementById("adsForm").style.display = "block";
             document.getElementById("loading").style.display = "none";
             $('#slug').val(ad.slug);
@@ -310,35 +327,38 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
-                  if(response.match.id >0){
-                    $("#posError").css('display','block');
+                    if (response.errors) { 
+                        if (response.errors[0] && response.errors[1]) {
+                            document.getElementById("posError1").style.display = "block";
+                            setTimeout('$("#posError1").hide()', 6000);
 
-                    setTimeout(() => {
-                      $("#posError").css('display','none');
+                            document.getElementById("imageError").style.display = "block";
+                            setTimeout('$("#imageError").hide()', 6000);
+                            $("#submit").prop('disabled', false);
+                        } else if(response.errors[0]=="The avatar field is required.") {
+                            document.getElementById("imageError").style.display = "block";
+                            setTimeout('$("#imageError").hide()', 6000);
+                            $("#submit").prop('disabled', false);
+                        }else if(response.errors[0]=="The position field is required.") {
+                            document.getElementById("posError1").style.display = "block";
+                            setTimeout('$("#posError1").hide()', 6000);
+                            $("#submit").prop('disabled', false);
+                        }
+                    } else {
+                        if(response.match){
+                            $("#posError").css('display','block');
+                            $("#submit").prop('disabled', false);
+                            setTimeout(() => {
+                            $("#posError").css('display','none');
 
-                    }, 5000);
-                  }else{
-                    window.location.reload();
-                  }
+                            }, 5000);
+                        }else{
+                            console.log(response.status);
+                            window.location.reload();
+                        }
 
+                    }
                 }
-                // if (response.errors) {
-                //         if (response.errors[0]) {
-                //             $('#avatarError').val(response.errors[0]);
-                //             document.getElementById("avatarError").style.display = "block";
-                //             setTimeout('$("#avatarError").hide()', 6000);
-
-                //         } else {
-                //             $('#avatarError').val(response.errors[1]);
-                //             document.getElementById("avatarError").style.display = "block";
-                //             setTimeout('$("#avatarError").hide()', 6000);
-                //         }
-                //     } else {
-                //         console.log(response.match);
-                //         // window.location.reload();
-
-                //     }
-                // }
             })
         };
 
@@ -359,23 +379,9 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
-                  if (response.errors) {
-                        if (response.errors[0]) {
-                            $('#avatarError').val(response.errors[0]);
-                            document.getElementById("avatarError").style.display = "block";
-                            setTimeout('$("#avatarError").hide()', 6000);
+                  
+                    window.location.reload();
 
-                        } else {
-                            $('#avatarError').val(response.errors[1]);
-                            document.getElementById("avatarError").style.display = "block";
-                            setTimeout('$("#avatarError").hide()', 6000);
-
-
-                        }
-                    } else {
-                        window.location.reload();
-
-                    }
 
                 }
             })

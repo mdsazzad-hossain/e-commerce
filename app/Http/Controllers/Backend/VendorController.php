@@ -51,7 +51,7 @@ class VendorController extends Controller
         toast('Vendor approve successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         return response()->json([
             'message'=>'success'
-        ],200);
+        ]);
     }
     public function disable(Request $request)
     {
@@ -60,7 +60,7 @@ class VendorController extends Controller
         ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         return response()->json([
             'message'=>'success'
-        ],200);
+        ]);
     }
 
     /**

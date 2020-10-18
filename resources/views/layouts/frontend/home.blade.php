@@ -414,78 +414,22 @@
             <!-- End .title -->
             <div class="cat-blocks-container">
                 <div class="row">
+                    @foreach ($categories as $cat)
+                    @if ($cat->explor == 1 && $cat->status == 1)
+                        
                     <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
                         <a href="category-4cols.html" class="icon-box icon-box-side"
                             style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Electronics</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/1.jpg"
-                                alt="Category image">
+                            <h3 class="icon-box-title" style="margin: auto;">{{$cat->cat_name}}</h3>
+                            <img style="width: 40px; margin: auto;height: 40px;" src="{{ asset('/images/' . $cat->cover) }}"
+                                alt="">
                             <!-- <i class="icon-rotate-right"></i> -->
                             <!-- End .icon-box-content -->
                         </a>
                         <!-- End .icon-box -->
                     </div>
-
-                    <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
-                            style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Furniture</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/2.jpg"
-                                alt="Category image">
-                            <!-- <i class="icon-rotate-right"></i> -->
-                            <!-- End .icon-box-content -->
-                        </a>
-                        <!-- End .icon-box -->
-                    </div>
-
-                    <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
-                            style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Cooking</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/3.jpg"
-                                alt="Category image">
-                            <!-- <i class="icon-rotate-right"></i> -->
-                            <!-- End .icon-box-content -->
-                        </a>
-                        <!-- End .icon-box -->
-                    </div>
-
-                    <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
-                            style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Clothes</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/4.jpg"
-                                alt="Category image">
-                            <!-- <i class="icon-rotate-right"></i> -->
-                            <!-- End .icon-box-content -->
-                        </a>
-                        <!-- End .icon-box -->
-                    </div>
-
-
-                    <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
-                            style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Healthy &amp; Beauty</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/5.jpg"
-                                alt="Category image">
-                            <!-- <i class="icon-rotate-right"></i> -->
-                            <!-- End .icon-box-content -->
-                        </a>
-                        <!-- End .icon-box -->
-                    </div>
-
-                    <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
-                            style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
-                            <h3 class="icon-box-title" style="margin: auto;">Smart Phones</h3>
-                            <img style="width: 40px; margin: auto" src="assets/images/demos/demo-13/cats/6.jpg"
-                                alt="Category image">
-                            <!-- <i class="icon-rotate-right"></i> -->
-                            <!-- End .icon-box-content -->
-                        </a>
-                        <!-- End .icon-box -->
-                    </div>
+                    @endif
+                    @endforeach
 
                 </div>
                 <!-- End .row -->
@@ -509,203 +453,19 @@
             </div>
             <div class="cat-blocks-container">
                 <div class="row">
+                    @foreach ($vendors as $vendor)
+                    @if ($vendor->status == 1)
                     <div class="col-6 col-sm-4 col-lg-2">
                         <a href="vendor-product.html" class="cat-block">
                             <figure>
                                 <span>
-                                    <img src="assets/images/demos/demo-13/cats/1.jpg" alt="Vendor image">
+                                    <img src="{{ asset('/images/' . $vendor->logo) }}">
                                 </span>
                             </figure>
                         </a>
                     </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/2.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/3.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/4.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/5.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/6.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/1.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/2.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/3.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/4.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/5.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/6.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/1.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/2.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/3.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/4.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/5.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    <!-- End .col-sm-4 col-lg-2 -->
-
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="assets/images/demos/demo-13/cats/6.jpg" alt="Vendor image">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
+                    @endif
+                    @endforeach
                     <!-- End .col-sm-4 col-lg-2 -->
                 </div>
                 <!-- End .row -->
