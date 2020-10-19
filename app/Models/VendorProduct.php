@@ -8,13 +8,17 @@ class VendorProduct extends Model
 {
     protected $guarded=[];
     
-    public function get_vendor_product_category()
+    public function get_vendor()
     {
-        return $this->belongsTo(VendorProductCategory::class,'vendor_product_category_id');
+        return $this->belongsTo(Vendor::class,'vendor__id');
     }
 
     public function get_vendor_product_avatar()
     {
         return $this->hasMany(VendorProductAvatar::class,'vendor_product_id');
+    }
+    public function get_single_vendor()
+    {
+        return $this->belongsTo(SingleVendor::class,'single_vendor_id');
     }
 }

@@ -40,9 +40,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function category(Request $request,$slug)
     {
-        //
+        $categories = Category::with('get_child_category')->get();
+        $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
+        $ads = AdManager::all();
+        
+        return view('layouts.frontend.category_list',[
+            'ads'=>$ads,
+            'categories'=>$categories,
+            'all_cat'=>$all_cat
+        ]);
     }
 
     /**

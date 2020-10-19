@@ -19,4 +19,9 @@ class ChildCategory extends Model
     {
         return $this->hasMany(SubChildCategory::class,'child_category_id');
     }
+
+    public function get_brand()
+    {
+        return $this->hasMany(Brand::class,'child_category_id');
+    }
 }

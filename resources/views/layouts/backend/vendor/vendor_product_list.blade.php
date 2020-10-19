@@ -131,6 +131,7 @@
 
                 <form id="productInfo" action="{{route('vendor.product.store')}}" method="POST" style="display: none;">
                  @csrf
+                 
                   <div class="card-body row col-12">
                     <div class="form-group col-6">
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
@@ -542,7 +543,7 @@
 
                                 </td>
                                 <td style="display: inline-flex;">
-                                    <a href="#" style="margin-right: 5px;" class="btn btn-primary">
+                                <a href="{{route('vendor.product.edit',$pro->slug)}}" style="margin-right: 5px;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                 <form action="#" method="POST">
@@ -573,6 +574,44 @@
     @section('js')
 
       <script>
+            function getVendorId(){
+                dt = $("#vendor_id").val()
+                if(dt != ''){
+                    $("#info").show();
+                }
+            }
+            function active(){
+                $("#logoDiv").css({
+                    'display':'none'
+                });
+                $("#logoDiv1").css({
+                    'display':'block'
+                });
+                $("#info").hide();
+                data = $("#vendors").val();
+                data1 = JSON.parse(data);
+                data1.forEach(element => {
+                    val = $("#vendor_id").val();
+                    if(val == element.id){
+                        $("#brand_name").val(element.brand_name);
+                        $("#brand_name").attr('readonly',true);
+                    }
+                });
+                $("#banar").attr('disabled',false);
+            }
+            function inactive(){
+                $("#logoDiv").css({
+                    'display':'block'
+                });
+                $("#logoDiv1").css({
+                    'display':'none'
+                });
+                $("#info").hide();
+                $("#brand_name").attr('readonly',false);
+                $("#banar").attr('disabled',false);
+                $("#logo").attr('disabled',false);
+                $("#brand_name").val('');
+            }
             function getId(){
 
                 $.ajax({

@@ -12,9 +12,14 @@ class Brand extends Model
     //     'child_category_id',
     //     'sub_child_category_id'
     // ];
-        protected $guarded =[];
+    protected $guarded =[];
     public function get_product()
     {
         return $this->hasMany(Product::class,'brand_id');
+    }
+
+    public function get_child_category()
+    {
+        return $this->belongsTo(ChildCategory::class,'child_category_id');
     }
 }

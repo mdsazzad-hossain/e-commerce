@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/category/{slug}', 'HomeController@category')->name('category');
 });
 
 Route::group(["namespace"=>"Backend"],function() {
@@ -110,12 +111,14 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('vendor-create', 'VendorController@store')->name('vendor.add');
         Route::post('vendor-brand-create', 'SingleVendorController@store')->name('vendor.brand.add');
         Route::post('vendor-product-store', 'VendorProductController@store')->name('vendor.product.store');
+        Route::get('vendor-product-edit/{slug}', 'VendorProductController@edit')->name('vendor.product.edit');
+        Route::post('vendor-product-update/{slug}', 'VendorProductController@update')->name('vendor.product.update');
         //vendor product avatar
         Route::post('vendor-product-avatar', 'VendorProductAvatarController@store')->name('vendor.product.avatar');
         Route::get('vendor-product-avatars', 'VendorProductAvatarController@index')->name('avatar.index');
         Route::get('vendor-product-avatars/{slug}', 'VendorProductAvatarController@showAvatar')->name('vendor.product.avatars');
         Route::post('vendor-product-avatar/update', 'VendorProductAvatarController@update')->name('vendor.product.avatar.update');
-        Route::post('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
+        Route::get('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
     });
 
 });

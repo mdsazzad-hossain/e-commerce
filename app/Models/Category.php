@@ -13,4 +13,9 @@ class Category extends Model
     {
         return $this->hasMany(ChildCategory::class,'category_id');
     }
+
+    public function get_brand()
+    {
+        return $this->hasMany(Brand::class,'category_id');
+    }
 }

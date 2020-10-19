@@ -418,7 +418,7 @@
                     @if ($cat->explor == 1 && $cat->status == 1)
                         
                     <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
-                        <a href="category-4cols.html" class="icon-box icon-box-side"
+                        <a href="{{route('category',$cat->cat_name)}}" class="icon-box icon-box-side"
                             style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
                             <h3 class="icon-box-title" style="margin: auto;">{{$cat->cat_name}}</h3>
                             <img style="width: 40px; margin: auto;height: 40px;" src="{{ asset('/images/' . $cat->cover) }}"
