@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Banar;
-use App\Models\Category;
-use App\Models\ChildCategory;
-use App\Models\SubChildCategory;
-use App\Models\Product;
-use App\Models\AdManager;
-use App\Models\Vendor;
 use App\Models\WishList;
 use App\Models\Cart;
+use App\Models\Category;
+use App\Models\AdManager;
+use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
-class HomeController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,24 +21,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $banars = Banar::select('id','image','image1','image2','image3')->first();
         $categories = Category::with('get_child_category')->get();
-        $products = Product::with('get_brand','get_product_avatars')->get();
         $ads = AdManager::all();
-        $vendors = Vendor::all();
         $count = WishList::select('id')->count();
+        $cart = Cart::latest()->where('user_id',auth()->user()->id)->get();
         $count1 = Cart::select('id')->count();
-        $cart = Cart::where('user_id',auth()->user()->id)->get();
-        
-        return view('layouts.frontend.home',[
-            'banars'=>$banars,
-            'categories'=>$categories,
-            'products'=>$products,
+
+        return view('layouts.frontend.cart.cart_list',[
             'ads'=>$ads,
-            'vendors'=>$vendors,
+            'categories'=>$categories,
             'count'=>$count,
-            'count1'=>$count1,
-            'cart'=>$cart
+            'cart'=>$cart,
+            'count1'=>$count1
         ]);
     }
 
@@ -49,17 +41,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function category(Request $request,$slug)
+    public function create()
     {
-        $categories = Category::with('get_child_category')->get();
-        $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
-        $ads = AdManager::all();
-        
-        return view('layouts.frontend.category_list',[
-            'ads'=>$ads,
-            'categories'=>$categories,
-            'all_cat'=>$all_cat
-        ]);
+        //
     }
 
     /**
@@ -70,7 +54,31 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
+        $wish = Cart::where('product_id',$product->id)->first();
+        if ($wish) {
+            return response()->json([
+                'errors'=> 'error'
+            ]);
+        }else{
+            
+
+            $data = Cart::create([
+                'product_id'=> $product->id,
+                'user_id'=> auth()->user()->id
+            ]);
+
+            if ($data) {
+                WishList::where('product_id',$request->id)->delete();
+                $count = WishList::select('id')->count();
+                $count1 = Cart::select('id')->count();
+
+                return response()->json([
+                    'count'=>$count,
+                    'count1'=>$count1
+                ]);
+            }
+        }
     }
 
     /**
@@ -113,8 +121,16 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        Cart::find($request->id)->delete();
+        $cart = Cart::where('user_id',auth()->user()->id)->get();
+        $count1 = Cart::select('id')->count();
+        toast('Product remove successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return response()->json([
+            'cart'=>$cart,
+            'count1'=>$count1
+        ]);
     }
 }

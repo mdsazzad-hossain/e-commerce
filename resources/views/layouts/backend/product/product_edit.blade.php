@@ -43,7 +43,7 @@
                         >Select Brand</label
                         >
                         <select class="form-control" name="brand_id" id="brand_id" required>
-                        <option value="{{$product->get_brand->brand_name}}" selected="selected" hidden>{{$product->get_brand->brand_name}}</option>
+                        <option value="{{$product->get_brand->id}}" selected="selected" hidden>{{$product->get_brand->brand_name}}</option>
                             @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}">
                                     {{ $brand->brand_name }}
@@ -96,7 +96,7 @@
                             >Select Product Size</label
                             >
                             <select class="form-control" name="size" id="size">
-                                <option value="{{$product->size}}">{{$product->size}}</option>
+                                <option value="{{$product->size}}" selected="selected" hidden>{{$product->size}}</option>
                                 <option value="xs">xs</option>
                                 <option value="xs">xs</option>
                                 <option value="x">x</option>
@@ -199,8 +199,11 @@
                             >Select Position</label
                             >
                             <select class="form-control" name="position" id="position">
+                                @if($product->position == null)
                                 <option value="" selected="selected" hidden>select view position</option>
-                                {{-- <option value="{{$product->position}}">{{$product->position}}</option> --}}
+                                @else
+                                <option value="{{$product->position}}" selected="selected" hidden>{{$product->position}}</option>
+                                @endif
                                 <option value="flash sale">flash sale</option>
                                 <option value="vendor">vendor</option>
                                 <option value="upcoming product">upcoming product</option>

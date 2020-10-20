@@ -269,11 +269,13 @@
                         <!-- End .product -->
 
                         <div class="owl-stage-outer">
+                            
                             <div class="owl-stage"
                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
+                                @foreach ($products as $product)
+                                @if ($product->position == 'flash sale')
                                 <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                    @foreach ($products as $product)
-                                    @if ($product->position == 'flash sale')
+                                    
                                     <div class="product">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
@@ -283,16 +285,17 @@
                                             </a>
 
                                             <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                        to wishlist</span></a>
+                                                <button onclick="addWishList({{$product}})" class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                        to wishlist</span></button>
                                                 <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                                     title="Quick view"><span>Quick view</span></a>
                                             </div>
                                             <!-- End .product-action-vertical -->
 
                                             <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                                        cart</span></a>
+                                                <button onclick="addToCart({{$product}})" class="btn-product btn-cart" title="Add to cart"><span>add to
+                                                        cart</span>
+                                                </button>
                                             </div>
                                             <!-- End .product-action -->
                                         </figure>
@@ -320,10 +323,12 @@
                                         </div>
                                         <!-- End .product-body -->
                                     </div>
-                                    @endif
-                                    @endforeach
+                                    
                                 </div>
+                                @endif
+                                @endforeach 
                             </div>
+                           
                         </div>
                         <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
                                     class="icon-angle-left"></i></button><button type="button" role="presentation"
@@ -1002,5 +1007,90 @@
 
 
     </main>
+    @section('js')
 
+        <script>
+            function addWishList(product){
+                slug = product.slug
+
+                $.ajax({
+                    url: "{{ route('wishlist.store') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'slug': slug
+                    },
+                    success:function(response)
+                    {
+                        if(response.errors == 'match'){
+                            $("#error").show();
+                            setTimeout(() => {
+                                $("#error").hide();
+
+                            },2000);
+                        }else{
+                            $("#count").text(response.count);
+                        }
+                        
+
+                    }
+                })
+
+            }
+
+            function addToCart(product){
+            id = product.id;
+            slug = product.slug;
+            $.ajax({
+                url: "{{ route('cart.store') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'slug': slug,
+                    'id':id
+                },
+                success:function(response)
+                {
+                    if(response.errors == 'error'){
+                        $("#cartError").show();
+                        setTimeout(() => {
+                            $("#cartError").hide();
+
+                        },2000);
+                    }else{
+                        $("#pro_name").text(response.cart.get_product.product_name);
+                        $("#pro_sale").text(response.cart.get_product.sale_price);
+                        response.cart.get_product.get_product_avatars.forEach(element => {
+                            $("cartAvtr").attr('src', "{{ asset('/images/') }}/" + element.front)
+                        });
+                        $("#count").text(response.count);
+                        $("#count1").text(response.count1);
+                        
+                    }
+                    
+
+                }
+            })
+
+        }
+
+            function itemDelete(id){
+                $.ajax({
+                    url: "{{ route('cart.item.delete') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': id
+                    },
+                    success:function(response)
+                    {
+                        window.location.reload();
+                        
+
+                    }
+                })
+            }
+        </script>
+        
+    @endsection
 @endsection

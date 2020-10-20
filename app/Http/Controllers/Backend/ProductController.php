@@ -118,6 +118,8 @@ class ProductController extends Controller
         $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $cal/100;
+        $cal1 = $request->e_money*$request->sale_price;
+        $price1 = $cal1/100;
         $data->update([
             'brand_id'=>$request->brand_id,
             'product_name'=>$request->product_name,
@@ -130,7 +132,7 @@ class ProductController extends Controller
             'sale_price'=>$price,
             'promo_price'=>$request->promo_price,
             'discount'=>$request->discount,
-            'e_money'=>$request->e_money,
+            'e_money'=>$price1,
             'description'=>$request->description,
             'total_price'=>$request->qty*$request->sale_price,
             'position'=>$request->position

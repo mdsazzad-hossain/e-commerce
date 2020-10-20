@@ -605,6 +605,7 @@
 <!-- Main JS File -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/demos/demo-13.js') }}"></script>
+@yield('js')
 
 </body>
 
