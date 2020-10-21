@@ -55,9 +55,8 @@
                                             <td id="sale_price" class="price-col">{{ $crt->get_product->sale_price }}</td>
                                             <td class="quantity-col">
                                                 <div class="cart-product-quantity">
-                                                    <input id="qty" type="number" class="form-control" value="1" min="1" max="10"
-                                                        step="1" data-decimals="0" required="" style="display: none;">
-                                                    <div class="input-group  input-spinner">
+                                                    <input onchange="calculate()" id="qty" type="number" class="form-control" value="1" required>
+                                                    {{-- <div class="input-group  input-spinner">
                                                         <div class="input-group-prepend">
                                                             <button onclick="calculate()" style="min-width: 26px"
                                                                 class="btn btn-decrement btn-spinner" type="button"><i
@@ -72,7 +71,7 @@
                                                                     class="icon-plus"></i>
                                                             </button>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </div><!-- End .cart-product-quantity -->
                                             </td>
                                             <td id="total" class="total-col">{{ $crt->get_product->sale_price }}</td>
@@ -192,23 +191,25 @@
             $("#total").text(final);
         }
 
-        function itemDelete(id){
-                $.ajax({
-                    url: "{{ route('cart.item.delete') }}",
-                    type: "POST",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        'id': id
-                    },
-                    success:function(response)
-                    {
-                        $("#count1").text(response.count1);
-                        window.location.reload();
-                        
+        
 
-                    }
-                })
-            }
+        function itemDelete(id){
+            $.ajax({
+                url: "{{ route('cart.item.delete') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id
+                },
+                success:function(response)
+                {
+                    $("#count1").text(response.count1);
+                    window.location.reload();
+                    
+
+                }
+            })
+        }
 
     </script>
 

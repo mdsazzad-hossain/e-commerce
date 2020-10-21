@@ -43,7 +43,7 @@ class LoginController extends Controller
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }elseif (Auth::attempt([
             'email'=>$request->email, 
             'password'=>$request->password,
@@ -71,6 +71,15 @@ class LoginController extends Controller
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
             return redirect()->route('dashboard');
+        }elseif (Auth::attempt([
+            'email'=>$request->email, 
+            'password'=>$request->password,
+            'verified'=> 1,
+            'role'=> 'user'
+        ])) {
+
+            toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->route('home');
         }
         else{
             Alert::warning('Opps!','Access Denied.');
@@ -104,7 +113,7 @@ class LoginController extends Controller
 
         Alert::success('success','Registration successfull.Please check your email for account verification.');
 
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
     public function user_verify($token)
@@ -116,7 +125,7 @@ class LoginController extends Controller
 
         toast('Account Verified Successfully.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
     public function update(Request $request)
@@ -138,12 +147,15 @@ class LoginController extends Controller
         return redirect()->back();
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        if(Auth::check()){
+            Auth::logout();
+            $request->session()->flush();
+            toast('Logout successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        Auth::logout();
-        toast('Logout successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
-        return redirect()->route('login');
+            return redirect()->route('home');
+        }
+        
     }
 }

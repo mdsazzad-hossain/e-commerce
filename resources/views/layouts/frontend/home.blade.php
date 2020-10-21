@@ -461,7 +461,7 @@
                     @foreach ($vendors as $vendor)
                     @if ($vendor->status == 1)
                     <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="vendor-product.html" class="cat-block">
+                        <a href="{{route('vendor.list.product',$vendor->brand_name)}}" class="cat-block">
                             <figure>
                                 <span>
                                     <img src="{{ asset('/images/' . $vendor->logo) }}">
@@ -1022,12 +1022,19 @@
                     },
                     success:function(response)
                     {
-                        if(response.errors == 'match'){
+                        if(response.guest == 'guest'){
+                            $("#error").text('Opps!plese login first.');
+                            $("#error").show();
+                            setTimeout(() => {
+                                $("#error").hide();
+                                $("#error").text();
+                            },3000);
+                        }else if(response.errors == 'match'){
                             $("#error").show();
                             setTimeout(() => {
                                 $("#error").hide();
 
-                            },2000);
+                            },3000);
                         }else{
                             $("#count").text(response.count);
                         }
@@ -1051,7 +1058,14 @@
                 },
                 success:function(response)
                 {
-                    if(response.errors == 'error'){
+                    if(response.guest == 'guest'){
+                        $("#error").text('Opps!plese login first.');
+                        $("#error").show();
+                        setTimeout(() => {
+                            $("#error").hide();
+                            $("#error").text();
+                        },3000);
+                    }else if(response.errors == 'error'){
                         $("#cartError").show();
                         setTimeout(() => {
                             $("#cartError").hide();

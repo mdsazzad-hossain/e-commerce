@@ -31,6 +31,14 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/{name}/cart', 'CartController@index')->name('cart');
     Route::post('/cart/store', 'CartController@store')->name('cart.store');
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
+    
+    Route::group(['middleware' =>'auth'], function () {
+        Route::post('/user/logout', 'UserController@logout')->name('user.logout');
+        Route::get('/{user}/profile', 'UserController@index')->name('user');
+        Route::get('/{brand}', 'HomeController@show_vendor')->name('vendor.list.product');
+
+    });
+    
 });
 
 Route::group(["namespace"=>"Backend"],function() {
@@ -44,7 +52,7 @@ Route::group(["namespace"=>"Backend"],function() {
 
 
     Route::group(['middleware' => ['auth','user.role']], function () {
-        Route::get('/logout', 'LoginController@logout')->name('logout');
+        Route::post('/logout', 'LoginController@logout')->name('logout');
         Route::get('dashboard', 'DashboardController@index')->name('dashboard');
         Route::get('user-list', 'DashboardController@user_list')->name('user.list');
         Route::get('vendor-list', 'DashboardController@vendor_list')->name('vendor.list');

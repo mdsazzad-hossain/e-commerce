@@ -28,9 +28,9 @@ class HomeController extends Controller
         $products = Product::with('get_brand','get_product_avatars')->get();
         $ads = AdManager::all();
         $vendors = Vendor::all();
-        $count = WishList::select('id')->count();
-        $count1 = Cart::select('id')->count();
-        $cart = Cart::where('user_id',auth()->user()->id)->get();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         
         return view('layouts.frontend.home',[
             'banars'=>$banars,
@@ -62,12 +62,22 @@ class HomeController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show_vendor()
+    {
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        
+        return view('layouts.frontend.vendor.vendor_list_and_product',[
+            'categories'=>$categories,
+            'ads'=>$ads,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart
+        ]);
+    }
     public function store(Request $request)
     {
         //

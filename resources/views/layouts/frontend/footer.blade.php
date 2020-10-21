@@ -374,18 +374,19 @@
                         <div class="tab-content" id="tab-content-5">
                             <div class="tab-pane fade show active" id="signin" role="tabpanel"
                                 aria-labelledby="signin-tab">
-                                <form action="#">
+                                <form action="{{route('user.login')}}" method="post">
+                                    @csrf
                                     <div class="form-group">
-                                        <label for="singin-email">Username or email address *</label>
-                                        <input type="text" class="form-control" id="singin-email" name="singin-email"
+                                        <label for="singin-email">Email address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="enter email"
                                             required>
                                     </div>
                                     <!-- End .form-group -->
 
                                     <div class="form-group">
                                         <label for="singin-password">Password *</label>
-                                        <input type="password" class="form-control" id="singin-password"
-                                            name="singin-password" required>
+                                        <input type="password" class="form-control" id="password"
+                                            name="password" placeholder="password" required>
                                     </div>
                                     <!-- End .form-group -->
 
@@ -398,7 +399,8 @@
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="signin-remember">
                                             <label class="custom-control-label" for="signin-remember">Remember
-                                                Me</label>
+                                                Me
+                                            </label>
                                         </div>
                                         <!-- End .custom-checkbox -->
 
@@ -428,20 +430,37 @@
                             </div>
                             <!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="#">
-                                    <div class="form-group">
-                                        <label for="register-email">Your email address *</label>
-                                        <input type="email" class="form-control" id="register-email"
-                                            name="register-email" required>
+                                <form action="{{route('user.store')}}" method="post">
+                                    @csrf
+                                    <div class="row col-12">
+                                        <div class="form-group col-6">
+                                            <label for="register-email">Name</label>
+                                            <input type="text" class="form-control" id="name"
+                                                name="name" placeholder="enter name" required>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="register-email">Your email address *</label>
+                                            <input type="email" class="form-control" id="email"
+                                                name="email" placeholder="enter email" required>
+                                        </div>
                                     </div>
-                                    <!-- End .form-group -->
-
-                                    <div class="form-group">
-                                        <label for="register-password">Password *</label>
-                                        <input type="password" class="form-control" id="register-password"
-                                            name="register-password" required>
+                                    <div class="row col-12">
+                                        <div class="form-group col-6">
+                                            <label for="register-email">Phone Number</label>
+                                            <input type="text" class="form-control" id="phn"
+                                                name="phn" placeholder="01xxxxxxxxx" maxlength="11" required>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="register-password">Password *</label>
+                                            <input type="password" class="form-control" id="password"
+                                                name="password" placeholder="enter password" required>
+                                        </div>
                                     </div>
-                                    <!-- End .form-group -->
+                                    <div class="form-group col-12">
+                                        <label for="register-email">Address</label>
+                                        <input type="text" class="form-control" id="address"
+                                            name="address" placeholder="enter address" required>
+                                    </div>
 
                                     <div class="form-footer">
                                         <button type="submit" class="btn btn-outline-primary-2">

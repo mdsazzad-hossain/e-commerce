@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 
-class WishListController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,22 +22,31 @@ class WishListController extends Controller
      */
     public function index()
     {
-        
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
-        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $wish_lists = WishList::latest()->where('user_id',auth()->user()->id ?? '')->get();
-        $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
+        $count = WishList::select('id')->count();
+        $count1 = Cart::select('id')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
 
-        return view('layouts.frontend.wishlist.wish_list',[
+        return view('layouts.frontend.profile.user_profile',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'count1'=>$count1,
-            'wish_lists'=>$wish_lists,
-            'cart'=>$cart
+            'cart'=>$cart,
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        if(Auth::check()){
+            Auth::logout();
+            $request->session()->flush();
+            toast('Logout successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+            return redirect()->route('home');
+        }
+        
     }
 
     /**
@@ -58,35 +67,7 @@ class WishListController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::check()){
-            $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
-            $wish = WishList::where('product_id',$product->id)->first();
-            if ($wish) {
-                return response()->json([
-                    'errors'=> 'match'
-                ]);
-            }else{
-                
-
-                $data = WishList::create([
-                    'product_id'=> $product->id,
-                    'user_id'=> auth()->user()->id
-                ]);
-
-                if ($data) {
-                    $count = WishList::select('id')->count();
-                    return response()->json([
-                        'count'=>$count
-                    ]);
-                }
-            }
-        }else{
-            return response()->json([
-                'guest'=>'guest'
-            ]);
-        }
-        
-        
+        //
     }
 
     /**
@@ -131,9 +112,6 @@ class WishListController extends Controller
      */
     public function destroy($id)
     {
-        WishList::where('product_id',$id)->delete();
-        toast('Product remove successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
-        return redirect()->back();
+        //
     }
 }

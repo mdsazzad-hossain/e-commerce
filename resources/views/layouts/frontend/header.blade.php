@@ -23,6 +23,9 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet"
         href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -35,7 +38,7 @@
 </head>
 
 <body>
-
+    @include('sweetalert::alert')
     <div class="page-wrapper">
 
         <div class="top-notice text-white bg-dark" id="newsletter-headadd">
@@ -221,18 +224,28 @@
                             padding-right: 5px;display:none;" id="cartError">Already in Cart.</span>
 
                             <div class="header-dropdown-link">
-
-                                <a href="{{route('wishlist',auth()->user()->name)}}" class="wishlist-link">
+                                @auth
+                                <a href="{{route('wishlist',auth()->user()->name)}}" title="wishlist" class="wishlist-link">
                                     <i class="icon-heart-o"></i>
-                                <span class="wishlist-count" id="count">{{$count}}</span>
-                                    <span class="wishlist-txt">Wishlist</span>
+                                <span style="top: -1.3rem !important;
+                                right: 0.7rem !important;" class="wishlist-count" id="count">{{$count}}</span>
+                                    {{-- <span class="wishlist-txt">Wishlist</span> --}}
                                 </a>
+                                @else
+                                <a href="#" class="wishlist-link" title="wishlist">
+                                    <i class="icon-heart-o"></i>
+                                <span style="top: -1.3rem !important;
+                                right: 0.7rem !important;" class="wishlist-count" id="count">{{$count}}</span>
+                                    {{-- <span class="wishlist-txt">Wishlist</span> --}}
+                                </a>
+                                @endauth
                                 <div class="dropdown cart-dropdown">
-                                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                    <a href="#" class="dropdown-toggle" title="cart" role="button" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false" data-display="static">
                                         <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count" id="count1">{{$count1}}</span>
-                                        <span class="cart-txt">Cart</span>
+                                    <span style="top: -1.3rem !important;
+                                    right: 0.7rem !important;" class="cart-count" id="count1">{{$count1}}</span>
+                                        {{-- <span class="cart-txt">Cart</span> --}}
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -272,15 +285,86 @@
                                             <span class="cart-total-price">$160.00</span>
                                         </div>
                                         <!-- End .dropdown-cart-total -->
-
+                                        @auth
                                         <div class="dropdown-cart-action">
                                             <a href="{{route('cart',auth()->user()->name)}}" class="btn btn-primary">View Cart</a>
                                             <a href="checkout.html" class="btn btn-outline-primary-2">Checkout</a>
                                         </div>
+                                        @else
+                                        <div class="dropdown-cart-action">
+                                            <a href="#" class="btn btn-primary">View Cart</a>
+                                            <a href="checkout.html" class="btn btn-outline-primary-2">Checkout</a>
+                                        </div>
+                                        @endauth
                                         <!-- End .dropdown-cart-total -->
                                     </div>
                                     <!-- End .dropdown-menu -->
                                 </div>
+                                @auth
+                                <div class="dropdown cart-dropdown">
+                                    <a href="{{route('user',auth()->user()->name)}}" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" data-display="static">
+                                        <i class="la la-user"></i>
+                                        <span class="cart-count" style="background-color: #c96;
+                                        height: 10px;
+                                        min-width: 10px;
+                                        margin-right: 26px;"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" style="width: 120px !important;padding:1.2rem 1rem 2.5rem !important;height: 112px;
+                                        !important: ;
+                                        border: 1px solid #ddd;
+                                        margin-top: 12px;
+                                        margin-right: -65px;">
+                                        
+                                        <ul>
+                                            <li>
+                                            <a href="{{route('user',auth()->user()->name)}}"><i style="font-size: 15px;
+                                                    margin-right: 3px;" class="la la-user"></i>Profile</a>
+                                            </li>
+                                            <hr style="margin:0px;">
+                                            <li>
+                                                <a href="#"><i style="font-size: 15px;
+                                                    margin-right: 5px;" class="la la-heart"></i>Wishlist</a>
+                                            </li>
+                                            <hr style="margin:0px;">
+                                            <li><a href="#"><i style="font-size: 15px;
+                                                margin-right: 5px;" class="la la-dollar"></i>E-money</a></li>
+                                            <hr style="margin:0px;">
+                                            <li>
+                                                <form id="logout-form" action="{{ route('user.logout') }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit"><i style="font-size: 15px;
+                                                        margin-right: 5px;cursor: pointer;" class="la la-sign-out"></i>
+                                                        Logout
+                                                    </button>
+                                                </form>
+                                                
+                                            </li>
+                                        </ul>
+                                        <!-- End .dropdown-cart-total -->
+                                    </div>
+                                    <!-- End .dropdown-menu -->
+                                </div>
+                                @else
+                                <div class="dropdown cart-dropdown">
+                                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" data-display="static">
+                                        <i class="la la-user"></i>
+                                        <span class="cart-count" style="background-color:red;
+                                        height: 10px;
+                                        min-width: 10px;
+                                        margin-right: 26px;"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <h6>Please login first then view your profile</h6>
+                                    </div>
+                                    <!-- End .dropdown-menu -->
+                                </div>
+                                @endauth
+                                
+                                
                                 <!-- End .cart-dropdown -->
                             </div>
                         </div>
