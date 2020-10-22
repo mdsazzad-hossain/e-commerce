@@ -94,9 +94,11 @@
                                         </div>
                                         <!-- End .header-dropdown -->
                                     </li>
-                                    <li class="login">
-                                        <a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a>
-                                    </li>
+                                    @guest
+                                        <li class="login">
+                                            <a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a>
+                                        </li>
+                                    @endguest
                                 </ul>
                             </li>
                         </ul>
@@ -311,11 +313,11 @@
                                         margin-right: 26px;"></span>
                                     </a>
 
-                                    <div class="dropdown-menu dropdown-menu-right" style="width: 120px !important;padding:1.2rem 1rem 2.5rem !important;height: 112px;
+                                    <div class="dropdown-menu dropdown-menu-right" style="width: 150px !important;padding:1.2rem 1rem 2.5rem !important;height: 112px;
                                         !important: ;
                                         border: 1px solid #ddd;
-                                        margin-top: 12px;
-                                        margin-right: -65px;">
+                                        margin-top: 19px;
+                                        margin-right: -87px;">
                                         
                                         <ul>
                                             <li>
@@ -329,17 +331,17 @@
                                             </li>
                                             <hr style="margin:0px;">
                                             <li><a href="#"><i style="font-size: 15px;
-                                                margin-right: 5px;" class="la la-dollar"></i>E-money</a></li>
+                                                margin-right: 5px;" class="la la-dollar"></i>
+                                                E-money
+                                                <span class="badge badge-warning">0.00</span>
+                                            </a></li>
                                             <hr style="margin:0px;">
                                             <li>
-                                                <form id="logout-form" action="{{ route('user.logout') }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit"><i style="font-size: 15px;
+                                                <a href="{{ route('user.logout') }}">
+                                                    <i style="font-size: 15px;
                                                         margin-right: 5px;cursor: pointer;" class="la la-sign-out"></i>
-                                                        Logout
-                                                    </button>
-                                                </form>
-                                                
+                                                    Logout
+                                                </a>
                                             </li>
                                         </ul>
                                         <!-- End .dropdown-cart-total -->

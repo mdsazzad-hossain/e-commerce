@@ -32,12 +32,10 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/cart/store', 'CartController@store')->name('cart.store');
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
     
-    Route::group(['middleware' =>'auth'], function () {
-        Route::post('/user/logout', 'UserController@logout')->name('user.logout');
-        Route::get('/{user}/profile', 'UserController@index')->name('user');
-        Route::get('/{brand}', 'HomeController@show_vendor')->name('vendor.list.product');
-
-    });
+    
+    Route::get('/user/logout', 'UserController@logout')->name('user.logout');
+    Route::get('/{user}/profile', 'UserController@index')->name('user');
+    Route::get('/product/{brand}', 'HomeController@show_vendor')->name('vendor.list.product');
     
 });
 
@@ -137,8 +135,16 @@ Route::group(["namespace"=>"Backend"],function() {
 
 });
 
-// Route::group(['namespace' => 'Frontend'], function () {
+// SSLCOMMERZ Start
+Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
+Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
 
-//     Route::get('home', 'HomeController@index')->name('home');
+Route::post('/pay', 'SslCommerzPaymentController@index');
+Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
 
-// });
+Route::post('/success', 'SslCommerzPaymentController@success');
+Route::post('/fail', 'SslCommerzPaymentController@fail');
+Route::post('/cancel', 'SslCommerzPaymentController@cancel');
+
+Route::post('/ipn', 'SslCommerzPaymentController@ipn');
+//SSLCOMMERZ END

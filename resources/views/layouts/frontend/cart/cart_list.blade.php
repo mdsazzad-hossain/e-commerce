@@ -38,6 +38,8 @@
 
                                         <tr>
                                             <td class="product-col">
+                                            {{-- <input hidden type="number" id="id" value="{{$crt->id}}" name="id">
+                                            <input hidden type="text" id="sale_price" value="{{$crt->get_product->sale_price}}" name="$crt->get_product->sale_price"> --}}
                                                 <div class="product">
                                                     @foreach ($crt->get_product->get_product_avatars as $avtr)
                                                         <figure class="product-media">
@@ -55,24 +57,9 @@
                                             <td id="sale_price" class="price-col">{{ $crt->get_product->sale_price }}</td>
                                             <td class="quantity-col">
                                                 <div class="cart-product-quantity">
-                                                    <input onchange="calculate()" id="qty" type="number" class="form-control" value="1" required>
-                                                    {{-- <div class="input-group  input-spinner">
-                                                        <div class="input-group-prepend">
-                                                            <button onclick="calculate()" style="min-width: 26px"
-                                                                class="btn btn-decrement btn-spinner" type="button"><i
-                                                                    class="icon-minus"></i>
-                                                                </button>
-                                                            </div>
-                                                            <input type="text" style="text-align: center" class="form-control " required=""
-                                                            placeholder="">
-                                                        <div class="input-group-append">
-                                                            <button onclick="calculate()" style="min-width: 26px"
-                                                                class="btn btn-increment btn-spinner" type="button"><i
-                                                                    class="icon-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div> --}}
-                                                </div><!-- End .cart-product-quantity -->
+                                                    <input onchange="calculate({{$crt}},this.value)" id="qty" name="qty" type="number" value="" class="form-control" required>
+                                                    
+                                                </div>
                                             </td>
                                             <td id="total" class="total-col">{{ $crt->get_product->sale_price }}</td>
                                             <td class="remove-col">
@@ -99,8 +86,8 @@
                                     </form>
                                 </div><!-- End .cart-discount -->
 
-                                <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
-                                        class="icon-refresh"></i></a>
+                                <button onclick="checkout()" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
+                                        class="icon-refresh"></i></button>
                             </div><!-- End .cart-bottom -->
                         </div><!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
@@ -169,6 +156,12 @@
 
                                 <a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
                                     CHECKOUT</a>
+                                <button class="your-button-class" id="sslczPayBtn"
+                                    token="if you have any token validation"
+                                    postdata="your javascript arrays or objects which requires in backend"
+                                    order="If you already have the transaction generated for current order"
+                                    endpoint="/pay-via-ajax"> Pay Now
+                            </button>
                             </div><!-- End .summary -->
 
                             <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
@@ -184,14 +177,26 @@
 
     <script>
         
-        function calculate(){
-            data = $("#qty").val();
-            initial = $("#sale_price").text();
-            final = data*initial;
-            $("#total").text(final);
+        function calculate(id,val){
+            $("#qty").val('');
+            if(id){ 
+                console.log(id.get_product);
+                console.log($("#sale_price").text());
+                $("#qty").val('');
+                initial = $("#sale_price").text();
+                final = val*id.get_product.sale_price;
+                $("#total").text(final);
+                
+            }
+           
         }
 
-        
+        function checkout(){
+            id = $("id").val();
+            qty = $("qty").val();
+            total = $("total").text();
+            console.log($("id").val());
+        }
 
         function itemDelete(id){
             $.ajax({

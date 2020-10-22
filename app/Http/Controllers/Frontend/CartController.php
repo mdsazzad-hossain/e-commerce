@@ -121,7 +121,38 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // if(Auth::check()){
+        //     $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
+        //     $wish = Cart::where('product_id',$product->id && 'user_id',auth()->user()->id)
+        //     ->first();
+        //     if ($wish) {
+        //         return response()->json([
+        //             'errors'=> 'error'
+        //         ]);
+        //     }else{
+                
+
+        //         $data = Cart::create([
+        //             'product_id'=> $product->id,
+        //             'user_id'=> auth()->user()->id
+        //         ]);
+
+        //         if ($data) {
+        //             WishList::where('product_id',$request->id)->delete();
+        //             $count = WishList::select('id')->count();
+        //             $count1 = Cart::select('id')->count();
+
+        //             return response()->json([
+        //                 'count'=>$count,
+        //                 'count1'=>$count1
+        //             ]);
+        //         }
+        //     }
+        // }else{
+        //     return response()->json([
+        //         'guest'=>'guest'
+        //     ]);
+        // }
     }
 
     /**
