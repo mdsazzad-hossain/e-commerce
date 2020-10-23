@@ -25,7 +25,7 @@
         href="{{ asset('assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        
+
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -117,11 +117,11 @@
                         <div class="header-left">
                             <div class="dropdown category-dropdown show is-on" data-visible="true">
 
-                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                <a href="{{ route('home') }}" class="dropdown-toggle" role="button" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="true" data-display="static"
                                     title="Browse Categories">
 
-                                    <img src="assets/images/demos/demo-13/logo.png" alt="Molla Logo" width="105"
+                                    <img src="#" alt="logo" width="105"
                                         height="25">
                                 </a>
 
@@ -318,7 +318,7 @@
                                         border: 1px solid #ddd;
                                         margin-top: 19px;
                                         margin-right: -87px;">
-                                        
+
                                         <ul>
                                             <li>
                                             <a href="{{route('user',auth()->user()->name)}}"><i style="font-size: 15px;
@@ -365,8 +365,8 @@
                                     <!-- End .dropdown-menu -->
                                 </div>
                                 @endauth
-                                
-                                
+
+
                                 <!-- End .cart-dropdown -->
                             </div>
                         </div>

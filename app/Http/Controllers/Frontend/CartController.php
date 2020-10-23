@@ -37,6 +37,23 @@ class CartController extends Controller
         ]);
     }
 
+    public function billing_index()
+    {
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+
+        return view('layouts.frontend.cart.billing_address',[
+            'ads'=>$ads,
+            'categories'=>$categories,
+            'count'=>$count,
+            'cart'=>$cart,
+            'count1'=>$count1
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -57,15 +74,15 @@ class CartController extends Controller
     {
         if(Auth::check()){
             $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
-            $wish = Cart::where('product_id',$product->id && 'user_id',auth()->user()->id)
-            ->first();
+            $wish = Cart::where([
+                'product_id'=>$product->id,
+                'user_id'=>auth()->user()->id
+            ])->first();
             if ($wish) {
                 return response()->json([
                     'errors'=> 'error'
                 ]);
-            }else{
-                
-
+            }else if(!$wish){
                 $data = Cart::create([
                     'product_id'=> $product->id,
                     'user_id'=> auth()->user()->id
@@ -73,8 +90,8 @@ class CartController extends Controller
 
                 if ($data) {
                     WishList::where('product_id',$request->id)->delete();
-                    $count = WishList::select('id')->count();
-                    $count1 = Cart::select('id')->count();
+                    $count = WishList::select('id')->where('user_id',Auth::user()->id ?? '')->count();
+                    $count1 = Cart::select('id')->where('user_id',Auth::user()->id ?? '')->count();
 
                     return response()->json([
                         'count'=>$count,
@@ -87,7 +104,7 @@ class CartController extends Controller
                 'guest'=>'guest'
             ]);
         }
-        
+
     }
 
     /**
@@ -119,40 +136,21 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // if(Auth::check()){
-        //     $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
-        //     $wish = Cart::where('product_id',$product->id && 'user_id',auth()->user()->id)
-        //     ->first();
-        //     if ($wish) {
-        //         return response()->json([
-        //             'errors'=> 'error'
-        //         ]);
-        //     }else{
-                
 
-        //         $data = Cart::create([
-        //             'product_id'=> $product->id,
-        //             'user_id'=> auth()->user()->id
-        //         ]);
+        Cart::where('id',$request->id)->update([
+            'qty'=>$request->qty,
+            'total'=>$request->total
+        ]);
 
-        //         if ($data) {
-        //             WishList::where('product_id',$request->id)->delete();
-        //             $count = WishList::select('id')->count();
-        //             $count1 = Cart::select('id')->count();
+        $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
 
-        //             return response()->json([
-        //                 'count'=>$count,
-        //                 'count1'=>$count1
-        //             ]);
-        //         }
-        //     }
-        // }else{
-        //     return response()->json([
-        //         'guest'=>'guest'
-        //     ]);
-        // }
+        return response()->json([
+            'cart'=>$cart
+        ]);
+
+
     }
 
     /**

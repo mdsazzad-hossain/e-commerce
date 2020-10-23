@@ -34,6 +34,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <input type="hidden" id="cart" value="{{ $cart }}">
                                     @foreach ($cart as $crt)
 
                                         <tr>
@@ -57,11 +58,12 @@
                                             <td id="sale_price" class="price-col">{{ $crt->get_product->sale_price }}</td>
                                             <td class="quantity-col">
                                                 <div class="cart-product-quantity">
-                                                    <input onchange="calculate({{$crt}},this.value)" id="qty" name="qty" type="number" value="" class="form-control" required>
-                                                    
+                                                    <input onchange="calculate({{$crt}},this.value)" id="qty" name="qty"
+                                                    type="number" value="{{ $crt->qty }}" class="form-control" required>
+
                                                 </div>
                                             </td>
-                                            <td id="total" class="total-col">{{ $crt->get_product->sale_price }}</td>
+                                            <td id="total" class="total-col">{{$crt ? $crt->total : $crt->get_product->sale_price }}</td>
                                             <td class="remove-col">
                                                 <button onclick="itemDelete({{$crt->id}})" class="btn-remove"><i
                                                         class="icon-close"></i>
@@ -86,11 +88,18 @@
                                     </form>
                                 </div><!-- End .cart-discount -->
 
-                                <button onclick="checkout()" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
-                                        class="icon-refresh"></i></button>
+                                <a href="{{ route('cart.bill') }}" class="btn btn-outline-dark-2"><span>Checkout Now</span>
+                                    <i class="icon-refresh"></i>
+                                </a>
+                                {{-- <button class="your-button-class" id="sslczPayBtn"
+                                    token="if you have any token validation"
+                                    postdata="your javascript arrays or objects which requires in backend"
+                                    order="If you already have the transaction generated for current order"
+                                    endpoint="/pay-via-ajax"> Pay Now
+                                </button> --}}
                             </div><!-- End .cart-bottom -->
                         </div><!-- End .col-lg-9 -->
-                        <aside class="col-lg-3">
+                        {{-- <aside class="col-lg-3">
                             <div class="summary summary-cart">
                                 <h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
 
@@ -161,12 +170,12 @@
                                     postdata="your javascript arrays or objects which requires in backend"
                                     order="If you already have the transaction generated for current order"
                                     endpoint="/pay-via-ajax"> Pay Now
-                            </button>
+                                </button>
                             </div><!-- End .summary -->
 
                             <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
                                     SHOPPING</span><i class="icon-refresh"></i></a>
-                        </aside><!-- End .col-lg-3 -->
+                        </aside><!-- End .col-lg-3 --> --}}
                     </div><!-- End .row -->
                 </div><!-- End .container -->
             </div><!-- End .cart -->
@@ -176,19 +185,25 @@
 @section('js')
 
     <script>
-        
-        function calculate(id,val){
-            $("#qty").val('');
-            if(id){ 
-                console.log(id.get_product);
-                console.log($("#sale_price").text());
-                $("#qty").val('');
-                initial = $("#sale_price").text();
-                final = val*id.get_product.sale_price;
-                $("#total").text(final);
-                
-            }
-           
+
+        function calculate(crt,val){
+
+            total = val*crt.get_product.sale_price;
+
+            $.ajax({
+                url: "{{ route('cart.update') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': crt.id,
+                    'qty': val,
+                    'total': total
+                },
+                success:function(response)
+                {
+                    window.location.reload();
+                }
+            })
         }
 
         function checkout(){
@@ -210,7 +225,7 @@
                 {
                     $("#count1").text(response.count1);
                     window.location.reload();
-                    
+
 
                 }
             })

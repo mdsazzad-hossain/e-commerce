@@ -30,10 +30,10 @@
                 <div class="owl-stage-outer">
                     <div class="owl-stage"
                         style="transform: translate3d(-2698px, 0px, 0px); transition: all 0s ease 0s; width: 10792px;">
-                        
+
                         <div class="owl-item cloned" style="width: 1349px;">
                             <div class="intro-slide"
-                                style="background-image: url({{ asset('/images/' . $banars->image) }})">
+                                style="background-image: url({{ $banars ? asset('/images/' . $banars->image) : '' }})">
                                 <div class="container intro-content">
                                     <div class="row">
                                         <div class="col-auto offset-lg-3 intro-col">
@@ -59,10 +59,10 @@
                                 <!-- End .container intro-content -->
                             </div>
                         </div>
-                        
+
                         <div class="owl-item cloned" style="width: 1349px;">
                             <div class="intro-slide"
-                                style="background-image: url({{ asset('/images/' . $banars->image1) }});">
+                                style="background-image: url({{$banars ?  asset('/images/' . $banars->image1) :'' }})">
                                 <div class="container intro-content">
                                     <div class="row">
                                         <div class="col-auto offset-lg-3 intro-col">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="owl-item active" style="width: 1349px;">
                             <div class="intro-slide"
-                                style="background-image: url({{ asset('/images/' . $banars->image2) }});">
+                                style="background-image: url({{$banars ?  asset('/images/' . $banars->image2) :'' }})">
                                 <div class="container intro-content">
                                     <div class="row">
                                         <div class="col-auto offset-lg-3 intro-col">
@@ -118,7 +118,7 @@
                         </div>
                         <div class="owl-item" style="width: 1349px;">
                             <div class="intro-slide"
-                                style="background-image: url({{ asset('/images/' . $banars->image3) }});">
+                                style="background-image: url({{$banars ?  asset('/images/' . $banars->image3) :'' }});">
                                 <div class="container intro-content">
                                     <div class="row">
                                         <div class="col-auto offset-lg-3 intro-col">
@@ -144,7 +144,7 @@
                                 <!-- End .container intro-content -->
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="owl-nav"><button type="button" role="presentation" class="owl-prev"><i
@@ -269,13 +269,13 @@
                         <!-- End .product -->
 
                         <div class="owl-stage-outer">
-                            
+
                             <div class="owl-stage"
                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
                                 @foreach ($products as $product)
                                 @if ($product->position == 'flash sale')
                                 <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                    
+
                                     <div class="product">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
@@ -323,12 +323,12 @@
                                         </div>
                                         <!-- End .product-body -->
                                     </div>
-                                    
+
                                 </div>
                                 @endif
-                                @endforeach 
+                                @endforeach
                             </div>
-                           
+
                         </div>
                         <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
                                     class="icon-angle-left"></i></button><button type="button" role="presentation"
@@ -357,7 +357,7 @@
                 <div class="col-lg-6">
                     @foreach ($ads as $ad)
                     @if($ad->position == "body-top left")
-                    
+
                     <div class="banner banner-overlay">
                         <a href="#">
                             <img src="{{ asset('/images/' . $ad->avatar) }}" alt="Banner">
@@ -383,7 +383,7 @@
                 <div class="col-lg-6">
                     @foreach ($ads as $ad)
                     @if($ad->position == "body-top right")
-                    
+
                     <div class="banner banner-overlay">
                         <a href="#">
                             <img src="{{ asset('/images/' . $ad->avatar) }}" alt="Banner">
@@ -421,7 +421,7 @@
                 <div class="row">
                     @foreach ($categories as $cat)
                     @if ($cat->explor == 1 && $cat->status == 1)
-                        
+
                     <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
                         <a href="{{route('category',$cat->cat_name)}}" class="icon-box icon-box-side"
                             style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
@@ -545,10 +545,10 @@
 
 
                             <!-- End .product -->
-                            
-                            
+
+
                             <div class="product">
-                                
+
 
                             <!-- End .product -->
                             <div class="owl-stage-outer">
@@ -748,9 +748,9 @@
                             <!-- End .product -->
 
 
-                            
-                            
-                                
+
+
+
 
                             <!-- End .product -->
                             <!-- End .product -->
@@ -921,7 +921,7 @@
                                         </figure>
                                         @endforeach
                                         <!-- End .product-media -->
-                        
+
                                         <div class="product-body">
                                             <!-- End .product-cat -->
                                             <h3 class="product-title"><a href="product.html">{{$product->product_name}}</a>
@@ -1038,7 +1038,7 @@
                         }else{
                             $("#count").text(response.count);
                         }
-                        
+
 
                     }
                 })
@@ -1065,23 +1065,26 @@
                             $("#error").hide();
                             $("#error").text();
                         },3000);
-                    }else if(response.errors == 'error'){
-                        $("#cartError").show();
-                        setTimeout(() => {
-                            $("#cartError").hide();
-
-                        },2000);
                     }else{
-                        $("#pro_name").text(response.cart.get_product.product_name);
-                        $("#pro_sale").text(response.cart.get_product.sale_price);
-                        response.cart.get_product.get_product_avatars.forEach(element => {
-                            $("cartAvtr").attr('src', "{{ asset('/images/') }}/" + element.front)
-                        });
-                        $("#count").text(response.count);
-                        $("#count1").text(response.count1);
-                        
+                        if(response.errors == 'error'){
+                            $("#cartError").show();
+                            setTimeout(() => {
+                                $("#cartError").hide();
+
+                            },2000);
+                        }else{
+                            // $("#pro_name").text(response.cart.get_product.product_name);
+                            // $("#pro_sale").text(response.cart.get_product.sale_price);
+                            // response.cart.get_product.get_product_avatars.forEach(element => {
+                            //     $("cartAvtr").attr('src', "{{ asset('/images/') }}/" + element.front)
+                            // });
+                            $("#count").text(response.count);
+                            $("#count1").text(response.count1);
+
+                        }
                     }
-                    
+
+
 
                 }
             })
@@ -1099,12 +1102,12 @@
                     success:function(response)
                     {
                         window.location.reload();
-                        
+
 
                     }
                 })
             }
         </script>
-        
+
     @endsection
 @endsection

@@ -76,8 +76,18 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="firstName">Full name</label>
-                        <input type="text" name="customer_name" class="form-control" id="customer_name" placeholder=""
+                        <input type="text" name="name" class="form-control" id="customer_name" placeholder=""
                                value="John Doe" required>
+                        <div class="invalid-feedback">
+                            Valid customer name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="firstName">Amount</label>
+                        <input type="text" name="amount" class="form-control" id="amount" placeholder=""
+                               value="" required>
                         <div class="invalid-feedback">
                             Valid customer name is required.
                         </div>

@@ -30,13 +30,15 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/wishlist/delete/{id}', 'WishListController@destroy')->name('wishlist.delete');
     Route::get('/{name}/cart', 'CartController@index')->name('cart');
     Route::post('/cart/store', 'CartController@store')->name('cart.store');
+    Route::get('/cart/billing-address', 'CartController@billing_index')->name('cart.bill');
+    Route::post('/cart/update', 'CartController@update')->name('cart.update');
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
-    
-    
+
+
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');
     Route::get('/product/{brand}', 'HomeController@show_vendor')->name('vendor.list.product');
-    
+
 });
 
 Route::group(["namespace"=>"Backend"],function() {
