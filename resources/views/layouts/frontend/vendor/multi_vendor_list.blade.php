@@ -85,14 +85,13 @@
                     </div><!-- End .toolbox -->
                     <div class="products mb-3">
                         <div class="row justify-content-center">
-                            @foreach ($products as $pro)
+                            @foreach ($single_vendor as $ven)
                             <div class="col-6 col-md-4 col-lg-4 col-xl-3">
                                 <div class="product product-7 text-center">
-                                    @foreach ($pro->get_vendor_product_avatar as $avtr)
                                     <figure class="product-media">
                                         <span class="product-label label-new">New</span>
-                                        <a href="{{route('product.quick',$avtr->slug)}}">
-                                            <img src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
+                                        <a href="{{route('vendor.all.products',$ven->brand_name)}}">
+                                            <img src="{{ asset('/images/' . $ven->logo) }}" alt="Product image"
                                                 class="product-image">
                                         </a>
 
@@ -109,15 +108,14 @@
                                             <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
                                         </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
-                                    @endforeach
                                     <div class="product-body">
                                         <div class="product-cat">
-                                            <a href="#">test</a>
+                                            <a href="#">Women</a>
                                         </div><!-- End .product-cat -->
-                                        <h3 class="product-title"><a href="product.html">{{$pro->product_name}}
+                                        <h3 class="product-title"><a href="product.html">{{$ven->brand_name}}
                                                 </a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                            {{$pro->sale_price}}
+                                            {{$ven->address}}
                                         </div><!-- End .product-price -->
                                         <div class="ratings-container">
                                             <div class="ratings">
@@ -126,23 +124,6 @@
                                             </div><!-- End .ratings -->
                                             <span class="ratings-text">( 2 Reviews )</span>
                                         </div><!-- End .rating-container -->  
-                                        @foreach ($pro->get_vendor_product_avatar as $avtr)
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active">
-                                                    <img src="{{ asset('/images/' . $avtr->back) }}"
-                                                        alt="product desc">
-                                                </a>
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->left) }}"
-                                                        alt="product desc">
-                                                </a>
-
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->right) }}"
-                                                        alt="product desc">
-                                                </a>
-                                            </div><!-- End .product-nav -->
-                                        @endforeach
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
                             </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->

@@ -10,7 +10,7 @@ class VendorProduct extends Model
     
     public function get_vendor()
     {
-        return $this->belongsTo(Vendor::class,'vendor__id');
+        return $this->belongsTo(Vendor::class,'vendor_id');
     }
 
     public function get_vendor_product_avatar()

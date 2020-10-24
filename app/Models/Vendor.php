@@ -8,8 +8,12 @@ class Vendor extends Model
 {
     protected $guarded=[];
     
-    public function get_vendor_product_category()
+    public function get_vendor_product()
     {
-        return $this->hasMany(VendorProductCategory::class,'vendor_id');
+        return $this->hasMany(VendorProduct::class,'vendor_id');
+    }
+    public function get_single_vendor_()
+    {
+        return $this->hasMany(SingleVendor::class,'vendor_id');
     }
 }

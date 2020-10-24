@@ -11,6 +11,9 @@ use App\Models\SubChildCategory;
 use App\Models\Product;
 use App\Models\AdManager;
 use App\Models\Vendor;
+use App\Models\SingleVendor;
+use App\Models\VendorProduct;
+use App\Models\VendorProductAvatar;
 use App\Models\WishList;
 use App\Models\Cart;
 
@@ -51,6 +54,9 @@ class HomeController extends Controller
      */
     public function category(Request $request,$slug)
     {
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $categories = Category::with('get_child_category')->get();
         $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
         $ads = AdManager::all();
@@ -58,29 +64,99 @@ class HomeController extends Controller
         return view('layouts.frontend.category_list',[
             'ads'=>$ads,
             'categories'=>$categories,
-            'all_cat'=>$all_cat
-        ]);
-    }
-
-    public function show_vendor()
-    {
-        $categories = Category::with('get_child_category')->get();
-        $ads = AdManager::all();
-        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        
-        return view('layouts.frontend.vendor.vendor_list_and_product',[
-            'categories'=>$categories,
-            'ads'=>$ads,
+            'all_cat'=>$all_cat,
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart
         ]);
     }
-    public function store(Request $request)
+
+    public function show_vendor($brand)
     {
-        //
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $vendor = Vendor::where('brand_name',$brand ?? '')->first();
+        $single_vendor = SingleVendor::with('get_vendor')->where([
+            'vendor_id'=>$vendor->id,
+        ])->get();
+        $products = VendorProduct::with('get_vendor')->where([
+            'vendor_id'=>$vendor->id,
+            'single_vendor_id'=> null
+        ])->get();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        if ($vendor->multi_vendor == 0) {
+            return view('layouts.frontend.vendor.vendor_list_and_product',[
+                'categories'=>$categories,
+                'ads'=>$ads,
+                'count'=>$count,
+                'count1'=>$count1,
+                'cart'=>$cart,
+                'products'=>$products,
+                'single_vendor'=>$single_vendor
+            ]);
+        }else{
+            return view('layouts.frontend.vendor.multi_vendor_list',[
+                'categories'=>$categories,
+                'ads'=>$ads,
+                'count'=>$count,
+                'count1'=>$count1,
+                'cart'=>$cart,
+                'products'=>$products,
+                'single_vendor'=>$single_vendor
+            ]);
+        }
+        
+    }
+
+    public function product_quick_view($slug)
+    {
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $avatar = VendorProductAvatar::where([
+            'front'=>$slug
+        ])->first();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $products = VendorProduct::all();
+        return view('layouts.frontend.vendor.product_quick_view',[
+            'categories'=>$categories,
+            'ads'=>$ads,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'avatar'=>$avatar,
+            'products'=>$products
+        ]);
+        
+    }
+
+
+    public function show_vendor_products($name)
+    {
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        
+        $single_vendor = SingleVendor::where('brand_name',$name ?? '')->first();
+        $products = VendorProduct::where([
+            'vendor_id'=>$single_vendor->vendor_id,
+            'single_vendor_id'=> $single_vendor->id
+        ])->get();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        
+        return view('layouts.frontend.vendor.multivendor_product',[
+            'categories'=>$categories,
+            'ads'=>$ads,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'products'=>$products
+        ]);
+        
     }
 
     /**

@@ -98,7 +98,7 @@
                                         
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
-                                            <a href="product.html">
+                                            <a href="{{route('product.quick',$avtr->slug)}}">
                                                 <img src="{{ asset('/images/' . $avtr->front) }}"
                                                     class="product-image">
                                             </a>

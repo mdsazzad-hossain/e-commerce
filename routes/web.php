@@ -38,6 +38,8 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');
     Route::get('/product/{brand}', 'HomeController@show_vendor')->name('vendor.list.product');
+    Route::get('/vendor/product/{name}', 'HomeController@show_vendor_products')->name('vendor.all.products');
+    Route::get('/view/{slug}', 'HomeController@product_quick_view')->name('product.quick');
 
 });
 
@@ -142,7 +144,7 @@ Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
 Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
 
 Route::post('/pay', 'SslCommerzPaymentController@index');
-Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax')->name('pay');
 
 Route::post('/success', 'SslCommerzPaymentController@success');
 Route::post('/fail', 'SslCommerzPaymentController@fail');
