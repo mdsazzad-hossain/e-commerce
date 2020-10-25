@@ -95,7 +95,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($slug)
-    {   
+    {
         $data = auth()->user();
         $product = Product::where('product_name',$slug)->with('get_brand')->first();
         $brands = Brand::all();
@@ -117,7 +117,7 @@ class ProductController extends Controller
     {
         $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
-        $price = $cal/100;
+        $price = $request->sale_price-($cal/100);
         $cal1 = $request->e_money*$request->sale_price;
         $price1 = $cal1/100;
         $data->update([
@@ -143,11 +143,11 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    
+
     public function destroy($id)
     {
         Product::find($id)->delete();
-        
+
         toast('Product deleted successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
         return redirect()->back();

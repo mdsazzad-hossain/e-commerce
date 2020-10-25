@@ -143,9 +143,9 @@
                                                                 <div class="menu-col">
                                                                     <div class="row">
                                                                         <div class="col-md-6">
-                                                                            
+
                                                                             @foreach ($cat->get_child_category as $child)
-                                                                                
+
                                                                                 <div class="menu-title">
                                                                                     <a
                                                                                         href="#">{{ $child->child_name }}</a>
@@ -197,7 +197,8 @@
                             <!-- End .category-dropdown -->
                         </div>
                         <!-- End .col-lg-3 -->
-                        <div class="header-center">
+                        <div class="header-center" style="display: block;
+                        position: relative;">
 
                             <div
                                 class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
@@ -207,16 +208,31 @@
 
                                         <!-- End .select-custom -->
                                         <label for="q" class="sr-only">Search</label>
-                                        <input type="search" class="form-control" name="q" id="q"
+                                        <input type="search" onkeyup="search()" class="form-control" name="q" id="q"
                                             placeholder="Search product ..." required="">
                                         <button class="btn btn-primary" type="submit"><i
-                                                class="icon-search"></i></button>
+                                            class="icon-search"></i>
+                                        </button>
                                     </div>
+
                                     <!-- End .header-search-wrapper -->
                                 </form>
                             </div>
+                            <div id="searchData" style="display: none;
+                            position: absolute;
+                            background-color: #ddd;
+                            z-index: 9999;
+                            width: 45%;
+                            padding: 5px;">
+                                <ul>
+                                    <li onclick="selectItem()" id="item" style="color: #000;
+                                    font-size: 15px;
+                                    font-weight: 700;cursor: pointer;">
 
-
+                                    </li>
+                                </ul>
+                            </div>
+                            
 
                             <!-- End .main-nav -->
                         </div>

@@ -25,27 +25,62 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $banars = Banar::select('id','image','image1','image2','image3')->first();
-        $categories = Category::with('get_child_category')->get();
-        $products = Product::with('get_brand','get_product_avatars')->get();
-        $ads = AdManager::all();
-        $vendors = Vendor::all();
-        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        
-        return view('layouts.frontend.home',[
-            'banars'=>$banars,
-            'categories'=>$categories,
-            'products'=>$products,
-            'ads'=>$ads,
-            'vendors'=>$vendors,
-            'count'=>$count,
-            'count1'=>$count1,
-            'cart'=>$cart
-        ]);
+
+            $banars = Banar::select('id','image','image1','image2','image3')->first();
+            $categories = Category::with('get_child_category')->get();
+            $products = Product::with('get_brand','get_product_avatars')->get();
+            $ads = AdManager::all();
+            $vendors = Vendor::all();
+            $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+            $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+            $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+
+            return view('layouts.frontend.home',[
+                'banars'=>$banars,
+                'categories'=>$categories,
+                'products'=>$products,
+                'ads'=>$ads,
+                'vendors'=>$vendors,
+                'count'=>$count,
+                'count1'=>$count1,
+                'cart'=>$cart
+            ]);
+
+
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->q != null) {
+            $search = Product::where('product_name','LIKE','%'.$request->q.'%')->get();
+
+            return response()->json([
+                'search'=>$search
+            ],200);
+        }else{
+            $banars = Banar::select('id','image','image1','image2','image3')->first();
+            $categories = Category::with('get_child_category')->get();
+            $products = Product::with('get_brand','get_product_avatars')->get();
+            $ads = AdManager::all();
+            $vendors = Vendor::all();
+            $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+            $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+            $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+
+            return view('layouts.frontend.home',[
+                'banars'=>$banars,
+                'categories'=>$categories,
+                'products'=>$products,
+                'ads'=>$ads,
+                'vendors'=>$vendors,
+                'count'=>$count,
+                'count1'=>$count1,
+                'cart'=>$cart
+            ]);
+        }
+
     }
 
     /**
@@ -61,7 +96,7 @@ class HomeController extends Controller
         $categories = Category::with('get_child_category')->get();
         $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
         $ads = AdManager::all();
-        
+
         return view('layouts.frontend.category_list',[
             'ads'=>$ads,
             'categories'=>$categories,
@@ -108,7 +143,7 @@ class HomeController extends Controller
                 'single_vendor'=>$single_vendor
             ]);
         }
-        
+
     }
 
     public function product_quick_view($slug)
@@ -131,7 +166,7 @@ class HomeController extends Controller
             'avatar'=>$avatar,
             'products'=>$products
         ]);
-        
+
     }
 
     public function quick_view($slug)
@@ -154,7 +189,7 @@ class HomeController extends Controller
             'avatar'=>$avatar,
             'products'=>$products
         ]);
-        
+
     }
 
 
@@ -164,14 +199,14 @@ class HomeController extends Controller
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        
+
         $single_vendor = SingleVendor::where('brand_name',$name ?? '')->first();
         $products = VendorProduct::where([
             'vendor_id'=>$single_vendor->vendor_id,
             'single_vendor_id'=> $single_vendor->id
         ])->get();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        
+
         return view('layouts.frontend.vendor.multivendor_product',[
             'categories'=>$categories,
             'ads'=>$ads,
@@ -180,7 +215,7 @@ class HomeController extends Controller
             'cart'=>$cart,
             'products'=>$products
         ]);
-        
+
     }
 
     /**

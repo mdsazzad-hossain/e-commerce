@@ -757,9 +757,10 @@
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
+                                    @foreach ($products as $product)
+                                    @if ($product->position == 'upcoming product')
                                     <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                        @foreach ($products as $product)
-                                        @if ($product->position == 'upcoming product')
+
                                         <div class="product">
                                             @foreach ($product->get_product_avatars as $pro_avatar)
                                             <figure class="product-media">
@@ -807,9 +808,10 @@
                                             </div>
                                             <!-- End .product-body -->
                                         </div>
-                                        @endif
-                                        @endforeach
+
                                     </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
@@ -893,9 +895,10 @@
                         <div class="owl-stage-outer">
                             <div class="owl-stage"
                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
+                                @foreach ($products as $product)
+                                @if ($product->position == 'just for you')
                                 <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                    @foreach ($products as $product)
-                                    @if ($product->position == 'just for you')
+
                                     <div class="product">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
@@ -943,9 +946,10 @@
                                         </div>
                                         <!-- End .product-body -->
                                     </div>
-                                    @endif
-                                    @endforeach
+
                                 </div>
+                                @endif
+                                @endforeach
                             </div>
                         </div>
                         <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
@@ -1106,6 +1110,45 @@
 
                     }
                 })
+            }
+
+            function search(){
+                q = $("#q").val();
+                $.ajax({
+                    url: "{{ route('search') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'q': q
+                    },
+                    success:function(response)
+                    {
+                        if(response.search){
+                            if($("#q").val() !=""){
+                                $("#searchData").css('display','block');
+                                response.search.forEach(element => {
+                                    $("#item").css({
+                                        "border-bottom":"1px solid #ddd"
+                                    });
+                                    $("#item").append("<p>"+element.product_name+"</p>");
+                                });
+                            }else if($("#q").val() == ""){
+                                $("#searchData").css('display','none');
+                                $("#item").text("");
+
+                            }
+                        }
+
+
+                        // window.location.reload();
+
+
+                    }
+                });
+            }
+
+            function selectItem(){
+                $("#q").val($("p").text());
             }
         </script>
 
