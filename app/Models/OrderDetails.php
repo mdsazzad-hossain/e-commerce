@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShoppingHistory extends Model
+class OrderDetails extends Model
 {
-    //
+    protected $guarded=[];
 }

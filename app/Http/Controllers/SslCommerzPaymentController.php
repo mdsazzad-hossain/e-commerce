@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
+use App\Models\Cart;
+use App\Models\Orders;
+use App\Models\OrderDetails;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -26,20 +31,21 @@ class SslCommerzPaymentController extends Controller
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data = array();
-        $post_data['total_amount'] = '10'; # You cant not pay less than 10
+        $post_data['total_amount'] = $request->amount; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = uniqid(); // tran_id must be unique
 
         # CUSTOMER INFORMATION
-        $post_data['cus_name'] = 'Customer Name';
-        $post_data['cus_email'] = 'customer@mail.com';
-        $post_data['cus_add1'] = 'Customer Address';
+        $post_data['cus_name'] = $request->customer_name;
+        $post_data['cus_email'] = $request->customer_email;
+        $post_data['cus_add1'] = $request->customer_address;
+        $post_data['trans_cost'] = $request->trans_cost;
         $post_data['cus_add2'] = "";
         $post_data['cus_city'] = "";
         $post_data['cus_state'] = "";
         $post_data['cus_postcode'] = "";
         $post_data['cus_country'] = "Bangladesh";
-        $post_data['cus_phone'] = '8801XXXXXXXXX';
+        $post_data['cus_phone'] = $request->customer_phone;
         $post_data['cus_fax'] = "";
 
         # SHIPMENT INFORMATION
@@ -70,7 +76,8 @@ class SslCommerzPaymentController extends Controller
                 'name' => $post_data['cus_name'],
                 'email' => $post_data['cus_email'],
                 'phone' => $post_data['cus_phone'],
-                'amount' => $post_data['total_amount'],
+                'trans_cost'=>$post_data['trans_cost'],
+                'amount' => $post_data['total_amount']+$post_data['trans_cost'],
                 'status' => 'Pending',
                 'address' => $post_data['cus_add1'],
                 'transaction_id' => $post_data['tran_id'],
@@ -88,80 +95,9 @@ class SslCommerzPaymentController extends Controller
 
     }
 
-    public function payViaAjax(Request $request)
-    {
-
-        # Here you have to receive all the order data to initate the payment.
-        # Lets your oder trnsaction informations are saving in a table called "orders"
-        # In orders table order uniq identity is "transaction_id","status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
-        $requestData = (array) json_decode($request->cart_json);
-        $post_data = array();
-        $post_data['total_amount'] = '10'; # You cant not pay less than 10
-        $post_data['currency'] = "BDT";
-        $post_data['tran_id'] = uniqid(); // tran_id must be unique
-
-        # CUSTOMER INFORMATION
-        $post_data['cus_name'] = $requestData['cus_name'];
-        $post_data['cus_email'] = $requestData['cus_email'];
-        $post_data['cus_add1'] = $requestData['cus_addr1'];
-        $post_data['cus_add2'] = "";
-        $post_data['cus_city'] = "";
-        $post_data['cus_state'] = "";
-        $post_data['cus_postcode'] = "";
-        $post_data['cus_country'] = "Bangladesh";
-        $post_data['cus_phone'] = $requestData['cus_phone'];
-        $post_data['cus_fax'] = "";
-
-        # SHIPMENT INFORMATION
-        $post_data['ship_name'] = "Store Test";
-        $post_data['ship_add1'] = "Dhaka";
-        $post_data['ship_add2'] = "Dhaka";
-        $post_data['ship_city'] = "Dhaka";
-        $post_data['ship_state'] = "Dhaka";
-        $post_data['ship_postcode'] = "1000";
-        $post_data['ship_phone'] = "";
-        $post_data['ship_country'] = "Bangladesh";
-
-        $post_data['shipping_method'] = "NO";
-        $post_data['product_name'] = "Computer";
-        $post_data['product_category'] = "Goods";
-        $post_data['product_profile'] = "physical-goods";
-
-        # OPTIONAL PARAMETERS
-        $post_data['value_a'] = "ref001";
-        $post_data['value_b'] = "ref002";
-        $post_data['value_c'] = "ref003";
-        $post_data['value_d'] = "ref004";
-
-
-        #Before  going to initiate the payment order status need to update as Pending.
-        $update_product = DB::table('orders')
-            ->where('transaction_id', $post_data['tran_id'])
-            ->updateOrInsert([
-                'name' => $post_data['cus_name'],
-                'email' => $post_data['cus_email'],
-                'phone' => $post_data['cus_phone'],
-                'amount' => $post_data['total_amount'],
-                'status' => 'Pending',
-                'address' => $post_data['cus_add1'],
-                'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency']
-            ]);
-
-        $sslc = new SslCommerzNotification();
-        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
-        $payment_options = $sslc->makePayment($post_data, 'checkout', 'json');
-
-        if (!is_array($payment_options)) {
-            print_r($payment_options);
-            $payment_options = array();
-        }
-
-    }
-
     public function success(Request $request)
     {
-        echo "Transaction is Successful";
+        
 
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
@@ -187,8 +123,26 @@ class SslCommerzPaymentController extends Controller
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Processing']);
 
-                // echo "<br >Transaction is successfully Completed";
-                return redirect()->route('home');
+                if($update_product){
+                    $carts = Cart::select('user_id','product_id','vendor_product_id','qty','total')->get();
+                    $id = Orders::latest()->first();
+                    foreach ($carts as $key => $value) {
+                        $data = OrderDetails::create([
+                            'user_id'=>$value->user_id,
+                            'product_id'=>$value->product_id,
+                            'vendor_product_id'=>$value->vendor_product_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total
+                        ]);
+                    }
+                    toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+                    // echo "<br >Transaction is successfully Completed";
+                    return redirect()->route('home');
+                }
+
+                
+                
             } else {
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.

@@ -14,6 +14,7 @@ use App\Models\Vendor;
 use App\Models\SingleVendor;
 use App\Models\VendorProduct;
 use App\Models\VendorProductAvatar;
+use App\Models\ProductAvatar;
 use App\Models\WishList;
 use App\Models\Cart;
 
@@ -122,6 +123,29 @@ class HomeController extends Controller
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $products = VendorProduct::all();
         return view('layouts.frontend.vendor.product_quick_view',[
+            'categories'=>$categories,
+            'ads'=>$ads,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'avatar'=>$avatar,
+            'products'=>$products
+        ]);
+        
+    }
+
+    public function quick_view($slug)
+    {
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $avatar = ProductAvatar::where([
+            'front'=>$slug
+        ])->first();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $products = VendorProduct::all();
+        return view('layouts.frontend.quick_view',[
             'categories'=>$categories,
             'ads'=>$ads,
             'count'=>$count,

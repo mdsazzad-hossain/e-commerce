@@ -202,6 +202,9 @@
     obj.cus_addr1 = $('#address').val();
     obj.amount = $('#total_amount').val();
 
+    $("#customer_name").change(function(){
+        obj.cus_name = $('#customer_name').val();
+    });
     $('#sslczPayBtn').prop('postdata', obj);
 
     (function (window, document) {

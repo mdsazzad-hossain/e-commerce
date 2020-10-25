@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShoppingHistoriesTable extends Migration
+class CreateOrderDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateShoppingHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shopping_histories', function (Blueprint $table) {
+        Schema::create('order_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->nullable()->constrained('order_details');
             $table->foreignId('product_id')->nullable()->constrained('products');
             $table->foreignId('vendor_product_id')->nullable()->constrained('vendor_products');
             $table->foreignId('user_id')->nullable()->constrained('users');
@@ -25,7 +26,6 @@ class CreateShoppingHistoriesTable extends Migration
         });
     }
 
-
     /**
      * Reverse the migrations.
      *
@@ -33,6 +33,6 @@ class CreateShoppingHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shopping_histories');
+        Schema::dropIfExists('order_details');
     }
 }

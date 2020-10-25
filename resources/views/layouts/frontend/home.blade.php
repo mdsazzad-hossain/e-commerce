@@ -279,7 +279,7 @@
                                     <div class="product">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
-                                            <a href="product.html">
+                                            <a href="{{route('quick',$pro_avatar->slug)}}">
                                                 <img src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>
@@ -764,7 +764,7 @@
                                             @foreach ($product->get_product_avatars as $pro_avatar)
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
-                                                <a href="product.html">
+                                                <a href="{{route('quick',$pro_avatar->slug)}}">
                                                     <img src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                         alt="Product image" class="product-image">
                                                 </a>
@@ -900,7 +900,7 @@
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
-                                            <a href="product.html">
+                                            <a href="{{route('quick',$pro_avatar->slug)}}">
                                                 <img src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>

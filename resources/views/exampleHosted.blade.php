@@ -76,18 +76,8 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="firstName">Full name</label>
-                        <input type="text" name="name" class="form-control" id="customer_name" placeholder=""
+                        <input type="text" name="customer_name" class="form-control" id="customer_name" placeholder=""
                                value="John Doe" required>
-                        <div class="invalid-feedback">
-                            Valid customer name is required.
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label for="firstName">Amount</label>
-                        <input type="text" name="amount" class="form-control" id="amount" placeholder=""
-                               value="" required>
                         <div class="invalid-feedback">
                             Valid customer name is required.
                         </div>
@@ -100,7 +90,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">+88</span>
                         </div>
-                        <input type="text" name="customer_mobile" class="form-control" id="mobile" placeholder="Mobile"
+                        <input type="text" name="customer_phone" class="form-control" id="mobile" placeholder="Mobile"
                                value="01711xxxxxx" required>
                         <div class="invalid-feedback" style="width: 100%;">
                             Your Mobile number is required.
@@ -119,7 +109,7 @@
 
                 <div class="mb-3">
                     <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St"
+                    <input type="text" name="customer_address" class="form-control" id="address" placeholder="1234 Main St"
                            value="93 B, New Eskaton Road" required>
                     <div class="invalid-feedback">
                         Please enter your shipping address.
@@ -172,7 +162,7 @@
                     <label class="custom-control-label" for="save-info">Save this information for next time</label>
                 </div>
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout (Hosted)</button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
             </form>
         </div>
     </div>

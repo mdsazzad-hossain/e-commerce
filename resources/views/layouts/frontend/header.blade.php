@@ -35,6 +35,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/skins/skin-demo-13.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demos/demo-13.css') }}">
+
+    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
+
 </head>
 
 <body>
@@ -139,7 +143,9 @@
                                                                 <div class="menu-col">
                                                                     <div class="row">
                                                                         <div class="col-md-6">
+                                                                            
                                                                             @foreach ($cat->get_child_category as $child)
+                                                                                
                                                                                 <div class="menu-title">
                                                                                     <a
                                                                                         href="#">{{ $child->child_name }}</a>

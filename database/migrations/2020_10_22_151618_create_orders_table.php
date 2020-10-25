@@ -15,11 +15,11 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shopping_history_id')->nullable()->constrained('shopping_histories');
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->string('amount');
+            $table->string('trans_cost',8,2)->default(0.00);
+            $table->decimal('amount',10,2);
             $table->string('address');
             $table->string('delivery_status')->nullable();
             $table->string('status');
