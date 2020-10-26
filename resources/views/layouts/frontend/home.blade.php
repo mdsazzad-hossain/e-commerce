@@ -26,7 +26,6 @@
 
 
                 <!-- End .intro-slide -->
-
                 <div class="owl-stage-outer">
                     <div class="owl-stage"
                         style="transform: translate3d(-2698px, 0px, 0px); transition: all 0s ease 0s; width: 10792px;">

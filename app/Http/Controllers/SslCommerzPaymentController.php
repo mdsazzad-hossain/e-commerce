@@ -40,6 +40,7 @@ class SslCommerzPaymentController extends Controller
         $post_data['cus_email'] = $request->customer_email;
         $post_data['cus_add1'] = $request->customer_address;
         $post_data['trans_cost'] = $request->trans_cost;
+        $post_data['user_id'] = auth()->user()->id;
         $post_data['cus_add2'] = "";
         $post_data['cus_city'] = "";
         $post_data['cus_state'] = "";
@@ -73,6 +74,7 @@ class SslCommerzPaymentController extends Controller
         $update_product = DB::table('orders')
             ->where('transaction_id', $post_data['tran_id'])
             ->updateOrInsert([
+                'user_id' => $post_data['user_id'],
                 'name' => $post_data['cus_name'],
                 'email' => $post_data['cus_email'],
                 'phone' => $post_data['cus_phone'],
@@ -124,24 +126,47 @@ class SslCommerzPaymentController extends Controller
                     ->update(['status' => 'Processing']);
 
                 if($update_product){
-                    $carts = Cart::select('user_id','product_id','vendor_product_id','qty','total')->get();
-                    $id = Orders::latest()->first();
+                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
+                    $id = Orders::orderBy('id','DESC')->first();
+                    
                     foreach ($carts as $key => $value) {
+                       if($value->vendor_product_id == null && $value->product_id != null){
                         $data = OrderDetails::create([
-                            'user_id'=>$value->user_id,
+                            'order_id'=>$id->id,
+                            'product_id'=>$value->product_id,
+                            'user_id'=>$id->user_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total
+                        ]);
+                        
+                        
+                       }elseif($value->product_id == null && $value->vendor_product_id != null){
+                        $data = OrderDetails::create([
+                            'order_id'=>$id->id,
+                            'user_id'=>$id->user_id,
+                            'vendor_product_id'=>$value->vendor_product_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total
+                        ]);
+                       }else{
+                        $data = OrderDetails::create([
+                            'order_id'=>$id->id,
+                            'user_id'=>$id->user_id,
                             'product_id'=>$value->product_id,
                             'vendor_product_id'=>$value->vendor_product_id,
                             'qty'=>$value->qty,
                             'total'=>$value->total
                         ]);
+                       }
                     }
+                    Cart::where('user_id',$data->user_id)->delete();
                     toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
                     // echo "<br >Transaction is successfully Completed";
                     return redirect()->route('home');
+                    
                 }
 
-                
                 
             } else {
                 /*
@@ -151,7 +176,7 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Failed']);
-                echo "validation Fail";
+                    return redirect()->route('cart');
             }
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
             /*

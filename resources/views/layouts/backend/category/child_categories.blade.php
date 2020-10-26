@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <a href="{{ route('sub.child.category') }}" class="btn btn-primary" >Sub Sub-Category</a>
+          <a href="{{ route('sub.child.category') }}" class="btn btn-primary" >Child Child-Category</a>
 
           </div>
           <div class="col-sm-6">
@@ -28,7 +28,7 @@
                 ">
                 <div class="card-header" style="background-color: #007bff;
                 color: #fff;">
-                  <h3 class="card-title">Add New Category</h3>
+                  <h3 class="card-title">Add New Child-Category</h3>
                   <button
                     type="button"
                     class="close"
@@ -46,8 +46,9 @@
                           >Select Category</label
                         >
                         <select class="form-control" name="category_id" id="category_id">
+                            <option value="" selected="selected" hidden>select category</option>
                             @foreach ($cats as $cat)
-                            <option selected="selected" value="{{ $cat->id }}">
+                            <option value="{{ $cat->id }}">
                                 {{ $cat->cat_name }}
                             </option>
                             @endforeach
@@ -55,7 +56,7 @@
                     </div>
                     <div class="form-group">
                       <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Sub Category Name</label
+                          >Child Category Name</label
                         >
                       <input
                         id="child_name"
@@ -85,7 +86,7 @@
                 background-color: #28a745;
                 border-color: #28a745;
                 box-shadow: none;">
-                  <h3 class="card-title">Update Category</h3>
+                  <h3 class="card-title">Update Child-Category</h3>
                   <a
                     href="#"
                     onclick="closeForm()"
@@ -112,7 +113,7 @@
                     </div>
                     <div class="form-group">
                       <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Sub Category Name</label
+                          >Child Category Name</label
                         >
                       <input
                         required
@@ -135,7 +136,7 @@
             </div>
             <div class="card col-7" style="margin-left: 70px;">
                 <div class="card-header">
-                <h3 class="card-title">All Sub Categories is here</h3>
+                <h3 class="card-title">All Child Categories is here</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -146,7 +147,7 @@
                             Category
                         </th>
                         <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Sub-Category
+                            Child-Category
                         </th>
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
                             Status
@@ -163,9 +164,9 @@
                                 <td class="sorting_1">{{ $child->child_name }}</td>
                                 <td>
                                     @if($child->status == 0)
-                                    <button class="badge badge-warning">Inactive</button>
+                                    <p class="badge badge-warning">Inactive</p>
                                     @else
-                                    <button class="badge badge-success">Active</button>
+                                    <p class="badge badge-success">Active</p>
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">
@@ -185,7 +186,7 @@
                     <tfoot>
                     <tr>
                         <th rowspan="1" colspan="1">Category Name</th>
-                        <th rowspan="1" colspan="1">Sub Category Name</th>
+                        <th rowspan="1" colspan="1">Child Category Name</th>
                         <th rowspan="1" colspan="1">Status</th>
                         <th rowspan="1" colspan="1">Action</th>
                     </tr>

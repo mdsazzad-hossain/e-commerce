@@ -72,8 +72,8 @@
                             <h4 class="mb-3">Billing address</h4>
                             <form action="{{ url('/pay') }}" method="POST" class="needs-validation">
                                 <input type="hidden" value="{{ csrf_token() }}" name="_token" />
-                                <input id="amount" type="number" hidden name="amount" value="{{$total}}" style="border: none;text-align: end;">
-                                <input id="trans_cost" hidden type="number" name="trans_cost" style="border: none;text-align: end;">
+                                <input id="amount" type="hidden" name="amount" value="{{$total}}" style="border: none;text-align: end;">
+                                <input id="trans_cost" type="hidden" name="trans_cost" style="border: none;text-align: end;">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <label for="firstName">Full name</label>

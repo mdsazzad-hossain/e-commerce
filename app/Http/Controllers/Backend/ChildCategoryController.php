@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class ChildCategoryController extends Controller
 {
@@ -45,14 +46,32 @@ class ChildCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'category_id' => 'required|string',
-            'child_name' => 'required|string',
+        $validator = Validator::make($request->all(), [
+            'child_name' => 'required|unique:"child_categories"',
+            'category_id' => 'required|string'
         ]);
+        
+        if ($validator->fails()) {
+            if($validator->messages()->all()[0] =="The child name has already been taken."){
+                Alert::warning('Warning','Opps!The child name has already been taken.');
+                return redirect()->back();
+            }elseif($validator->messages()->all()[0] =="The child name field is required."){
+                Alert::warning('Warning','Opps!The child name field is required.');
+                return redirect()->back();
+            }elseif($validator->messages()->all()[0] =="The category id field is required."){
+                Alert::warning('Warning','Opps!The category field is required.');
+                return redirect()->back();
+            }elseif($validator->messages()->all()[0] =="The child name field is required." && $validator->messages()->all()[1] =="The category id field is required."){
+                Alert::warning('Warning','Opps!please fillup all field.');
+                return redirect()->back();
+            }
+        }else{
+            ChildCategory::create($request->all());
+            toast('Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->back();
+        }
 
-        ChildCategory::create($request->all());
-        toast('Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        return redirect()->back();
+        
     }
 
     /**
@@ -108,7 +127,7 @@ class ChildCategoryController extends Controller
      */
     public function destroy($id)
     {
-        Alert::warning('Opps',"you cant'n delete sub-category!");
+        Alert::warning('Opps',"you cant'n delete child-category!");
         return redirect()->back();
     }
 }

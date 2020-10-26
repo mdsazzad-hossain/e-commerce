@@ -23,8 +23,6 @@ class UserRole
                 return $next($request);
             }elseif (auth()->user()->role == 'vendor') {
                 return $next($request);
-            }elseif (auth()->user()->role == 'sub_vendor') {
-                return $next($request);
             }else{
                 return redirect()->back();
 

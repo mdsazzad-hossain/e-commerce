@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\SubChildCategory;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
 
 class SubChildCategoryController extends Controller
 {
@@ -46,19 +47,45 @@ class SubChildCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $catId = ChildCategory::where('id',$request->child_category_id)->get();
-        foreach ($catId as $key => $value) {
-            $id = $value->category_id;
+        $validator = Validator::make($request->all(), [
+            'child_category_id'=>'required',
+            'sub_child_name'=>'required|unique:"sub_child_categories"'
+
+        ]);
+        
+        if ($validator->fails()) {
+
+            if($validator->messages()->all()[0] =="The child category id field is required."){
+                Alert::warning('Warning','Opps!The child name field is required.');
+                return redirect()->back();
+            }elseif($validator->messages()->all()[0] =="The sub child name field is required."){
+                Alert::warning('Warning','Opps!The child child name field is required.');
+                return redirect()->back();
+            }elseif($validator->messages()->all()[0] =="The sub child name has already been taken."){
+                Alert::warning('Warning','Opps!The child child name has already been taken.');
+                return redirect()->back();
+            }else{
+                Alert::warning('Warning','Opps!Plese fillup all field.');
+                return redirect()->back();
+            }
+            
+        }else{
+            $catId = ChildCategory::where('id',$request->child_category_id)->get();
+            foreach ($catId as $key => $value) {
+                $id = $value->category_id;
+            }
+
+            SubChildCategory::create([
+                'category_id'=>$id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_name'=>$request->sub_child_name
+            ]);
+
+            toast('Sub Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+            return redirect()->back();
         }
 
-        SubChildCategory::create([
-            'category_id'=>$id,
-            'child_category_id'=>$request->child_category_id,
-            'sub_child_name'=>$request->sub_child_name
-        ]);
-
-        toast('Sub Sub-Category create successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        return redirect()->back();
+        
     }
 
     /**
@@ -115,7 +142,7 @@ class SubChildCategoryController extends Controller
      */
     public function destroy($id)
     {
-        Alert::warning('Opps',"you cant'n delete sub sub-category!");
+        Alert::warning('Opps',"you cant'n delete child child-category!");
         return redirect()->back();
     }
 }

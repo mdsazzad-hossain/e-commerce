@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banar;
 use App\Models\Category;
+use App\Models\Orders;
+use App\Models\OrderDetails;
 use App\Models\ChildCategory;
 use App\Models\SubChildCategory;
 use App\Models\Product;
@@ -36,7 +38,7 @@ class HomeController extends Controller
             $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
             $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
             $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-
+            $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
             return view('layouts.frontend.home',[
                 'banars'=>$banars,
                 'categories'=>$categories,
@@ -45,7 +47,8 @@ class HomeController extends Controller
                 'vendors'=>$vendors,
                 'count'=>$count,
                 'count1'=>$count1,
-                'cart'=>$cart
+                'cart'=>$cart,
+                'orders'=>$orders
             ]);
 
 

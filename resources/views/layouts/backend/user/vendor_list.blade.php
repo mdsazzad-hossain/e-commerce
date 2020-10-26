@@ -125,6 +125,7 @@
               <thead>
                 <tr role="row">
                     <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">Name</th>
+                    <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">Designation</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 219px;">Address</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">Email</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 139px;">Phone</th>
@@ -133,9 +134,12 @@
               </thead>
               <tbody>
                 @foreach ($users as $user)
-                @if($user->role == 'Vendor')
+                @if($user->role == 'vendor')
                 <tr role="row" class="odd">
                   <td class="sorting_1">{{$user->name}}</td>
+                  <td class="sorting_1">
+                    <p class="badge badge-success">{{$user->role}}</p>
+                  </td>
                   <td>{{$user->address}}</td>
                   <td>{{$user->email}}</td>
                   <td>{{$user->phn}}</td>
@@ -154,6 +158,7 @@
               <tfoot>
                 <tr>
                     <th rowspan="1" colspan="1">Name</th>
+                    <th rowspan="1" colspan="1">Designation</th>
                     <th rowspan="1" colspan="1">Address</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">Phone</th>

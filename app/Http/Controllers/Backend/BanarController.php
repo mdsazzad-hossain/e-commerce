@@ -47,35 +47,6 @@ class BanarController extends Controller
             return response()->json([
                 'errors'=> $validator->messages()->all()
             ]);
-        }elseif($request->file('image') != null && $request->file('image1') == null &&
-        $request->file('image2') == null && $request->file('image3') == null)
-        {
-            $image = $request->file('image');
-            $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('image'))->fit(1349,375);
-            $upload_path = public_path()."/images/";
-
-            if($new_name){
-                $data = Banar::create([
-                    'image'=>$new_name,
-                    'image1'=>'',
-                    'image2'=>'',
-                    'image3'=>'',
-                    'slug'=>$new_name
-                ]);
-                if($data){
-                    $img->save($upload_path.$new_name);
-
-                    toast('Banar upload successfully','success')
-                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-                    return response()->json([
-                        'message'=>'success'
-                    ],200);
-                }
-            }else{
-
-
-            }
         }elseif($request->file('image') != null && $request->file('image1') != null &&
         $request->file('image2') != null && $request->file('image3') != null)
         {
@@ -190,8 +161,36 @@ class BanarController extends Controller
                     ],200);
                 }
             }
-        }
-        else{
+        }elseif($request->file('image') != null && $request->file('image1') == null &&
+        $request->file('image2') == null && $request->file('image3') == null)
+        {
+            $image = $request->file('image');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('image'))->fit(1349,375);
+            $upload_path = public_path()."/images/";
+
+            if($new_name){
+                $data = Banar::create([
+                    'image'=>$new_name,
+                    'image1'=>'',
+                    'image2'=>'',
+                    'image3'=>'',
+                    'slug'=>$new_name
+                ]);
+                if($data){
+                    $img->save($upload_path.$new_name);
+
+                    toast('Banar upload successfully','success')
+                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
+                }
+            }else{
+
+
+            }
+        }else{
             Alert::error('Opps...','Data entry wrong.');
             return response()->json([
                 'message'=>'success'

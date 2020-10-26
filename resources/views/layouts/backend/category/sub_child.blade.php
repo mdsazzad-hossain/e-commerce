@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-          <a href="#" class="btn btn-primary" >Sub Sub-Category</a>
+          {{-- <a href="#" class="btn btn-primary" >Sub Sub-Category</a> --}}
 
           </div>
           <div class="col-sm-6">
@@ -28,7 +28,7 @@
                 ">
                 <div class="card-header" style="background-color: #007bff;
                 color: #fff;">
-                  <h3 class="card-title">Add New Sub Sub-Category</h3>
+                  <h3 class="card-title">Add New Child Child-Category</h3>
                   <button
                     type="button"
                     class="close"
@@ -43,11 +43,12 @@
                   <div class="card-body">
                     <div class="form-group">
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Select SubCategory</label
+                          >Select ChildCategory</label
                         >
                         <select class="form-control" name="child_category_id" id="child_category_id">
+                            <option value="" selected="selected" hidden>select child category</option>
                             @foreach ($childs as $sub_cat)
-                            <option selected="selected" value="{{ $sub_cat->id }}">
+                            <option value="{{ $sub_cat->id }}">
                                 {{ $sub_cat->child_name }}
                             </option>
                             @endforeach
@@ -56,7 +57,7 @@
 
                     <div class="form-group">
                       <label class="mr-sm-2" for="inlineFormCustomSelect"
-                          >Sub SubCategory Name</label
+                          >Child ChildCategory Name</label
                         >
                       <input
                         id="sub_child_name"
@@ -86,7 +87,7 @@
                 background-color: #28a745;
                 border-color: #28a745;
                 box-shadow: none;">
-                  <h3 class="card-title">Update Sub SubCategory</h3>
+                  <h3 class="card-title">Update Child Child-Category</h3>
                   <a
                     href="#"
                     onclick="closeForm()"
@@ -169,10 +170,10 @@
                                 <td class="sorting_1">{{ $item->get_child_category->child_name }}</td>
                                 <td class="sorting_1">{{ $item->sub_child_name }}</td>
                                 <td>
-                                    @if($item->status == 1)
-                                    <button class="badge badge-warning">Inactive</button>
+                                    @if($item->status == 0)
+                                    <p class="badge badge-warning">Inactive</p>
                                     @else
-                                    <button class="badge badge-success">Active</button>
+                                    <p class="badge badge-success">Active</p>
                                     @endif
                                 </td>
                                 <td style="display: inline-flex;">

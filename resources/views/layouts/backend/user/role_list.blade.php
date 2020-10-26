@@ -63,9 +63,9 @@
                           name="role"
                           class="custom-select mr-sm-2"
                         >
-                          <option value="Super Admin" selected="selected">Super Admin</option>
-                          <option value="Admin">Admin</option>
-                          <option value="Vendor">Vendor</option>
+                          <option value="super_admin" selected="selected">super_admin</option>
+                          <option value="admin">admin</option>
+                          <option value="vendor">vendor</option>
                         </select>
                       </div>
                     </div>
@@ -129,7 +129,6 @@
                           <option value="super_admin">super_admin</option>
                           <option value="admin">admin</option>
                           <option value="vendor">vendor</option>
-                          <option value="sub_vendor">sub_vendor</option>
                         </select>
                       </div>
                     </div>
@@ -164,19 +163,19 @@
                     <tr role="row" class="odd">
                       <td class="sorting_1">{{$user->name}}</td>
                       <td>
-                        @if($user->role == 'Super Admin')
+                        @if($user->role == 'super_admin')
                       <p class="badge badge-success">{{$user->role}}</p>
-                        @elseif($user->role == 'Admin')
+                        @elseif($user->role == 'admin')
                         <p class="badge badge-warning">{{$user->role}}</p>
-                        @elseif($user->role == 'Vendor')
+                        @elseif($user->role == 'vendor')
                         <p class="badge badge-danger">{{$user->role}}</p>
                         @endif
                       </td>
                       <td>
                         @if($user->status == 0)
-                        <button class="badge badge-warning">Inactive</button>
+                        <p class="badge badge-warning">Inactive</p>
                         @else
-                        <button class="badge badge-success">Active</button>
+                        <p class="badge badge-success">Active</p>
                         @endif
                       </td>
                       <td style="display: inline-flex;">

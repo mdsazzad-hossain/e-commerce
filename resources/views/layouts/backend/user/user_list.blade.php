@@ -144,7 +144,9 @@
                                             @foreach ($users as $user)
                                                 <tr role="row" class="odd">
                                                     <td class="sorting_1">{{ $user->name }}</td>
-                                                    <td class="sorting_1">{{ $user->role }}</td>
+                                                    <td class="sorting_1">
+                                                        <p class="badge badge-success">{{ $user->role }}</p>
+                                                    </td>
                                                     <td>{{ $user->address }}</td>
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ $user->phn }}</td>
