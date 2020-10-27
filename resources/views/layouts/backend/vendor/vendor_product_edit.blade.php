@@ -125,16 +125,45 @@
                                     </div>
                                 </div>
                                 <div class="form-group row col-12">
-                                    <div class="form-group col-4">
+                                    <div class="form-group col-2">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Discount Price</label>
                                         <input value="{{ $product->discount }}" id="discount" step="any" name="discount"
                                             type="number" class="form-control" placeholder="product discount" />
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Admin Commission</label>
+                                    <div class="form-group col-2">
+                                        <label style="font-size: 13px !important; class="mr-sm-2" for="inlineFormCustomSelect">Admin Commission</label>
                                         <input value="{{ $product->admin_percent }}" id="admin_percent" name="admin_percent"
                                             type="number" step="any" class="form-control"
                                             placeholder="product admin commission" />
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                        >Shipping Destinination</label
+                                        >
+                                        <select class="form-control" name="deli_destinination" id="deli_destinination">
+                                            @if($product->position == null)
+                                            <option value="" selected="selected" hidden>select destinination</option>
+                                            @else
+                                            <option value="{{$product->deli_destinination}}" selected="selected" hidden>{{$product->deli_destinination}}</option>
+                                            @endif
+                                            <option value="outdoor dhaka">outdoor dhaka</option>
+                                            <option value="indoor dhaka">indoor dhaka</option>
+                                            <option value="indoor dhaka">free shipping</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                            >Charge</label
+                                            >
+                                        <input
+                                            value="{{$product->deli_charge}}"
+                                            id="deli_charge"
+                                            name="deli_charge"
+                                            type="number"
+                                            step="any"
+                                            class="form-control"
+                                            placeholder="shipping charge"
+                                        />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Select Position</label>

@@ -28,29 +28,75 @@
                             <span class="badge badge-secondary badge-pill">{{$count1}}</span>
                             </h4>
                             <ul class="list-group mb-3" style="margin-top: 58px;">
+                                @php
+                                    $cost = 0;
+                                    $e_money = 0;
+                                @endphp
                                 @foreach ($cart as $crt)
-                                
+                                @if ($crt->get_product)
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <h6 class="my-0">{{$crt->get_product->product_name}}</h6>
                                         <small class="text-muted">{{$crt->get_product->color}}/{{$crt->get_product->size}}</small>
                                     </div>
-                                    <span class="text-muted">{{$crt->total}}</span>
+                                    <div>
+                                        <h6 class="my-0">= {{$crt->total}} TK</h6>
+                                        @if ($crt->get_product->deli_destinination == "free shipping")
+                                            <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
+                                            @else
+                                            <small class="text-muted">Ship.Co.= {{$crt->get_product->deli_charge}} TK</small>
+                                        @endif
+                                        
+                                    </div>
                                 </li>
-                                
+                                @php
+                                    $cost += $crt->get_product->deli_charge;
+                                    $e_money += $crt->get_product->e_money;
+                                @endphp
+                                @endif
+                                @if ($crt->get_vendor_product)
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">{{$crt->get_vendor_product->product_name}}</h6>
+                                        <small class="text-muted">{{$crt->get_vendor_product->color}}/{{$crt->get_vendor_product->size}}</small>
+                                    </div>
+                                    <div>
+                                        <h6 class="my-0">= {{$crt->total}} TK</h6>
+                                        @if ($crt->get_vendor_product->deli_destinination == "free shipping")
+                                            <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
+                                            @else
+                                            <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                        @endif
+                                        
+                                    </div>
+                                </li>
+                                @php
+                                    $cost += $crt->get_vendor_product->deli_charge
+                                @endphp
+                                @endif
                                 @endforeach
+                                
+
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <h6 class="my-0">Shipping Cost</h6>
                                     </div>
-                                    <span class="text-muted">
-                                        <input type="text" style="width: 40%;
-                                        text-align: end;
-                                        float: right;" id="cost" onkeyup="getCost()" name="trans_cost" placeholder="00">
-                                    </span>
+                                    
+                                    <strong>
+                                        = {{$cost}} TK
+                                    </strong>
                                 </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>Total (BDT)</span>
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">Total E-Money</h6>
+                                    </div>
+                                    <strong>= {{$e_money}} TK</strong>
+
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">Total (BDT)</h6>
+                                    </div>
                                     @php
                                         $total = 0;
                                     @endphp
@@ -58,9 +104,13 @@
                                         <input hidden type="text" readonly value="{{$val->total}}" style="border: none;text-align: end;">
                                         @php
                                             $total += $val->total;
+                                            
                                         @endphp
 
                                     @endforeach
+                                    @php
+                                        $total += $cost;
+                                    @endphp
                                     <strong>= {{$total}} TK</strong>
 
 
@@ -73,7 +123,7 @@
                             <form action="{{ url('/pay') }}" method="POST" class="needs-validation">
                                 <input type="hidden" value="{{ csrf_token() }}" name="_token" />
                                 <input id="amount" type="hidden" name="amount" value="{{$total}}" style="border: none;text-align: end;">
-                                <input id="trans_cost" type="hidden" name="trans_cost" style="border: none;text-align: end;">
+                                <input id="total_emoney" type="hidden" name="total_emoney" value="{{$e_money}}" style="border: none;text-align: end;">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <label for="firstName">Full name</label>

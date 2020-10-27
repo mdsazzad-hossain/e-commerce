@@ -71,7 +71,7 @@ class HomeController extends Controller
             $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
             $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
             $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-
+            
             return view('layouts.frontend.home',[
                 'banars'=>$banars,
                 'categories'=>$categories,
@@ -99,6 +99,7 @@ class HomeController extends Controller
         $categories = Category::with('get_child_category')->get();
         $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
         $ads = AdManager::all();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
 
         return view('layouts.frontend.category_list',[
             'ads'=>$ads,
@@ -106,7 +107,8 @@ class HomeController extends Controller
             'all_cat'=>$all_cat,
             'count'=>$count,
             'count1'=>$count1,
-            'cart'=>$cart
+            'cart'=>$cart,
+            'orders'=>$orders
         ]);
     }
 
@@ -117,12 +119,14 @@ class HomeController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $vendor = Vendor::where('brand_name',$brand ?? '')->first();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+
         $single_vendor = SingleVendor::with('get_vendor')->where([
             'vendor_id'=>$vendor->id,
         ])->get();
         $products = VendorProduct::with('get_vendor')->where([
-            'vendor_id'=>$vendor->id,
-            'single_vendor_id'=> null
+            'vendor_id'=>null,
+            'single_vendor_id'=> $vendor->id
         ])->get();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         if ($vendor->multi_vendor == 0) {
@@ -133,7 +137,8 @@ class HomeController extends Controller
                 'count1'=>$count1,
                 'cart'=>$cart,
                 'products'=>$products,
-                'single_vendor'=>$single_vendor
+                'single_vendor'=>$single_vendor,
+                'orders'=>$orders
             ]);
         }else{
             return view('layouts.frontend.vendor.multi_vendor_list',[
@@ -143,7 +148,8 @@ class HomeController extends Controller
                 'count1'=>$count1,
                 'cart'=>$cart,
                 'products'=>$products,
-                'single_vendor'=>$single_vendor
+                'single_vendor'=>$single_vendor,
+                'orders'=>$orders
             ]);
         }
 
@@ -155,6 +161,7 @@ class HomeController extends Controller
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         $avatar = VendorProductAvatar::where([
             'front'=>$slug
         ])->first();
@@ -167,7 +174,8 @@ class HomeController extends Controller
             'count1'=>$count1,
             'cart'=>$cart,
             'avatar'=>$avatar,
-            'products'=>$products
+            'products'=>$products,
+            'orders'=>$orders
         ]);
 
     }
@@ -178,6 +186,7 @@ class HomeController extends Controller
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         $avatar = ProductAvatar::where([
             'front'=>$slug
         ])->first();
@@ -190,7 +199,8 @@ class HomeController extends Controller
             'count1'=>$count1,
             'cart'=>$cart,
             'avatar'=>$avatar,
-            'products'=>$products
+            'products'=>$products,
+            'orders'=>$orders
         ]);
 
     }
@@ -202,7 +212,8 @@ class HomeController extends Controller
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        
         $single_vendor = SingleVendor::where('brand_name',$name ?? '')->first();
         $products = VendorProduct::where([
             'vendor_id'=>$single_vendor->vendor_id,
@@ -216,7 +227,8 @@ class HomeController extends Controller
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart,
-            'products'=>$products
+            'products'=>$products,
+            'orders'=>$orders
         ]);
 
     }

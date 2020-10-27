@@ -116,6 +116,23 @@
             })
 
         }
+
+        function itemDelete(id){
+            $.ajax({
+                url: "{{ route('cart.item.delete') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id
+                },
+                success:function(response)
+                {
+                    window.location.reload();
+
+
+                }
+            })
+        }
     </script>
 
 @endsection

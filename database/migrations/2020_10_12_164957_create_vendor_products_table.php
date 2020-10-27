@@ -29,6 +29,8 @@ class CreateVendorProductsTable extends Migration
             $table->decimal('discount',8,2)->default(0.00);
             $table->decimal('admin_percent',8,2)->default(0.00);
             $table->string('position')->nullable();
+            $table->string('deli_destinination')->default('free shipping');
+            $table->decimal('deli_charge',8,2)->default('0');
             $table->text('description')->nullable();
             $table->decimal('total_price',8,2)->default(0.00);
             $table->boolean('status')->default(1);

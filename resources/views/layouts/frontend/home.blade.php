@@ -167,6 +167,34 @@
 
 
         <div class="mb-3"></div>
+        <!-- Vendor started from here -->
+        <div class="container">
+            <div class="heading-border bg-light">
+                <h2 class="text-center title" style="padding-top: 10px;">Vendor</h2>
+            </div>
+            <div class="cat-blocks-container">
+                <div class="row">
+                    @foreach ($vendors as $vendor)
+                    @if ($vendor->status == 1)
+                    <div class="col-6 col-sm-4 col-lg-2">
+                        <a href="{{route('vendor.list.product',$vendor->brand_name)}}" class="cat-block">
+                            <figure>
+                                <span>
+                                    <img src="{{ asset('/images/' . $vendor->logo) }}">
+                                </span>
+                            </figure>
+                        </a>
+                    </div>
+                    @endif
+                    @endforeach
+                    <!-- End .col-sm-4 col-lg-2 -->
+                </div>
+                <!-- End .row -->
+            </div>
+            <!-- End .cat-blocks-container -->
+        </div>
+        <!-- End .container -->
+        <div class="mb-2"></div>
         <!-- End .mb-3 -->
         <div class="bg-light">
             <div class="container">
@@ -450,33 +478,7 @@
 
         <!-- <div class="mb-4"></div> -->
 
-        <!-- Vendor started from here -->
-        <div class="container">
-            <div class="heading-border bg-light">
-                <h2 class="text-center title" style="padding-top: 10px;">Vendor</h2>
-            </div>
-            <div class="cat-blocks-container">
-                <div class="row">
-                    @foreach ($vendors as $vendor)
-                    @if ($vendor->status == 1)
-                    <div class="col-6 col-sm-4 col-lg-2">
-                        <a href="{{route('vendor.list.product',$vendor->brand_name)}}" class="cat-block">
-                            <figure>
-                                <span>
-                                    <img src="{{ asset('/images/' . $vendor->logo) }}">
-                                </span>
-                            </figure>
-                        </a>
-                    </div>
-                    @endif
-                    @endforeach
-                    <!-- End .col-sm-4 col-lg-2 -->
-                </div>
-                <!-- End .row -->
-            </div>
-            <!-- End .cat-blocks-container -->
-        </div>
-        <!-- End .container -->
+        
 
         <div class="mb-2"></div>
         <div class="bg-light">
@@ -1051,13 +1053,15 @@
             function addToCart(product){
             id = product.id;
             slug = product.slug;
+            sale_price = product.sale_price;
             $.ajax({
                 url: "{{ route('cart.store') }}",
                 type: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
                     'slug': slug,
-                    'id':id
+                    'id':id,
+                    'sale_price':sale_price
                 },
                 success:function(response)
                 {

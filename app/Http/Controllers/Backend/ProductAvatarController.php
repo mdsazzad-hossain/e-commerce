@@ -59,7 +59,7 @@ class ProductAvatarController extends Controller
         {
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('front'))->fit(203,203);
+            $img = Image::make($request->file('front'));
             $upload_path = public_path()."/images/";
 
             if($new_name){
@@ -89,22 +89,22 @@ class ProductAvatarController extends Controller
         {
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('front'))->fit(203,203);
+            $img = Image::make($request->file('front'));
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('back');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $img2 = Image::make($request->file('back'));
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('left');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('left'))->fit(203,203);
+            $img3 = Image::make($request->file('left'));
             $upload_path3 = public_path()."/images/";
 
             $image4 = $request->file('right');
             $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
-            $img4 = Image::make($request->file('right'))->fit(203,203);
+            $img4 = Image::make($request->file('right'));
             $upload_path4 = public_path()."/images/";
 
             if($new_name && $new_name2 && $new_name3 && $new_name4){
@@ -134,17 +134,17 @@ class ProductAvatarController extends Controller
         {
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('front'))->fit(203,203);
+            $img = Image::make($request->file('front'));
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('back');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $img2 = Image::make($request->file('back'));
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('left');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('left'))->fit(203,203);
+            $img3 = Image::make($request->file('left'));
             $upload_path3 = public_path()."/images/";
 
             if($new_name && $new_name2){
@@ -173,12 +173,12 @@ class ProductAvatarController extends Controller
         {
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('front'))->fit(203,203);
+            $img = Image::make($request->file('front'));
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('back');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $img2 = Image::make($request->file('back'));
             $upload_path2 = public_path()."/images/";
 
             if($new_name && $new_name2){
@@ -240,22 +240,22 @@ class ProductAvatarController extends Controller
 
             $image = $request->file('front');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('front'))->fit(203,203);
+            $img = Image::make($request->file('front'));
             $upload_path = public_path()."/images/";
 
             $image2 = $request->file('back');
             $new_name2 = rand() . '.' . $image2->getClientOriginalExtension();
-            $img2 = Image::make($request->file('back'))->fit(203,203);
+            $img2 = Image::make($request->file('back'));
             $upload_path2 = public_path()."/images/";
 
             $image3 = $request->file('left');
             $new_name3 = rand() . '.' . $image3->getClientOriginalExtension();
-            $img3 = Image::make($request->file('left'))->fit(203,203);
+            $img3 = Image::make($request->file('left'));
             $upload_path3 = public_path()."/images/";
 
             $image4 = $request->file('right');
             $new_name4 = rand() . '.' . $image4->getClientOriginalExtension();
-            $img4 = Image::make($request->file('right'))->fit(203,203);
+            $img4 = Image::make($request->file('right'));
             $upload_path4 = public_path()."/images/";
 
             \File::delete(public_path('images/' . $data->front));

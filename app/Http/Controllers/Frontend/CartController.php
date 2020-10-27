@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\AdManager;
 use App\Models\Product;
+use App\Models\Orders;
+use App\Models\VendorProduct;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +29,14 @@ class CartController extends Controller
         $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         return view('layouts.frontend.cart.cart_list',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'cart'=>$cart,
-            'count1'=>$count1
+            'count1'=>$count1,
+            'orders'=>$orders
         ]);
     }
 
@@ -44,13 +47,14 @@ class CartController extends Controller
         $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         return view('layouts.frontend.cart.billing_address',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'cart'=>$cart,
-            'count1'=>$count1
+            'count1'=>$count1,
+            'orders'=>$orders
         ]);
     }
 
@@ -74,22 +78,52 @@ class CartController extends Controller
     {
         if(Auth::check()){
             $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
-            $wish = Cart::where([
-                'product_id'=>$product->id,
-                'user_id'=>auth()->user()->id
-            ])->first();
+            $ven_product = VendorProduct::where('slug',$request->slug)->with('get_vendor_product_avatar')->first();
+            if($product){
+                $wish = Cart::where([
+                    'product_id'=>$product->id,
+                    'user_id'=>auth()->user()->id
+                    
+                ])->first();
+            }else{
+                $wish = Cart::where([
+                    'vendor_product_id'=>$ven_product->id,
+                    'user_id'=>auth()->user()->id
+                ])->first();
+            }
             if ($wish) {
                 return response()->json([
                     'errors'=> 'error'
                 ]);
             }else if(!$wish){
+               if($product){
+                    $data = Cart::create([
+                        'product_id'=> $product->id,
+                        'user_id'=> auth()->user()->id,
+                        'total'=>$product->sale_price,
+                        'qty'=>1,
+                    ]);
+
+                    if ($data) {
+                        WishList::where('product_id',$request->id)->delete();
+                        $count = WishList::select('id')->where('user_id',Auth::user()->id ?? '')->count();
+                        $count1 = Cart::select('id')->where('user_id',Auth::user()->id ?? '')->count();
+
+                        return response()->json([
+                            'count'=>$count,
+                            'count1'=>$count1
+                        ]);
+                    }
+               }else{
                 $data = Cart::create([
-                    'product_id'=> $product->id,
-                    'user_id'=> auth()->user()->id
+                    'vendor_product_id'=> $ven_product->id,
+                    'user_id'=> auth()->user()->id,
+                    'total'=>$ven_product->sale_price,
+                    'qty'=>1,
                 ]);
 
                 if ($data) {
-                    WishList::where('product_id',$request->id)->delete();
+                    WishList::where('vendor_product_id',$request->id)->delete();
                     $count = WishList::select('id')->where('user_id',Auth::user()->id ?? '')->count();
                     $count1 = Cart::select('id')->where('user_id',Auth::user()->id ?? '')->count();
 
@@ -98,6 +132,7 @@ class CartController extends Controller
                         'count1'=>$count1
                     ]);
                 }
+               }
             }
         }else{
             return response()->json([

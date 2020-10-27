@@ -24,12 +24,12 @@ class UserRole
             }elseif (auth()->user()->role == 'vendor') {
                 return $next($request);
             }else{
-                return redirect()->back();
+                return redirect()->route('home');
 
             }
             
         }else{
-            return redirect()->back();
+            return redirect()->route('home');
         }
         
     }

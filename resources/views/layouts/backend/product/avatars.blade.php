@@ -304,13 +304,12 @@
                 rightUrl(this);
             });
 
-            function myFunction() {
-                document.getElementById("submitData").disabled = true;
-            }
+           
             $(document).ready(function(){
-                myFunction();
+                
 
                 $('#update_avatar').on('submit', function(event){
+                    document.getElementById("submitData").disabled = true;
                     event.preventDefault();
                     $.ajax({
                         url:"{{ route('avatar.update') }}",

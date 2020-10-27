@@ -19,10 +19,10 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->string('trans_cost',8,2)->default(0.00);
             $table->decimal('amount',10,2);
+            $table->decimal('total_emoney',10,2)->nullable();
             $table->string('address');
-            $table->string('delivery_status')->nullable();
+            $table->string('delivery_status')->default('pending');
             $table->string('status');
             $table->string('transaction_id');
             $table->string('currency');

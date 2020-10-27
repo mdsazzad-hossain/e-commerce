@@ -39,7 +39,7 @@ class SslCommerzPaymentController extends Controller
         $post_data['cus_name'] = $request->customer_name;
         $post_data['cus_email'] = $request->customer_email;
         $post_data['cus_add1'] = $request->customer_address;
-        $post_data['trans_cost'] = $request->trans_cost;
+        $post_data['total_emoney'] = $request->total_emoney;
         $post_data['user_id'] = auth()->user()->id;
         $post_data['cus_add2'] = "";
         $post_data['cus_city'] = "";
@@ -78,8 +78,8 @@ class SslCommerzPaymentController extends Controller
                 'name' => $post_data['cus_name'],
                 'email' => $post_data['cus_email'],
                 'phone' => $post_data['cus_phone'],
-                'trans_cost'=>$post_data['trans_cost'],
-                'amount' => $post_data['total_amount']+$post_data['trans_cost'],
+                'total_emoney'=>$post_data['total_emoney'],
+                'amount' => $post_data['total_amount'],
                 'status' => 'Pending',
                 'address' => $post_data['cus_add1'],
                 'transaction_id' => $post_data['tran_id'],

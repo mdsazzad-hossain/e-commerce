@@ -132,6 +132,8 @@ class ProductController extends Controller
             'sale_price'=>$price,
             'promo_price'=>$request->promo_price,
             'discount'=>$request->discount,
+            'deli_destinination'=>$request->deli_destinination,
+            'deli_charge'=>$request->deli_charge,
             'e_money'=>$price1,
             'description'=>$request->description,
             'total_price'=>$request->qty*$request->sale_price,

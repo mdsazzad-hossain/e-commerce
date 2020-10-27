@@ -43,8 +43,8 @@ class VendorProductController extends Controller
      */
     public function store(Request $request)
     {
-        $cal = $request->discount*$request->sale_price;
-        $price = $cal/100;
+        // $cal = $request->discount*$request->sale_price;
+        // $price = $cal/100;
 
         VendorProduct::create([
             'single_vendor_id'=>$request->single_vendor_id,
@@ -56,7 +56,7 @@ class VendorProductController extends Controller
             'size'=>$request->size,
             'qty'=>$request->qty,
             'pur_price'=>$request->pur_price,
-            'sale_price'=>$price,
+            'sale_price'=>$request->sale_price,
             'promo_price'=>$request->promo_price,
             'description'=>$request->description,
             'total_price'=>$request->qty*$request->sale_price
@@ -103,7 +103,7 @@ class VendorProductController extends Controller
     public function update(Request $request, $slug)
     {
         $cal = $request->discount*$request->sale_price;
-        $price = $cal/100;
+        $price = $request->sale_price-($cal/100);
         $cal1 = $request->admin_percent*$request->sale_price;
         $price1 = $cal1/100;
 
@@ -122,6 +122,8 @@ class VendorProductController extends Controller
             'promo_price'=>$request->promo_price,
             'admin_percent'=>$price1,
             'description'=>$request->description,
+            'deli_destinination'=>$request->deli_destinination,
+            'deli_charge'=>$request->deli_charge,
             'total_price'=>$request->qty*$request->sale_price
         ]);
 

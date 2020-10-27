@@ -275,18 +275,50 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <div class="dropdown-cart-products">
                                             @foreach ($cart as $crt)
+                                            @if ($crt->get_product)
                                             <div class="product">
                                                 <div class="product-cart-details">
                                                     <h4 class="product-title">
-                                                        <a id="pro_name" href="product.html">{{$crt->get_product->product_name}}</a>
+                                                        <a id="pro_name" href="product.html">{{$crt->get_product ? $crt->get_product->product_name  : ''}}</a>
                                                     </h4>
 
                                                     <span class="cart-product-info">
-                                                        <span id="pro_sale" class="cart-product-qty">1</span> x {{$crt->get_product->sale_price}}
+                                                        <span id="pro_sale" class="cart-product-qty">1</span> x {{$crt->get_product ? $crt->get_product->sale_price : ''}}
                                                     </span>
                                                 </div>
                                                 <!-- End .product-cart-details -->
+                                                @if ($crt->get_product)
+                                                
                                                 @foreach ($crt->get_product->get_product_avatars as $avatar)
+                                                <figure class="product-image-container">
+                                                    <a href="product.html" class="product-image">
+                                                        <img id="cartAvtr" src="{{ asset('/images/' . $avatar->front) }}"
+                                                            alt="product">
+                                                    </a>
+                                                </figure>
+                                                @endforeach
+                                                @endif
+                                                <button onclick="itemDelete({{$crt->id}})" class="btn-remove" title="Remove Product">
+                                                    <i style="margin-left: 12px;" class="icon-close"></i>
+                                                </button>
+                                            </div>
+                                            <!-- End .product -->
+                                            @endif
+                                            @endforeach
+                                            @foreach ($cart as $crt)
+                                            @if ($crt->get_vendor_product)
+                                            <div class="product">
+                                                <div class="product-cart-details">
+                                                    <h4 class="product-title">
+                                                        <a id="pro_name" href="product.html">{{$crt->get_vendor_product->product_name}}</a>
+                                                    </h4>
+
+                                                    <span class="cart-product-info">
+                                                    <span id="pro_sale" class="cart-product-qty">{{$crt->qty}}</span> x {{$crt->get_vendor_product->sale_price}}
+                                                    </span>
+                                                </div>
+                                                <!-- End .product-cart-details -->
+                                                @foreach ($crt->get_vendor_product->get_vendor_product_avatar as $avatar)
                                                 <figure class="product-image-container">
                                                     <a href="product.html" class="product-image">
                                                         <img id="cartAvtr" src="{{ asset('/images/' . $avatar->front) }}"
@@ -299,20 +331,28 @@
                                                 </button>
                                             </div>
                                             <!-- End .product -->
+                                            @endif
                                             @endforeach
                                         </div>
                                         <!-- End .cart-product -->
 
                                         <div class="dropdown-cart-total">
                                             <span>Total</span>
-
-                                            <span class="cart-total-price">$160.00</span>
+                                            @php
+                                                $amount = 0    
+                                            @endphp
+                                            @foreach ($cart as $crt)
+                                                @php
+                                                    $amount += $crt->total
+                                                @endphp
+                                            @endforeach
+                                            <span class="cart-total-price">= {{$amount}} TK</span>
                                         </div>
                                         <!-- End .dropdown-cart-total -->
                                         @auth
                                         <div class="dropdown-cart-action">
                                             <a href="{{route('cart',auth()->user()->name)}}" class="btn btn-primary">View Cart</a>
-                                            <a href="checkout.html" class="btn btn-outline-primary-2">Checkout</a>
+                                            <a href="{{ route('cart.bill') }}" class="btn btn-outline-primary-2">Checkout</a>
                                         </div>
                                         @else
                                         <div class="dropdown-cart-action">
@@ -355,7 +395,15 @@
                                             <li><a href="#"><i style="font-size: 15px;
                                                 margin-right: 5px;" class="la la-dollar"></i>
                                                 E-money
-                                                <span class="badge badge-warning">0.00</span>
+                                                @php
+                                                    $total_coin = 0;
+                                                @endphp
+                                                @foreach ($orders as $odr)
+                                                    @php
+                                                        $total_coin += $odr->total_emoney;
+                                                    @endphp
+                                                @endforeach
+                                                <span class="badge badge-warning">{{ auth()->user()->e_money + $total_coin ? $total_coin : '0.00'}}</span>
                                             </a></li>
                                             <hr style="margin:0px;">
                                             <li>

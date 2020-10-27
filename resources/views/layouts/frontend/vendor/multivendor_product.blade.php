@@ -97,8 +97,8 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                    to wishlist</span></a>
+                                            <button onclick="addWishList({{$pro}})" class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                    to wishlist</span></button>
                                             <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                                 title="Quick view"><span>Quick view</span></a>
                                             <a href="#" class="btn-product-icon btn-compare"
@@ -106,7 +106,7 @@
                                         </div><!-- End .product-action-vertical -->
 
                                         <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            <button onclick="addToCart({{$pro}})" class="btn-product btn-cart"><span>add to cart</span></button>
                                         </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
                                     @endforeach
@@ -440,5 +440,106 @@
     </div><!-- End .page-content -->
 </main>
 @section('js')
+<script>
+    function addWishList(pro){
+                slug = pro.slug
+
+                $.ajax({
+                    url: "{{ route('wishlist.store') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'slug': slug
+                    },
+                    success:function(response)
+                    {
+                        if(response.guest == 'guest'){
+                            $("#error").text('Opps!plese login first.');
+                            $("#error").show();
+                            setTimeout(() => {
+                                $("#error").hide();
+                                $("#error").text();
+                            },3000);
+                        }else if(response.errors == 'match'){
+                            $("#error").show();
+                            setTimeout(() => {
+                                $("#error").hide();
+
+                            },3000);
+                        }else{
+                            $("#count").text(response.count);
+                        }
+
+
+                    }
+                })
+
+            }
+
+            function addToCart(pro){
+            id = pro.id;
+            slug = pro.slug;
+            sale_price = pro.sale_price;
+            $.ajax({
+                url: "{{ route('cart.store') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'slug': slug,
+                    'id':id,
+                    'sale_price':sale_price
+                },
+                success:function(response)
+                {
+                    if(response.guest == 'guest'){
+                        $("#error").text('Opps!plese login first.');
+                        $("#error").show();
+                        setTimeout(() => {
+                            $("#error").hide();
+                            $("#error").text();
+                        },3000);
+                    }else{
+                        if(response.errors == 'error'){
+                            $("#cartError").show();
+                            setTimeout(() => {
+                                $("#cartError").hide();
+
+                            },2000);
+                        }else{
+                            // $("#pro_name").text(response.cart.get_product.product_name);
+                            // $("#pro_sale").text(response.cart.get_product.sale_price);
+                            // response.cart.get_product.get_product_avatars.forEach(element => {
+                            //     $("cartAvtr").attr('src', "{{ asset('/images/') }}/" + element.front)
+                            // });
+                            $("#count").text(response.count);
+                            $("#count1").text(response.count1);
+
+                        }
+                    }
+
+
+
+                }
+            })
+
+        }
+
+        function itemDelete(id){
+            $.ajax({
+                url: "{{ route('cart.item.delete') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'id': id
+                },
+                success:function(response)
+                {
+                    window.location.reload();
+
+
+                }
+            })
+        }
+</script>
 @endsection
 @endsection

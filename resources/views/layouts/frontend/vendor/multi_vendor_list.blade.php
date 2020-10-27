@@ -94,19 +94,6 @@
                                             <img src="{{ asset('/images/' . $ven->logo) }}" alt="Product image"
                                                 class="product-image">
                                         </a>
-
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                    to wishlist</span></a>
-                                            <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
-                                                title="Quick view"><span>Quick view</span></a>
-                                            <a href="#" class="btn-product-icon btn-compare"
-                                                title="Compare"><span>Compare</span></a>
-                                        </div><!-- End .product-action-vertical -->
-
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                        </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
                                     <div class="product-body">
                                         <div class="product-cat">
@@ -116,14 +103,7 @@
                                                 </a></h3><!-- End .product-title -->
                                         <div class="product-price">
                                             {{$ven->address}}
-                                        </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container -->  
+                                        </div><!-- End .product-price -->  
                                     </div><!-- End .product-body -->
                                 </div><!-- End .product -->
                             </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->

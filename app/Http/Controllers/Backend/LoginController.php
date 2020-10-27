@@ -52,7 +52,7 @@ class LoginController extends Controller
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }elseif (Auth::attempt([
             'email'=>$request->email, 
             'password'=>$request->password,
@@ -61,7 +61,7 @@ class LoginController extends Controller
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }elseif (Auth::attempt([
             'email'=>$request->email, 
             'password'=>$request->password,
@@ -70,7 +70,7 @@ class LoginController extends Controller
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }elseif (Auth::attempt([
             'email'=>$request->email, 
             'password'=>$request->password,

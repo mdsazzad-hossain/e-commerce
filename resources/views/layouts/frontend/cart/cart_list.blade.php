@@ -36,7 +36,7 @@
                                 <tbody>
                                     <input type="hidden" id="cart" value="{{ $cart }}">
                                     @foreach ($cart as $crt)
-
+                                        @if ($crt->get_product)
                                         <tr>
                                             <td class="product-col">
                                             {{-- <input hidden type="number" id="id" value="{{$crt->id}}" name="id">
@@ -70,8 +70,45 @@
                                                 </button>
                                             </td>
                                         </tr>
-
+                                        @endif
                                     @endforeach
+                                    @foreach ($cart as $crt)
+                                    @if ($crt->get_vendor_product)
+                                    <tr>
+                                        <td class="product-col">
+                                        {{-- <input hidden type="number" id="id" value="{{$crt->id}}" name="id">
+                                        <input hidden type="text" id="sale_price" value="{{$crt->get_product->sale_price}}" name="$crt->get_product->sale_price"> --}}
+                                            <div class="product">
+                                                @foreach ($crt->get_vendor_product->get_vendor_product_avatar as $avtr)
+                                                    <figure class="product-media">
+                                                        <a href="#">
+                                                            <img src="{{ asset('/images/' . $avtr->front) }}"
+                                                                alt="Product image">
+                                                        </a>
+                                                    </figure>
+                                                @endforeach
+                                                <h3 class="product-title">
+                                                    <a href="#">{{ $crt->get_vendor_product->product_name }}</a>
+                                                </h3><!-- End .product-title -->
+                                            </div><!-- End .product -->
+                                        </td>
+                                        <td id="sale_price" class="price-col">{{ $crt->get_vendor_product->sale_price }}</td>
+                                        <td class="quantity-col">
+                                            <div class="cart-product-quantity">
+                                                <input onchange="calculate({{$crt}},this.value)" id="qty" name="qty"
+                                                type="number" value="{{ $crt->qty }}" class="form-control" required>
+
+                                            </div>
+                                        </td>
+                                        <td id="total" class="total-col">{{$crt ? $crt->total : $crt->get_vendor_product->sale_price }}</td>
+                                        <td class="remove-col">
+                                            <button onclick="itemDelete({{$crt->id}})" class="btn-remove"><i
+                                                    class="icon-close"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
                                 </tbody>
                             </table><!-- End .table table-wishlist -->
 
