@@ -44,13 +44,28 @@
                                         @if ($crt->get_product->deli_destinination == "free shipping")
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
                                             @else
-                                            <small class="text-muted">Ship.Co.= {{$crt->get_product->deli_charge}} TK</small>
+                                            
+                                            @if ($crt->qty >3 && $crt->qty <=6)
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_product->deli_charge}} TK</small>
+                                            @elseif($crt->qty >6 && $crt->qty <=9)
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->deli_charge}} TK</small>
+                                            @elseif($crt->qty >9 && $crt->qty <=10)
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->deli_charge}} TK</small>
+                                            @else 
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_product->deli_charge}} TK</small>
+                                            @endif
                                         @endif
                                         
                                     </div>
                                 </li>
                                 @php
-                                    $cost += $crt->get_product->deli_charge;
+                                    if ($crt->qty >3 && $crt->qty <=6) {
+                                        $cost += 2*$crt->get_product->deli_charge;
+                                    }elseif($crt->qty >6 && $crt->qty <=9){
+                                        $cost += 3*$crt->get_product->deli_charge;
+                                    }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                        $cost += 4*$crt->get_product->deli_charge;
+                                    }
                                     $e_money += $crt->get_product->e_money;
                                 @endphp
                                 @endif
@@ -65,13 +80,27 @@
                                         @if ($crt->get_vendor_product->deli_destinination == "free shipping")
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
                                             @else
-                                            <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                            @if ($crt->qty >3 && $crt->qty <=6)
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                            @elseif($crt->qty >6 && $crt->qty <=9)
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                            @elseif($crt->qty >9 && $crt->qty <=10)
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                            @else 
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                            @endif
                                         @endif
                                         
                                     </div>
                                 </li>
                                 @php
-                                    $cost += $crt->get_vendor_product->deli_charge
+                                    if ($crt->qty >3 && $crt->qty <=6) {
+                                        $cost += 2*$crt->get_vendor_product->deli_charge;
+                                    }elseif($crt->qty >6 && $crt->qty <=9){
+                                        $cost += 3*$crt->get_vendor_product->deli_charge;
+                                    }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                        $cost += 4*$crt->get_vendor_product->deli_charge;
+                                    }
                                 @endphp
                                 @endif
                                 @endforeach
@@ -177,6 +206,14 @@
 
     @section('js')
         <script>
+            window.onload=(function(){
+                $("#showCategory").hide();
+            });
+
+            function showDropdown(){
+                $("#showCategory").show();
+            }
+
             function getCost(){
                 $("#trans_cost").val($("#cost").val());
             }

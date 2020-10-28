@@ -401,5 +401,14 @@
     </div><!-- End .page-content -->
 </main>
 @section('js')
+    <script>
+        window.onload=(function(){
+                $("#showCategory").hide();
+            });
+
+            function showDropdown(){
+                $("#showCategory").show();
+            }
+    </script>
 @endsection
 @endsection

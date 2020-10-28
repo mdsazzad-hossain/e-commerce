@@ -10,7 +10,7 @@ class OrderDetails extends Model
 
     public function get_orders()
     {
-        return $this->belongsTo(Oders::class,'order_id');
+        return $this->belongsTo(Orders::class,'order_id');
     }
 
     public function get_user()

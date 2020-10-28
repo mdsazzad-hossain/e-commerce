@@ -180,7 +180,8 @@
                         <a href="{{route('vendor.list.product',$vendor->brand_name)}}" class="cat-block">
                             <figure>
                                 <span>
-                                    <img src="{{ asset('/images/' . $vendor->logo) }}">
+                                    <img style="height: 100px;
+                                    width: 130px;" src="{{ asset('/images/' . $vendor->logo) }}">
                                 </span>
                             </figure>
                         </a>
@@ -307,7 +308,7 @@
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
                                             <a href="{{route('quick',$pro_avatar->slug)}}">
-                                                <img src="{{ asset('/images/' . $pro_avatar->front) }}"
+                                                <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>
 
@@ -563,7 +564,7 @@
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
                                                 <a href="product.html">
-                                                    <img src="{{ asset('/images/' . $pro_avatar->front) }}"
+                                                    <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                         alt="Product image" class="product-image">
                                                 </a>
 
@@ -767,7 +768,7 @@
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
                                                 <a href="{{route('quick',$pro_avatar->slug)}}">
-                                                    <img src="{{ asset('/images/' . $pro_avatar->front) }}"
+                                                    <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                         alt="Product image" class="product-image">
                                                 </a>
 
@@ -905,7 +906,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
                                             <a href="{{route('quick',$pro_avatar->slug)}}">
-                                                <img src="{{ asset('/images/' . $pro_avatar->front) }}"
+                                                <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>
 

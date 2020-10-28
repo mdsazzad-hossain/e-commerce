@@ -119,7 +119,7 @@
                 <div class="header-bottom sticky-header">
                     <div class="container">
                         <div class="header-left">
-                            <div class="dropdown category-dropdown show is-on" data-visible="true">
+                            <div onclick="showDropdown()" class="dropdown category-dropdown show is-on" data-visible="true">
 
                                 <a href="{{ route('home') }}" class="dropdown-toggle" role="button" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="true" data-display="static"
@@ -130,39 +130,38 @@
                                 </a>
 
 
-                                <div class="dropdown-menu show">
+                                <div class="dropdown-menu show" id="showCategory">
                                     <nav class="side-nav">
-                                        <ul class="menu-vertical sf-arrows sf-js-enabled" style="touch-action: pan-y;">
+                                        <ul class="menu-vertical sf-arrows sf-js-enabled" style="touch-action: pan-y;overflow-y: scroll;
+                                        height: 375px;">
                                             @foreach ($categories as $cat)
                                                 <li class="megamenu-container">
                                                 <a class="sf-with-ul" href="{{route('category',$cat->cat_name)}}">{{ $cat->cat_name }}</a>
 
-                                                    <div class="megamenu" style="display: none;">
+                                                    <div class="megamenu" style="display: none;height: 300px;width: 650px;">
                                                         <div class="row no-gutters">
-                                                            <div class="col-md-8">
+                                                            <div class="col-md-12" style="overflow-y: scroll;
+                                                            height: 375px !important;">
                                                                 <div class="menu-col">
-                                                                    <div class="row">
+                                                                    <div class="row col-12">
+                                                                        @foreach ($cat->get_child_category as $child)
                                                                         <div class="col-md-6">
 
-                                                                            @foreach ($cat->get_child_category as $child)
-
                                                                                 <div class="menu-title">
-                                                                                    <a
-                                                                                        href="#">{{ $child->child_name }}</a>
+                                                                                    <a href="#">{{ $child->child_name }}</a>
                                                                                 </div>
                                                                                 <!-- End .menu-title -->
 
                                                                                 <ul>
                                                                                     @foreach ($child->get_sub_child_category as $sub_child)
 
-                                                                                        <li><a
-                                                                                                href="#">{{ $sub_child->sub_child_name }}</a>
+                                                                                        <li>
+                                                                                            <a href="#">{{ $sub_child->sub_child_name }}</a>
                                                                                         </li>
                                                                                     @endforeach
                                                                                 </ul>
-                                                                            @endforeach
                                                                         </div>
-
+                                                                        @endforeach
                                                                         <!-- End .col-md-6 -->
                                                                     </div>
                                                                     <!-- End .row -->
@@ -171,15 +170,15 @@
                                                             </div>
                                                             <!-- End .col-md-8 -->
 
-                                                            <div class="col-md-4">
+                                                            {{-- <div class="col-md-4">
                                                                 <div class="banner banner-overlay">
                                                                     <a href="category.html" class="banner banner-menu">
-                                                                        <img src="assets/images/demos/demo-13/menu/banner-1.jpg"
+                                                                        <img style="height: 375px;" src="assets/images/demos/demo-13/menu/banner-1.jpg"
                                                                             alt="Banner">
                                                                     </a>
                                                                 </div>
                                                                 <!-- End .banner banner-overlay -->
-                                                            </div>
+                                                            </div> --}}
                                                             <!-- End .col-md-4 -->
                                                         </div>
                                                         <!-- End .row -->
@@ -283,7 +282,7 @@
                                                     </h4>
 
                                                     <span class="cart-product-info">
-                                                        <span id="pro_sale" class="cart-product-qty">1</span> x {{$crt->get_product ? $crt->get_product->sale_price : ''}}
+                                                        <span id="pro_sale" class="cart-product-qty">{{$crt->qty}}</span> x {{$crt->get_product ? $crt->get_product->sale_price : ''}}
                                                     </span>
                                                 </div>
                                                 <!-- End .product-cart-details -->
@@ -395,15 +394,7 @@
                                             <li><a href="#"><i style="font-size: 15px;
                                                 margin-right: 5px;" class="la la-dollar"></i>
                                                 E-money
-                                                @php
-                                                    $total_coin = 0;
-                                                @endphp
-                                                @foreach ($orders as $odr)
-                                                    @php
-                                                        $total_coin += $odr->total_emoney;
-                                                    @endphp
-                                                @endforeach
-                                                <span class="badge badge-warning">{{ auth()->user()->e_money + $total_coin ? $total_coin : '0.00'}}</span>
+                                                <span class="badge badge-warning">{{auth()->user()->e_money}}</span>
                                             </a></li>
                                             <hr style="margin:0px;">
                                             <li>

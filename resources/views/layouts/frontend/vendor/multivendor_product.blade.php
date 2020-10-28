@@ -540,6 +540,14 @@
                 }
             })
         }
+
+        window.onload=(function(){
+                $("#showCategory").hide();
+            });
+
+            function showDropdown(){
+                $("#showCategory").show();
+            }
 </script>
 @endsection
 @endsection

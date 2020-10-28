@@ -173,17 +173,29 @@ class CartController extends Controller
      */
     public function update(Request $request)
     {
-
-        Cart::where('id',$request->id)->update([
-            'qty'=>$request->qty,
-            'total'=>$request->total
-        ]);
-
-        $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
-
-        return response()->json([
-            'cart'=>$cart
-        ]);
+        
+        if ($request->qty >10) {
+            Alert::warning('Opps!',"you can't buy as a same product up to quantity 10.");
+            return response()->json([
+                'msg'=>'warning'
+            ]);
+        }else{
+            Cart::where('id',$request->id)->update([
+                'qty'=>$request->qty,
+                'total'=>$request->total
+            ]);
+            $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
+            if ($request->qty == 4 || $request->qty == 5 || $request->qty == 6) {
+                Alert::warning('warning','If your cart product quantity up to 3 as a same product.You have to pay two times delivery charge.');
+            }elseif($request->qty >7 || $request->qty == 8 || $request->qty == 9){
+                Alert::warning('warning','If your cart product quantity up to 6 as a same product.You have to pay three times delivery charge.');
+            }elseif($request->qty == 10){
+                Alert::warning('warning','If your cart product quantity up to 9 as a same product.You have to pay four times delivery charge.');
+            }
+            return response()->json([
+                'cart'=>$cart
+            ]);
+        }
 
 
     }

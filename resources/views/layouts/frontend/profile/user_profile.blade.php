@@ -55,15 +55,145 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                     aria-labelledby="tab-dashboard-link">
-                                    <p>Hello <span class="font-weight-normal text-dark">User</span> (not <span
-                                            class="font-weight-normal text-dark">User</span>? <a href="#">Log out</a>)
-                                        <br>
-                                        From your account dashboard you can view your <a href="#tab-orders"
-                                            class="tab-trigger-link link-underline">recent orders</a>, manage your <a
-                                            href="#tab-address" class="tab-trigger-link">shipping and billing addresses</a>,
-                                        and <a href="#tab-account" class="tab-trigger-link">edit your password and account
-                                            details</a>.
-                                    </p>
+                                    <h6>Recent Orders</h6>
+                                    <h6 style="    margin-top: -31px;" class="pull-right">Total E-Money : <span class="badge badge-success">{{auth()->user()->e_money}}</span></h6>
+                                    <hr>
+                                    <table class="table table-cart table-mobile">
+                                        <thead>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <th>Product Image</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
+                                                <th>Address</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($orderDetails as $order)
+                                            @if($order->product_id != null)
+                                                <tr>
+                                                    <td>
+                                                        <div style="display:block;">
+                                                            <p style="margin: 0px;"><Strong>{{$order->get_product->product_name}}</Strong></p>
+                                                            <small>Size : {{$order->get_product->size}}</small>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-col">
+                                                        <div class="product">
+                                                                @foreach ($order->get_product->get_product_avatars as $avtr)
+                                                                    <figure class="product-media">
+                                                                        <a href="#">
+                                                                            <img src="{{ asset('/images/' . $avtr->front) }}"
+                                                                                alt="Product image">
+                                                                        </a>
+                                                                    </figure>
+                                                                @endforeach
+                                                        </div><!-- End .product -->
+                                                    </td>
+                                                    <td class="quantity-col">
+                                                        <div class="cart-product-quantity">
+                                                            <p>{{$order->qty}}</p>
+        
+                                                        </div>
+                                                    </td>
+                                                    <td id="sale_price" class="price-col">{{$order->get_product->sale_price}}</td>
+                                                    <td id="total" class="total-col">{{$order->total}}</td>
+                                                    
+                                                    <td>
+                                                        <p onclick="getAddress({{$order->get_orders}})" style="cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter" class="badge badge-warning">Address</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="badge badge-warning">{{$order->get_orders->delivery_status}}</p>
+                                                    </td>
+                                                    <td class="remove-col">
+                                                        <button class="btn-remove"><i
+                                                                class="icon-close"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                                @if($order->vendor_product_id != null)
+                                                <tr>
+                                                    <td>
+                                                        <div style="display:block;">
+                                                            <p style="margin: 0px;"><Strong>{{$order->get_vendor_product->product_name}}</Strong></p>
+                                                            <small>Size : {{$order->get_vendor_product->size}}</small>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-col">
+                                                        <div class="product">
+                                                                @foreach ($order->get_vendor_product->get_vendor_product_avatar as $avtr)
+                                                                    <figure class="product-media">
+                                                                        <a href="#">
+                                                                            <img src="{{ asset('/images/' . $avtr->front) }}"
+                                                                                alt="Product image">
+                                                                        </a>
+                                                                    </figure>
+                                                                @endforeach
+                                                        </div><!-- End .product -->
+                                                    </td>
+                                                    <td class="quantity-col">
+                                                        <div class="cart-product-quantity">
+                                                            <p>{{$order->qty}}</p>
+        
+                                                        </div>
+                                                    </td>
+                                                    <td id="sale_price" class="price-col">{{$order->get_vendor_product->sale_price}}</td>
+                                                    <td id="total" class="total-col">{{$order->total}}</td>
+                                                    
+                                                    <td>
+                                                        <p onclick="getAddress({{$order->get_orders}})" style="cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter" class="badge badge-warning">Address</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="badge badge-warning">{{$order->get_orders->delivery_status}}</p>
+                                                    </td>
+                                                    <td class="remove-col">
+                                                        <button class="btn-remove"><i
+                                                                class="icon-close"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table><!-- End .table table-wishlist -->
+                                    <!-- Button trigger modal -->
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="padding: 20px 50px;">
+                                                    <Strong style="display: inline-flex">Transection Id : <p style="margin-left: 20px;" id="getTran"></p></Strong>
+                                                    <br>
+                                                    <Strong style="display: inline-flex">Name : <p style="margin-left: 20px;" id="getName"></p></Strong>
+                                                    <br>
+                                                    <Strong style="display: inline-flex">Email : <p style="margin-left: 20px;" id="getEmail"></p></Strong>
+                                                    <br>
+                                                    <Strong style="display: inline-flex">Phone No. : <p style="margin-left: 20px;" id="getPhn"></p></Strong>
+                                                    <br>
+                                                    <Strong style="display: inline-flex">Total Amount : <p style="margin-left: 20px;" id="getAmount"></p></Strong>
+                                                    <br>
+                                                    <Strong style="display: inline-flex">Address : <p style="margin-left: 20px;" id="getAddress"></p></Strong>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div><!-- .End .tab-pane -->
 
                                 <div class="tab-pane fade" id="tab-orders" role="tabpanel"
@@ -161,5 +291,24 @@
             </div><!-- End .dashboard -->
         </div><!-- End .page-content -->
     </main>
+    @section('js')
+        <script>
+            window.onload=(function(){
+                $("#showCategory").hide();
+            });
 
+            function showDropdown(){
+                $("#showCategory").show();
+            }
+
+            function getAddress(order){
+                $("#getTran").text(order.transaction_id);
+                $("#getName").text(order.name);
+                $("#getEmail").text(order.email);
+                $("#getPhn").text(order.phone);
+                $("#getAmount").text(order.amount);
+                $("#getAddress").text(order.address);
+            }
+        </script>
+    @endsection
 @endsection

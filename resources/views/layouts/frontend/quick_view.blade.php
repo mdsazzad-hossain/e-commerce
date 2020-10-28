@@ -519,6 +519,13 @@
 
 @section('js')
     <script>
+        window.onload=(function(){
+                $("#showCategory").hide();
+            });
+
+            function showDropdown(){
+                $("#showCategory").show();
+            }
         function addWishList(product) {
             slug = product.slug
 

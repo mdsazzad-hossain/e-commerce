@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Models\Cart;
+use App\User;
 use App\Models\Orders;
 use App\Models\OrderDetails;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -159,6 +160,10 @@ class SslCommerzPaymentController extends Controller
                         ]);
                        }
                     }
+                    $money = User::where('id',$id->user_id)->first();
+                    User::where('id',$id->user_id)->update([
+                        'e_money'=>$money->e_money+$id->total_emoney
+                    ]);
                     Cart::where('user_id',$data->user_id)->delete();
                     toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 

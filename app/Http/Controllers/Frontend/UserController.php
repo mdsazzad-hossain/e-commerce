@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\AdManager;
 use App\Models\Product;
+use App\Models\Orders;
+use App\Models\OrderDetails;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +29,8 @@ class UserController extends Controller
         $count = WishList::select('id')->count();
         $count1 = Cart::select('id')->count();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        $orderDetails = OrderDetails::latest()->where('user_id',auth()->user()->id ?? '')->get();
 
         return view('layouts.frontend.profile.user_profile',[
             'ads'=>$ads,
@@ -34,6 +38,8 @@ class UserController extends Controller
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart,
+            'orders'=>$orders,
+            'orderDetails'=>$orderDetails
         ]);
     }
 

@@ -222,7 +222,13 @@
 @section('js')
 
     <script>
+        window.onload=(function(){
+            $("#showCategory").hide();
+        });
 
+        function showDropdown(){
+            $("#showCategory").show();
+        }
         function calculate(crt,val){
 
             total = val*crt.get_product.sale_price;
