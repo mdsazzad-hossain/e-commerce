@@ -239,9 +239,18 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function updateProductShipp(Request $request)
     {
-        //
+        $carts = Cart::where('user_id',auth()->user()->id?? '')->get();
+        foreach ($carts as $key => $cart) {
+            $data = Product::where('id',$cart->product_id)->update([
+                'shipp_des'=>$request->val
+            ]);          
+        }
+
+        return response()->json([
+            'msg'=>'success'
+        ]);
     }
 
     /**

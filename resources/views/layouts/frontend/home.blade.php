@@ -1073,6 +1073,12 @@
                             $("#error").hide();
                             $("#error").text();
                         },3000);
+                    }else if(response.stockOut == 'stock out'){
+                        $("#error").text('Stock Out');
+                        $("#error").show();
+                        setTimeout(() => {
+                            $("#error").hide();
+                        },3000);
                     }else{
                         if(response.errors == 'error'){
                             $("#cartError").show();

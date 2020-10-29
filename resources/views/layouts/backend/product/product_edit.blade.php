@@ -119,7 +119,7 @@
                                 name="qty"
                                 type="number"
                                 class="form-control"
-                                placeholder="Enter product quantity"
+                                placeholder="00"
                             />
                         </div>
                         <div class="form-group col-3">
@@ -133,7 +133,7 @@
                                 type="number"
                                 step="any"
                                 class="form-control"
-                                placeholder="Enter product purchase price"
+                                placeholder="0.00tk"
                             />
                         </div>
                         <div class="form-group col-3">
@@ -147,7 +147,7 @@
                                 type="number"
                                 step="any"
                                 class="form-control"
-                                placeholder="Enter product sale price"
+                                placeholder="0.00tk"
                             />
                         </div>
                         <div class="form-group col-3">
@@ -161,7 +161,7 @@
                                 name="promo_price"
                                 type="number"
                                 class="form-control"
-                                placeholder="Enter product promo price"
+                                placeholder="0.00 tk"
                             />
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                                 name="discount"
                                 type="number"
                                 class="form-control"
-                                placeholder="product discount"
+                                placeholder="0.00%"
                             />
                         </div>
                         <div class="form-group col-2">
@@ -191,36 +191,35 @@
                                 type="number"
                                 step="any"
                                 class="form-control"
-                                placeholder="product e_money"
+                                placeholder="0.00%"
                             />
                         </div>
-                        <div class="form-group col-3">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect"
-                            >Shipping Destinination</label
-                            >
-                            <select class="form-control" name="deli_destinination" id="deli_destinination">
-                                @if($product->position == null)
-                                <option value="" selected="selected" hidden>select destinination</option>
-                                @else
-                                <option value="{{$product->deli_destinination}}" selected="selected" hidden>{{$product->deli_destinination}}</option>
-                                @endif
-                                <option value="outdoor dhaka">outdoor dhaka</option>
-                                <option value="indoor dhaka">indoor dhaka</option>
-                                <option value="indoor dhaka">free shipping</option>
-                            </select>
-                        </div>
                         <div class="form-group col-2">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                >Charge</label
-                                >
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                Indoor Ship.Ch
+                            </label>
                             <input
-                                value="{{$product->deli_charge}}"
-                                id="deli_charge"
-                                name="deli_charge"
+                                value="{{$product->indoor_charge}}"
+                                id="indoor_charge"
+                                name="indoor_charge"
                                 type="number"
                                 step="any"
                                 class="form-control"
-                                placeholder="shipping charge"
+                                placeholder="indoor charge"
+                            />
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                Outdoor Ship.Ch
+                            </label>
+                            <input
+                                value="{{$product->outdoor_charge}}"
+                                id="outdoor_charge"
+                                name="outdoor_charge"
+                                type="number"
+                                step="any"
+                                class="form-control"
+                                placeholder="outdoor charge"
                             />
                         </div>
                         

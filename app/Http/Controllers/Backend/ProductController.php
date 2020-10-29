@@ -118,6 +118,7 @@ class ProductController extends Controller
         $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
+        $discount = $cal/100;
         $cal1 = $request->e_money*$request->sale_price;
         $price1 = $cal1/100;
         $data->update([
@@ -131,9 +132,9 @@ class ProductController extends Controller
             'pur_price'=>$request->pur_price,
             'sale_price'=>$price,
             'promo_price'=>$request->promo_price,
-            'discount'=>$request->discount,
-            'deli_destinination'=>$request->deli_destinination,
-            'deli_charge'=>$request->deli_charge,
+            'discount'=>$discount,
+            'indoor_charge'=>$request->indoor_charge,
+            'outdoor_charge'=>$request->outdoor_charge,
             'e_money'=>$price1,
             'description'=>$request->description,
             'total_price'=>$request->qty*$request->sale_price,
@@ -142,7 +143,7 @@ class ProductController extends Controller
 
         toast('Product Updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        return redirect()->back();
+        return redirect()->route('products');
     }
 
 

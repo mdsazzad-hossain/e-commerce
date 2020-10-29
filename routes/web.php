@@ -35,6 +35,7 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/cart/update', 'CartController@update')->name('cart.update');
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
 
+    Route::post('product-shipp-update', 'HomeController@updateProductShipp')->name('product.shipp.des');
 
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');

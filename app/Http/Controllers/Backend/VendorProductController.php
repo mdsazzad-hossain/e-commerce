@@ -104,6 +104,7 @@ class VendorProductController extends Controller
     {
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
+        $discount = $cal/100;
         $cal1 = $request->admin_percent*$request->sale_price;
         $price1 = $cal1/100;
 
@@ -118,18 +119,18 @@ class VendorProductController extends Controller
             'qty'=>$request->qty,
             'pur_price'=>$request->pur_price,
             'sale_price'=>$price,
-            'discount'=>$request->discount,
+            'discount'=>$discount,
             'promo_price'=>$request->promo_price,
             'admin_percent'=>$price1,
             'description'=>$request->description,
-            'deli_destinination'=>$request->deli_destinination,
-            'deli_charge'=>$request->deli_charge,
+            'indoor_charge'=>$request->indoor_charge,
+            'outdoor_charge'=>$request->outdoor_charge,
             'total_price'=>$request->qty*$request->sale_price
         ]);
 
         toast('Product Update successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        return redirect()->back();
+        return redirect()->route('vendor.products');
     }
 
     /**

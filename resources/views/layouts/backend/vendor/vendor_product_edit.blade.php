@@ -103,66 +103,65 @@
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Quantity</label>
                                         <input value="{{ $product->qty }}" id="qty" name="qty" type="number"
-                                            class="form-control" placeholder="Enter product quantity" />
+                                            class="form-control" placeholder="00" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Purchase Price</label>
                                         <input value="{{ $product->pur_price }}" id="pur_price" name="pur_price"
                                             type="number" step="any" class="form-control"
-                                            placeholder="Enter product purchase price" />
+                                            placeholder="0.00tk" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Sale Price</label>
                                         <input value="{{ $product->sale_price }}" id="sale_price" name="sale_price"
                                             type="number" step="any" class="form-control"
-                                            placeholder="Enter product sale price" />
+                                            placeholder="0.00tk" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Promo Price</label>
                                         <input value="{{ $product->promo_price }}" id="promo_price" step="any"
                                             name="promo_price" type="number" class="form-control"
-                                            placeholder="Enter product promo price" />
+                                            placeholder="0.00tk" />
                                     </div>
                                 </div>
                                 <div class="form-group row col-12">
                                     <div class="form-group col-2">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Discount Price</label>
                                         <input value="{{ $product->discount }}" id="discount" step="any" name="discount"
-                                            type="number" class="form-control" placeholder="product discount" />
+                                            type="number" class="form-control" placeholder="0.00%" />
                                     </div>
                                     <div class="form-group col-2">
                                         <label style="font-size: 13px !important; class="mr-sm-2" for="inlineFormCustomSelect">Admin Commission</label>
                                         <input value="{{ $product->admin_percent }}" id="admin_percent" name="admin_percent"
                                             type="number" step="any" class="form-control"
-                                            placeholder="product admin commission" />
+                                            placeholder="0.00%" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                        >Shipping Destinination</label
+                                        >Indoor Shipp.Charge</label
                                         >
-                                        <select class="form-control" name="deli_destinination" id="deli_destinination">
-                                            @if($product->position == null)
-                                            <option value="" selected="selected" hidden>select destinination</option>
-                                            @else
-                                            <option value="{{$product->deli_destinination}}" selected="selected" hidden>{{$product->deli_destinination}}</option>
-                                            @endif
-                                            <option value="outdoor dhaka">outdoor dhaka</option>
-                                            <option value="indoor dhaka">indoor dhaka</option>
-                                            <option value="indoor dhaka">free shipping</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-2">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                            >Charge</label
-                                            >
                                         <input
-                                            value="{{$product->deli_charge}}"
-                                            id="deli_charge"
-                                            name="deli_charge"
+                                            value="{{$product->indoor_charge}}"
+                                            id="indoor_charge"
+                                            name="indoor_charge"
                                             type="number"
                                             step="any"
                                             class="form-control"
-                                            placeholder="shipping charge"
+                                            placeholder="indoor charge"
+                                        />
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                            >Outdoot Shipp.Charge</label
+                                            >
+                                        <input
+                                            value="{{$product->outdoor_charge}}"
+                                            id="outdoor_charge"
+                                            name="outdoor_charge"
+                                            type="number"
+                                            step="any"
+                                            class="form-control"
+                                            placeholder="outdoor charge"
                                         />
                                     </div>
                                     <div class="form-group col-3">

@@ -31,6 +31,7 @@
                                 @php
                                     $cost = 0;
                                     $e_money = 0;
+                                    $indoor = null;
                                 @endphp
                                 @foreach ($cart as $crt)
                                 @if ($crt->get_product)
@@ -41,32 +42,57 @@
                                     </div>
                                     <div>
                                         <h6 class="my-0">= {{$crt->total}} TK</h6>
-                                        @if ($crt->get_product->deli_destinination == "free shipping")
+                                        @if ($crt->get_product->indoor_charge == null || $crt->get_product->outdoor_charge == null)
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
-                                            @else
+                                        @elseif($crt->get_product->shipp_des == 0)
                                             
                                             @if ($crt->qty >3 && $crt->qty <=6)
-                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >6 && $crt->qty <=9)
-                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
-                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->indoor_charge}} TK</small>
                                             @else 
-                                                <small class="text-muted">Ship.Co.= {{$crt->get_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_product->indoor_charge}} TK</small>
+                                            @endif
+                                        @elseif($crt->get_product->shipp_des == 1)
+                                            @if ($crt->qty >3 && $crt->qty <=6)
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_product->outdoor_charge}} TK</small>
+                                            @elseif($crt->qty >6 && $crt->qty <=9)
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->outdoor_charge}} TK</small>
+                                            @elseif($crt->qty >9 && $crt->qty <=10)
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->outdoor_charge}} TK</small>
+                                            @else 
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_product->outdoor_charge}} TK</small>
                                             @endif
                                         @endif
                                         
                                     </div>
                                 </li>
                                 @php
-                                    if ($crt->qty >3 && $crt->qty <=6) {
-                                        $cost += 2*$crt->get_product->deli_charge;
-                                    }elseif($crt->qty >6 && $crt->qty <=9){
-                                        $cost += 3*$crt->get_product->deli_charge;
-                                    }elseif ($crt->qty >9 && $crt->qty <=10) {
-                                        $cost += 4*$crt->get_product->deli_charge;
+                                    if ($crt->get_product->shipp_des == 0) {
+                                        if ($crt->qty >3 && $crt->qty <=6) {
+                                            $cost += 2*$crt->get_product->indoor_charge;
+                                        }elseif($crt->qty >6 && $crt->qty <=9){
+                                            $cost += 3*$crt->get_product->indoor_charge;
+                                        }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                            $cost += 4*$crt->get_product->indoor_charge;
+                                        }else{
+                                            $cost += $crt->get_product->indoor_charge;
+                                        }
+                                    }else if($crt->get_product->shipp_des == 1){
+                                        if ($crt->qty >3 && $crt->qty <=6) {
+                                            $cost += 2*$crt->get_product->outdoor_charge;
+                                        }elseif($crt->qty >6 && $crt->qty <=9){
+                                            $cost += 3*$crt->get_product->outdoor_charge;
+                                        }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                            $cost += 4*$crt->get_product->outdoor_charge;
+                                        }else{
+                                            $cost += $crt->get_product->outdoor_charge;
+                                        }
                                     }
                                     $e_money += $crt->get_product->e_money;
+                                    $indoor = $crt->get_product->shipp_des;
                                 @endphp
                                 @endif
                                 @if ($crt->get_vendor_product)
@@ -77,30 +103,57 @@
                                     </div>
                                     <div>
                                         <h6 class="my-0">= {{$crt->total}} TK</h6>
-                                        @if ($crt->get_vendor_product->deli_destinination == "free shipping")
+
+                                        @if ($crt->get_vendor_product->indoor_charge == null || $crt->get_vendor_product->outdoor_charge == null)
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
-                                            @else
+                                        @elseif($crt->get_vendor_product->shipp_des == 0)
+                                            
                                             @if ($crt->qty >3 && $crt->qty <=6)
-                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >6 && $crt->qty <=9)
-                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
-                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @else 
-                                                <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->deli_charge}} TK</small>
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->indoor_charge}} TK</small>
+                                            @endif
+                                        @elseif($crt->get_vendor_product->shipp_des == 1)
+                                            @if ($crt->qty >3 && $crt->qty <=6)
+                                                <small class="text-muted">Ship.Co.= 2 x {{$crt->get_vendor_product->outdoor_charge}} TK</small>
+                                            @elseif($crt->qty >6 && $crt->qty <=9)
+                                                <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->outdoor_charge}} TK</small>
+                                            @elseif($crt->qty >9 && $crt->qty <=10)
+                                                <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->outdoor_charge}} TK</small>
+                                            @else 
+                                                <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->outdoor_charge}} TK</small>
                                             @endif
                                         @endif
                                         
                                     </div>
                                 </li>
                                 @php
-                                    if ($crt->qty >3 && $crt->qty <=6) {
-                                        $cost += 2*$crt->get_vendor_product->deli_charge;
-                                    }elseif($crt->qty >6 && $crt->qty <=9){
-                                        $cost += 3*$crt->get_vendor_product->deli_charge;
-                                    }elseif ($crt->qty >9 && $crt->qty <=10) {
-                                        $cost += 4*$crt->get_vendor_product->deli_charge;
+                                    if ($crt->get_vendor_product->shipp_des == 0) {
+                                        if ($crt->qty >3 && $crt->qty <=6) {
+                                            $cost += 2*$crt->get_vendor_product->indoor_charge;
+                                        }elseif($crt->qty >6 && $crt->qty <=9){
+                                            $cost += 3*$crt->get_vendor_product->indoor_charge;
+                                        }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                            $cost += 4*$crt->get_vendor_product->indoor_charge;
+                                        }else{
+                                            $cost += $crt->get_vendor_product->indoor_charge;
+                                        }
+                                    }else if($crt->get_vendor_product->shipp_des == 1){
+                                        if ($crt->qty >3 && $crt->qty <=6) {
+                                            $cost += 2*$crt->get_vendor_product->outdoor_charge;
+                                        }elseif($crt->qty >6 && $crt->qty <=9){
+                                            $cost += 3*$crt->get_vendor_product->outdoor_charge;
+                                        }elseif ($crt->qty >9 && $crt->qty <=10) {
+                                            $cost += 4*$crt->get_vendor_product->outdoor_charge;
+                                        }else{
+                                            $cost += $crt->get_vendor_product->outdoor_charge;
+                                        }
                                     }
+                                    $indoor = $crt->get_vendor_product->shipp_des;
                                 @endphp
                                 @endif
                                 @endforeach
@@ -149,6 +202,57 @@
                         
                         <div class="col-md-8 order-md-1">
                             <h4 class="mb-3">Billing address</h4>
+                            <p style="display: none;background-color:yellow;color:#000">Opps!Please select one.</p>
+                            <hr>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" name="exampleRadios" id="checkout2" checked>
+                                <label class="custom-control-label" for="checkout2">
+                                    Select your cart product shipping charge following your given address.
+                                </label>
+                            </div>
+                            <hr>
+                                @if ($indoor == 0 && $indoor != null)
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout" value="0" checked>
+                                        <label class="custom-control-label" for="checkout">
+                                            Product will be delivered in dhaka
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout1" value="1">
+                                        <label class="custom-control-label" for="checkout1">
+                                            Product will be delivered out dhaka
+                                        </label>
+                                    </div>
+                                @elseif($indoor == 1 && $indoor != null)
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout" value="0">
+                                        <label class="custom-control-label" for="checkout">
+                                            Product will be delivered in dhaka
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout1" value="1" checked>
+                                        <label class="custom-control-label" for="checkout1">
+                                            Product will be delivered out dhaka
+                                        </label>
+                                    </div>
+                                @else
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout" required value="0">
+                                        <label class="custom-control-label" for="checkout">
+                                            Product will be delivered in dhaka
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout1" required value="1">
+                                        <label class="custom-control-label" for="checkout1">
+                                            Product will be delivered out dhaka
+                                        </label>
+                                    </div>
+                                    
+                                @endif
+                            
                             <form action="{{ url('/pay') }}" method="POST" class="needs-validation">
                                 <input type="hidden" value="{{ csrf_token() }}" name="_token" />
                                 <input id="amount" type="hidden" name="amount" value="{{$total}}" style="border: none;text-align: end;">
@@ -195,6 +299,7 @@
                                         Please enter your shipping address.
                                     </div>
                                 </div>
+                                
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
                             </form>
                         </div>
@@ -216,6 +321,21 @@
 
             function getCost(){
                 $("#trans_cost").val($("#cost").val());
+            }
+
+            function productShippDes(val){
+                $.ajax({
+                    url: "{{ route('product.shipp.des') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'val': val
+                    },
+                    success:function(response)
+                    {
+                        window.location.reload();
+                    }
+                })
             }
         </script>
     @endsection

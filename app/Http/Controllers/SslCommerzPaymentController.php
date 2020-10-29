@@ -9,6 +9,8 @@ use App\Models\Cart;
 use App\User;
 use App\Models\Orders;
 use App\Models\OrderDetails;
+use App\Models\Product;
+use App\Models\VendorProduct;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 
@@ -139,6 +141,11 @@ class SslCommerzPaymentController extends Controller
                             'qty'=>$value->qty,
                             'total'=>$value->total
                         ]);
+
+                        $qty = Product::where('id',$data->product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty
+                        ]);
                         
                         
                        }elseif($value->product_id == null && $value->vendor_product_id != null){
@@ -149,6 +156,11 @@ class SslCommerzPaymentController extends Controller
                             'qty'=>$value->qty,
                             'total'=>$value->total
                         ]);
+                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty
+                        ]);
+
                        }else{
                         $data = OrderDetails::create([
                             'order_id'=>$id->id,
@@ -157,6 +169,16 @@ class SslCommerzPaymentController extends Controller
                             'vendor_product_id'=>$value->vendor_product_id,
                             'qty'=>$value->qty,
                             'total'=>$value->total
+                        ]);
+                        
+                        $qty = Product::where('id',$data->product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty
+                        ]);
+
+                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty
                         ]);
                        }
                     }
