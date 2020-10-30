@@ -11,6 +11,8 @@ use App\Models\SubChildCategory;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductAvatar;
+use App\Models\Orders;
+use App\Models\OrderDetails;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -44,7 +46,18 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function sales_history()
+    {
+        $data = auth()->user();
+
+        $sales = OrderDetails::latest()->with('get_orders','get_product','get_vendor_product')->get();
+        return view('layouts.backend.sales.sales_history',[
+            'data'=>$data,
+            'sales'=>$sales
+        ]);
+    }
+
+    public function sales_refund()
     {
         //
     }

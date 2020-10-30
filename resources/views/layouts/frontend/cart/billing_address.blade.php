@@ -17,7 +17,7 @@
                 </ol>
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
-        
+
         <div class="page-content">
             <div class="checkout">
                 <div class="container">
@@ -31,7 +31,7 @@
                                 @php
                                     $cost = 0;
                                     $e_money = 0;
-                                    $indoor = null;
+                                    $indoor = 'null';
                                 @endphp
                                 @foreach ($cart as $crt)
                                 @if ($crt->get_product)
@@ -45,14 +45,14 @@
                                         @if ($crt->get_product->indoor_charge == null || $crt->get_product->outdoor_charge == null)
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
                                         @elseif($crt->get_product->shipp_des == 0)
-                                            
+
                                             @if ($crt->qty >3 && $crt->qty <=6)
                                                 <small class="text-muted">Ship.Co.= 2 x {{$crt->get_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >6 && $crt->qty <=9)
                                                 <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
                                                 <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->indoor_charge}} TK</small>
-                                            @else 
+                                            @else
                                                 <small class="text-muted">Ship.Co.= {{$crt->get_product->indoor_charge}} TK</small>
                                             @endif
                                         @elseif($crt->get_product->shipp_des == 1)
@@ -62,11 +62,11 @@
                                                 <small class="text-muted">Ship.Co.= 3 x {{$crt->get_product->outdoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
                                                 <small class="text-muted">Ship.Co.= 4 x {{$crt->get_product->outdoor_charge}} TK</small>
-                                            @else 
+                                            @else
                                                 <small class="text-muted">Ship.Co.= {{$crt->get_product->outdoor_charge}} TK</small>
                                             @endif
                                         @endif
-                                        
+
                                     </div>
                                 </li>
                                 @php
@@ -107,14 +107,14 @@
                                         @if ($crt->get_vendor_product->indoor_charge == null || $crt->get_vendor_product->outdoor_charge == null)
                                             <small style="margin-left: 22px;" class="text-muted">Free Shipping</small>
                                         @elseif($crt->get_vendor_product->shipp_des == 0)
-                                            
+
                                             @if ($crt->qty >3 && $crt->qty <=6)
                                                 <small class="text-muted">Ship.Co.= 2 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >6 && $crt->qty <=9)
                                                 <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
                                                 <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->indoor_charge}} TK</small>
-                                            @else 
+                                            @else
                                                 <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->indoor_charge}} TK</small>
                                             @endif
                                         @elseif($crt->get_vendor_product->shipp_des == 1)
@@ -124,11 +124,11 @@
                                                 <small class="text-muted">Ship.Co.= 3 x {{$crt->get_vendor_product->outdoor_charge}} TK</small>
                                             @elseif($crt->qty >9 && $crt->qty <=10)
                                                 <small class="text-muted">Ship.Co.= 4 x {{$crt->get_vendor_product->outdoor_charge}} TK</small>
-                                            @else 
+                                            @else
                                                 <small class="text-muted">Ship.Co.= {{$crt->get_vendor_product->outdoor_charge}} TK</small>
                                             @endif
                                         @endif
-                                        
+
                                     </div>
                                 </li>
                                 @php
@@ -157,13 +157,13 @@
                                 @endphp
                                 @endif
                                 @endforeach
-                                
+
 
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <h6 class="my-0">Shipping Cost</h6>
                                     </div>
-                                    
+
                                     <strong>
                                         = {{$cost}} TK
                                     </strong>
@@ -186,7 +186,7 @@
                                         <input hidden type="text" readonly value="{{$val->total}}" style="border: none;text-align: end;">
                                         @php
                                             $total += $val->total;
-                                            
+
                                         @endphp
 
                                     @endforeach
@@ -199,7 +199,7 @@
                                 </li>
                             </ul>
                         </div>
-                        
+
                         <div class="col-md-8 order-md-1">
                             <h4 class="mb-3">Billing address</h4>
                             <p style="display: none;background-color:yellow;color:#000">Opps!Please select one.</p>
@@ -211,7 +211,7 @@
                                 </label>
                             </div>
                             <hr>
-                                @if ($indoor == 0 && $indoor != null)
+                                @if ($indoor == 0 && $indoor != 'null')
                                     <div class="custom-control custom-checkbox">
                                         <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout" value="0" checked>
                                         <label class="custom-control-label" for="checkout">
@@ -224,7 +224,7 @@
                                             Product will be delivered out dhaka
                                         </label>
                                     </div>
-                                @elseif($indoor == 1 && $indoor != null)
+                                @elseif($indoor == 1 && $indoor != 'null')
                                     <div class="custom-control custom-checkbox">
                                         <input onclick="productShippDes(this.value)" class="custom-control-input" type="radio" name="exampleRadios" id="checkout" value="0">
                                         <label class="custom-control-label" for="checkout">
@@ -250,9 +250,9 @@
                                             Product will be delivered out dhaka
                                         </label>
                                     </div>
-                                    
+
                                 @endif
-                            
+
                             <form action="{{ url('/pay') }}" method="POST" class="needs-validation">
                                 <input type="hidden" value="{{ csrf_token() }}" name="_token" />
                                 <input id="amount" type="hidden" name="amount" value="{{$total}}" style="border: none;text-align: end;">
@@ -267,7 +267,7 @@
                                         </div>
                                     </div>
                                 </div>
-                
+
                                 <div class="mb-3">
                                     <label for="mobile">Mobile</label>
                                     <div class="input-group">
@@ -281,7 +281,7 @@
                                         </div>
                                     </div>
                                 </div>
-                
+
                                 <div class="mb-3">
                                     <label for="email">Email <span class="text-muted">(Optional)</span></label>
                                     <input type="email" name="customer_email" class="form-control" id="email"
@@ -290,7 +290,7 @@
                                         Please enter a valid email address for shipping updates.
                                     </div>
                                 </div>
-                
+
                                 <div class="mb-3">
                                     <label for="address">Address</label>
                                     <input type="text" name="customer_address" class="form-control" id="address" placeholder="1234 Main St"
@@ -299,7 +299,7 @@
                                         Please enter your shipping address.
                                     </div>
                                 </div>
-                                
+
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
                             </form>
                         </div>

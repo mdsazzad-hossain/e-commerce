@@ -35,7 +35,15 @@
                         </button>
                     </div>
                     <form role="form" id="addCategory">
-                        <div class="card-body">
+                        <img style="display: none;
+                        position: absolute;
+                        z-index: 9999;
+                        background-color: #fff;
+                        opacity: .8;
+                        height: 318px;
+                        width: 351px;" id="loading" src="{{ asset('/images/loader1.gif') }}" alt="">
+
+                        <div class="card-body" style="position: relative">
                             <input type="text" id="id" name="id" hidden>
                             <div class="form-group">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">Category Name</label>
@@ -51,7 +59,7 @@
                                 margin-top: 2px;
                                 font-size: 12px;
                                 width: 64%;">Category name has already been taken.</p>
-                                
+
                             </div>
                             <div class="form-group">
                               <label for="image" class="col-form-label">Cover Photo</label>
@@ -78,12 +86,13 @@
                         <button id="submit" style="width: 100%" onclick="addCategory()" class="btn btn-primary">
                             Submit
                         </button>
+
                         <button id="update" style="width: 100%;display:none;" onclick="updateCategory()" class="btn btn-success">
                           Submit
                       </button>
                     </form>
                 </div>
-                
+
                 <div class="card col-7" style="margin-left: 70px;">
                     <div class="card-header">
                         <h3 class="card-title">All Categories is here</h3>
@@ -284,7 +293,8 @@
         });
 
         function addCategory() {
-            $("#submit").prop('disabled', true);
+            $("#loading").show();
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -300,7 +310,7 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
-                    if (response.errors) { 
+                    if (response.errors) {
                         if (response.errors[0] && response.errors[1]) {
                             document.getElementById("catError").style.display = "block";
                             setTimeout('$("#catError").hide()', 6000);
@@ -322,8 +332,9 @@
                             $("#submit").prop('disabled', false);
                         }
                     } else {
-                      
-                      window.location.reload();
+                        window.location.reload();
+                        $("#loading").hide();
+
                     }
                 }
             })
@@ -346,16 +357,16 @@
                 cache: false,
                 processData: false,
                 success: function(response) {
-                    if (response.errors) { 
+                    if (response.errors) {
                         if (response.errors[0]) {
                           document.getElementById("catError").style.display = "block";
                           setTimeout('$("#catError").hide()', 6000);
                           $("#update").prop('disabled', false);
                         }
                     } else {
-                        
+
                         window.location.reload();
-                        
+
 
                     }
                 }

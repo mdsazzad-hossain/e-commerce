@@ -33,7 +33,7 @@
               </a>
           </li>
           @if ($data->role == 'super_admin')
-              
+
           <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-star"></i>
@@ -97,9 +97,7 @@
             </li>
           </ul>
         </li>
-        @endif
-        
-        @if($data->role == 'vendor' || $data->role == 'super_admin')
+
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-star"></i>
@@ -117,6 +115,32 @@
             </li>
           </ul>
         </li>
+
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-star"></i>
+              <p>
+                Sales Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="{{route('sales.history')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sales List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('sales.refund')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Refund List</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+        @endif
+        @if($data->role == 'vendor' || $data->role == 'super_admin')
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-star"></i>
@@ -138,8 +162,22 @@
                 <p>Vendor Product List</p>
               </a>
             </li>
+            <li class="nav-item">
+                <a href="{{route('vendor.sales.history')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sales List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('vendor.sales.refund')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Refund List</p>
+                </a>
+              </li>
           </ul>
         </li>
+        @endif
+        @if($data->role == 'super_admin')
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-star"></i>

@@ -57,7 +57,7 @@ Route::group(["namespace"=>"Backend"],function() {
 
 
     Route::group(['middleware' => ['auth','user.role']], function () {
-        Route::post('/logout', 'LoginController@logout')->name('logout');
+        Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::get('dashboard', 'DashboardController@index')->name('dashboard');
         Route::get('user-list', 'DashboardController@user_list')->name('user.list');
         Route::get('vendor-list', 'DashboardController@vendor_list')->name('vendor.list');
@@ -138,6 +138,14 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('vendor-product-avatars/{slug}', 'VendorProductAvatarController@showAvatar')->name('vendor.product.avatars');
         Route::post('vendor-product-avatar/update', 'VendorProductAvatarController@update')->name('vendor.product.avatar.update');
         Route::get('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
+
+        //sales owner
+        Route::get('product-sales-history', 'ProductController@sales_history')->name('sales.history');
+        Route::get('product-sales-refund', 'ProductController@sales_refund')->name('sales.refund');
+
+        //sales vendor
+        Route::get('vendor-sales-history', 'VendorProductController@sales_history')->name('vendor.sales.history');
+        Route::get('vendor-sales-refund', 'VendorProductController@sales_refund')->name('vendor.sales.refund');
     });
 
 });

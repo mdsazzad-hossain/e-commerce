@@ -30,11 +30,15 @@ class VendorProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function sales_history()
     {
         //
     }
 
+    public function sales_refund()
+    {
+        //
+    }
     /**
      * Store a newly created resource in storage.
      *
