@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddShippDesToVendorProductsTable extends Migration
+class AddShippChargeToOrderDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddShippDesToVendorProductsTable extends Migration
      */
     public function up()
     {
-        Schema::table('vendor_products', function (Blueprint $table) {
-            $table->string('shipp_des')->nullable()->change();
+        Schema::table('order_details', function (Blueprint $table) {
+            $table->decimal('shipp_charge',8,2)->nullable();
+            
         });
     }
 
@@ -25,8 +26,8 @@ class AddShippDesToVendorProductsTable extends Migration
      */
     public function down()
     {
-        Schema::table('vendor_products', function (Blueprint $table) {
-            $table->dropColumn('shipp_des');
+        Schema::table('order_details', function (Blueprint $table) {
+            $table->dropColumn('shipp_charge');
         });
     }
 }

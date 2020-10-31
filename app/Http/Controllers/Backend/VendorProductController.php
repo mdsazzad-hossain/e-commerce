@@ -108,7 +108,6 @@ class VendorProductController extends Controller
     {
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
-        $discount = $cal/100;
         $cal1 = $request->admin_percent*$request->sale_price;
         $price1 = $cal1/100;
 
@@ -122,8 +121,8 @@ class VendorProductController extends Controller
             'size'=>$request->size,
             'qty'=>$request->qty,
             'pur_price'=>$request->pur_price,
-            'sale_price'=>$price,
-            'discount'=>$discount,
+            'sale_price'=>$request->sale_price,
+            'discount'=>$price,
             'promo_price'=>$request->promo_price,
             'admin_percent'=>$price1,
             'description'=>$request->description,

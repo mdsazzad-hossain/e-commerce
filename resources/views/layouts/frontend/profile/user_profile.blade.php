@@ -64,48 +64,47 @@
                                                 <th>Product Name</th>
                                                 <th>Product Image</th>
                                                 <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Total</th>
+                                                <th>Price/TK</th>
+                                                <th>Total/TK</th>
                                                 <th>Address</th>
                                                 <th>Status</th>
+                                                <th>Payment</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orderDetails as $order)
                                             @if($order->product_id != null)
                                                 <tr>
-                                                    <td>
+                                                    <td style="width: 10% !important">
                                                         <div style="display:block;">
                                                             <p style="margin: 0px;"><Strong>{{$order->get_product->product_name}}</Strong></p>
                                                             <small>Size : {{$order->get_product->size}}</small>
                                                         </div>
                                                     </td>
-                                                    <td class="product-col">
-                                                        <div class="product">
-                                                                @foreach ($order->get_product->get_product_avatars as $avtr)
-                                                                    <figure class="product-media">
-                                                                        <a href="#">
-                                                                            <img src="{{ asset('/images/' . $avtr->front) }}"
-                                                                                alt="Product image">
-                                                                        </a>
-                                                                    </figure>
-                                                                @endforeach
-                                                        </div><!-- End .product -->
+                                                    <td style="width: 10% !important">
+                                                        @foreach ($order->get_product->get_product_avatars as $avtr)
+                                                        <img style="height:60px !important;" src="{{ asset('/images/' . $avtr->front) }}"
+                                                        alt="Product image">
+                                                        @endforeach
                                                     </td>
-                                                    <td class="quantity-col">
+                                                    <td style="width: 10% !important">
                                                         <div class="cart-product-quantity">
                                                             <p>{{$order->qty}}</p>
         
                                                         </div>
                                                     </td>
-                                                    <td id="sale_price" class="price-col">{{$order->get_product->sale_price}}</td>
-                                                    <td id="total" class="total-col">{{$order->total}}</td>
+                                                    <td>{{$order->get_product->sale_price}} TK</td>
+                                                    <td>{{$order->total}} TK</td>
                                                     
                                                     <td>
                                                         <p onclick="getAddress({{$order->get_orders}})" style="cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter" class="badge badge-warning">Address</p>
                                                     </td>
                                                     <td>
                                                         <p class="badge badge-warning">{{$order->get_orders->delivery_status}}</p>
+                                                    </td>
+                                                    <td style="width: 10% !important">
+                                                        <p class="badge badge-success">{{$order->get_orders->payment}}</p>
                                                     </td>
                                                     <td class="remove-col">
                                                         <button class="btn-remove"><i
@@ -140,14 +139,17 @@
         
                                                         </div>
                                                     </td>
-                                                    <td id="sale_price" class="price-col">{{$order->get_vendor_product->sale_price}}</td>
-                                                    <td id="total" class="total-col">{{$order->total}}</td>
+                                                    <td id="sale_price" class="price-col">{{$order->get_vendor_product->sale_price}} TK</td>
+                                                    <td id="total" class="total-col">{{$order->total}} TK</td>
                                                     
                                                     <td>
                                                         <p onclick="getAddress({{$order->get_orders}})" style="cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter" class="badge badge-warning">Address</p>
                                                     </td>
                                                     <td>
                                                         <p class="badge badge-warning">{{$order->get_orders->delivery_status}}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="badge badge-success">{{$order->get_orders->payment}}</p>
                                                     </td>
                                                     <td class="remove-col">
                                                         <button class="btn-remove"><i

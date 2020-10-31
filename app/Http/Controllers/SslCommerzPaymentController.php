@@ -29,14 +29,17 @@ class SslCommerzPaymentController extends Controller
 
     public function index(Request $request)
     {
+        
+
         # Here you have to receive all the order data to initate the payment.
         # Let's say, your oder transaction informations are saving in a table called "orders"
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
-
+        
         $post_data = array();
         $post_data['total_amount'] = $request->amount; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = uniqid(); // tran_id must be unique
+        $post_data['shipp_charge'] = $request->shipp_charge;
 
         # CUSTOMER INFORMATION
         $post_data['cus_name'] = $request->customer_name;
@@ -73,149 +76,244 @@ class SslCommerzPaymentController extends Controller
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
 
-        #Before  going to initiate the payment order status need to insert or update as Pending.
-        $update_product = DB::table('orders')
-            ->where('transaction_id', $post_data['tran_id'])
-            ->updateOrInsert([
-                'user_id' => $post_data['user_id'],
-                'name' => $post_data['cus_name'],
-                'email' => $post_data['cus_email'],
-                'phone' => $post_data['cus_phone'],
-                'total_emoney'=>$post_data['total_emoney'],
-                'amount' => $post_data['total_amount'],
-                'status' => 'Pending',
-                'address' => $post_data['cus_add1'],
-                'transaction_id' => $post_data['tran_id'],
-                'currency' => $post_data['currency']
-            ]);
+        if ($request->payment == 'cash on delivery') {
+            $post_data['payment'] = $request->payment;
 
-        $sslc = new SslCommerzNotification();
-        # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
-        $payment_options = $sslc->makePayment($post_data, 'hosted');
+            $update_product = DB::table('orders')
+                ->where('transaction_id', $post_data['tran_id'])
+                ->updateOrInsert([
+                    'user_id' => $post_data['user_id'],
+                    'name' => $post_data['cus_name'],
+                    'email' => $post_data['cus_email'],
+                    'phone' => $post_data['cus_phone'],
+                    'total_emoney'=>$post_data['total_emoney'],
+                    'amount' => $post_data['total_amount'],
+                    'status' => 'Pending',
+                    'address' => $post_data['cus_add1'],
+                    'transaction_id' => $post_data['tran_id'],
+                    'payment' => $post_data['payment'],
+                    'currency' => $post_data['currency']
+                ]);
+                $orderData = DB::table('orders')->where('transaction_id', $post_data['tran_id'])->first();
 
-        if (!is_array($payment_options)) {
-            print_r($payment_options);
-            $payment_options = array();
+                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
+
+                    foreach ($carts as $key => $value) {
+                        if($value->vendor_product_id == null && $value->product_id != null){
+                         $data = OrderDetails::create([
+                             'order_id'=>$orderData->id,
+                             'product_id'=>$value->product_id,
+                             'user_id'=>$orderData->user_id,
+                             'qty'=>$value->qty,
+                             'total'=>$value->total,
+                             'shipp_charge'=>$request->shipp_charge
+                         ]);
+ 
+                         $qty = Product::where('id',$data->product_id)->first();
+                         $qty->update([
+                             'qty'=>$qty->qty-$data->qty,
+                             'shipp_des'=>NULL,
+                         ]);
+                         
+                         
+                        }elseif($value->product_id == null && $value->vendor_product_id != null){
+                         $data = OrderDetails::create([
+                             'order_id'=>$orderData->id,
+                             'user_id'=>$orderData->user_id,
+                             'vendor_product_id'=>$value->vendor_product_id,
+                             'qty'=>$value->qty,
+                             'total'=>$value->total,
+                             'shipp_charge'=>$request->shipp_charge
+                         ]);
+                         $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                         $qty->update([
+                             'qty'=>$qty->qty-$data->qty,
+                             'shipp_des'=>NULL,
+                         ]);
+ 
+                        }else{
+                         $data = OrderDetails::create([
+                             'order_id'=>$orderData->id,
+                             'user_id'=>$orderData->user_id,
+                             'product_id'=>$value->product_id,
+                             'vendor_product_id'=>$value->vendor_product_id,
+                             'qty'=>$value->qty,
+                             'total'=>$value->total,
+                             'shipp_charge'=>$request->shipp_charge
+                         ]);
+                         
+                         $qty = Product::where('id',$data->product_id)->first();
+                         $qty->update([
+                             'qty'=>$qty->qty-$data->qty,
+                             'shipp_des'=>NULL,
+                         ]);
+ 
+                         $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                         $qty->update([
+                             'qty'=>$qty->qty-$data->qty,
+                             'shipp_des'=>NULL,
+                         ]);
+                        }
+                     }
+
+                $money = User::where('id',$data->user_id)->first();
+                User::where('id',$data->user_id)->update([
+                    'e_money'=>$money->e_money+$data->total_emoney
+                ]);
+                Cart::where('user_id',$data->user_id)->delete();
+                toast('Checkout successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+                // echo "<br >Transaction is successfully Completed";
+                return redirect()->route('home');
+        }else{
+
+            #Before  going to initiate the payment order status need to insert or update as Pending.
+            $update_product = DB::table('orders')
+                ->where('transaction_id', $post_data['tran_id'])
+                ->updateOrInsert([
+                    'user_id' => $post_data['user_id'],
+                    'name' => $post_data['cus_name'],
+                    'email' => $post_data['cus_email'],
+                    'phone' => $post_data['cus_phone'],
+                    'total_emoney'=>$post_data['total_emoney'],
+                    'amount' => $post_data['total_amount'],
+                    'status' => 'Pending',
+                    'address' => $post_data['cus_add1'],
+                    'transaction_id' => $post_data['tran_id'],
+                    'currency' => $post_data['currency']
+                ]);
+
+            $sslc = new SslCommerzNotification();
+            # initiate(Transaction Data , false: Redirect to SSLCOMMERZ gateway/ true: Show all the Payement gateway here )
+            $payment_options = $sslc->makePayment($post_data, 'hosted');
+
+            if (!is_array($payment_options)) {
+                print_r($payment_options);
+                $payment_options = array();
+            }
         }
+        
 
     }
 
     public function success(Request $request)
     {
-        
+        return dd($request->input('shipp_charge'));
+        // $tran_id = $request->input('tran_id');
+        // $amount = $request->input('amount');
+        // $currency = $request->input('currency');
 
-        $tran_id = $request->input('tran_id');
-        $amount = $request->input('amount');
-        $currency = $request->input('currency');
+        // $sslc = new SslCommerzNotification();
 
-        $sslc = new SslCommerzNotification();
+        // #Check order status in order tabel against the transaction id or order id.
+        // $order_detials = DB::table('orders')
+        //     ->where('transaction_id', $tran_id)
+        //     ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-        #Check order status in order tabel against the transaction id or order id.
-        $order_detials = DB::table('orders')
-            ->where('transaction_id', $tran_id)
-            ->select('transaction_id', 'status', 'currency', 'amount')->first();
+        // if ($order_detials->status == 'Pending') {
+        //     $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
 
-        if ($order_detials->status == 'Pending') {
-            $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
+        //     if ($validation == TRUE) {
+        //         /*
+        //         That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
+        //         in order table as Processing or Complete.
+        //         Here you can also sent sms or email for successfull transaction to customer
+        //         */
+        //         $update_product = DB::table('orders')
+        //             ->where('transaction_id', $tran_id)
+        //             ->update([
+        //                 'status' => 'Processing',
+        //                 'payment' => $request->card_type
+        //             ]);
 
-            if ($validation == TRUE) {
-                /*
-                That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
-                in order table as Processing or Complete.
-                Here you can also sent sms or email for successfull transaction to customer
-                */
-                $update_product = DB::table('orders')
-                    ->where('transaction_id', $tran_id)
-                    ->update(['status' => 'Processing']);
-
-                if($update_product){
-                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
-                    $id = Orders::orderBy('id','DESC')->first();
+        //         if($update_product){
+        //             $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
+        //             $id = Orders::orderBy('id','DESC')->first();
                     
-                    foreach ($carts as $key => $value) {
-                       if($value->vendor_product_id == null && $value->product_id != null){
-                        $data = OrderDetails::create([
-                            'order_id'=>$id->id,
-                            'product_id'=>$value->product_id,
-                            'user_id'=>$id->user_id,
-                            'qty'=>$value->qty,
-                            'total'=>$value->total
-                        ]);
+        //             foreach ($carts as $key => $value) {
+        //                if($value->vendor_product_id == null && $value->product_id != null){
+        //                 $data = OrderDetails::create([
+        //                     'order_id'=>$id->id,
+        //                     'product_id'=>$value->product_id,
+        //                     'user_id'=>$id->user_id,
+        //                     'qty'=>$value->qty,
+        //                     'total'=>$value->total
+        //                 ]);
 
-                        $qty = Product::where('id',$data->product_id)->first();
-                        $qty->update([
-                            'qty'=>$qty->qty-$data->qty
-                        ]);
+        //                 $qty = Product::where('id',$data->product_id)->first();
+        //                 $qty->update([
+        //                     'qty'=>$qty->qty-$data->qty
+        //                 ]);
                         
                         
-                       }elseif($value->product_id == null && $value->vendor_product_id != null){
-                        $data = OrderDetails::create([
-                            'order_id'=>$id->id,
-                            'user_id'=>$id->user_id,
-                            'vendor_product_id'=>$value->vendor_product_id,
-                            'qty'=>$value->qty,
-                            'total'=>$value->total
-                        ]);
-                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
-                        $qty->update([
-                            'qty'=>$qty->qty-$data->qty
-                        ]);
+        //                }elseif($value->product_id == null && $value->vendor_product_id != null){
+        //                 $data = OrderDetails::create([
+        //                     'order_id'=>$id->id,
+        //                     'user_id'=>$id->user_id,
+        //                     'vendor_product_id'=>$value->vendor_product_id,
+        //                     'qty'=>$value->qty,
+        //                     'total'=>$value->total
+        //                 ]);
+        //                 $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+        //                 $qty->update([
+        //                     'qty'=>$qty->qty-$data->qty
+        //                 ]);
 
-                       }else{
-                        $data = OrderDetails::create([
-                            'order_id'=>$id->id,
-                            'user_id'=>$id->user_id,
-                            'product_id'=>$value->product_id,
-                            'vendor_product_id'=>$value->vendor_product_id,
-                            'qty'=>$value->qty,
-                            'total'=>$value->total
-                        ]);
+        //                }else{
+        //                 $data = OrderDetails::create([
+        //                     'order_id'=>$id->id,
+        //                     'user_id'=>$id->user_id,
+        //                     'product_id'=>$value->product_id,
+        //                     'vendor_product_id'=>$value->vendor_product_id,
+        //                     'qty'=>$value->qty,
+        //                     'total'=>$value->total
+        //                 ]);
                         
-                        $qty = Product::where('id',$data->product_id)->first();
-                        $qty->update([
-                            'qty'=>$qty->qty-$data->qty
-                        ]);
+        //                 $qty = Product::where('id',$data->product_id)->first();
+        //                 $qty->update([
+        //                     'qty'=>$qty->qty-$data->qty
+        //                 ]);
 
-                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
-                        $qty->update([
-                            'qty'=>$qty->qty-$data->qty
-                        ]);
-                       }
-                    }
-                    $money = User::where('id',$id->user_id)->first();
-                    User::where('id',$id->user_id)->update([
-                        'e_money'=>$money->e_money+$id->total_emoney
-                    ]);
-                    Cart::where('user_id',$data->user_id)->delete();
-                    toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        //                 $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+        //                 $qty->update([
+        //                     'qty'=>$qty->qty-$data->qty
+        //                 ]);
+        //                }
+        //             }
+        //             $money = User::where('id',$id->user_id)->first();
+        //             User::where('id',$id->user_id)->update([
+        //                 'e_money'=>$money->e_money+$id->total_emoney
+        //             ]);
+        //             Cart::where('user_id',$data->user_id)->delete();
+        //             toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-                    // echo "<br >Transaction is successfully Completed";
-                    return redirect()->route('home');
+        //             // echo "<br >Transaction is successfully Completed";
+        //             return redirect()->route('home');
                     
-                }
+        //         }
 
                 
-            } else {
-                /*
-                That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
-                Here you need to update order status as Failed in order table.
-                */
-                $update_product = DB::table('orders')
-                    ->where('transaction_id', $tran_id)
-                    ->update(['status' => 'Failed']);
-                    return redirect()->route('cart');
-            }
-        } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-            /*
-             That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
-             */
-            // echo "Transaction is successfully Completed";
-            return redirect()->route('cart');
+        //     } else {
+        //         /*
+        //         That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
+        //         Here you need to update order status as Failed in order table.
+        //         */
+        //         $update_product = DB::table('orders')
+        //             ->where('transaction_id', $tran_id)
+        //             ->update(['status' => 'Failed']);
+        //             return redirect()->route('cart');
+        //     }
+        // } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
+        //     /*
+        //      That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
+        //      */
+        //     // echo "Transaction is successfully Completed";
+        //     return redirect()->route('cart');
 
-        } else {
-            #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
-        }
+        // } else {
+        //     #That means something wrong happened. You can redirect customer to your product page.
+        //     echo "Invalid Transaction";
+        // }
 
 
     }

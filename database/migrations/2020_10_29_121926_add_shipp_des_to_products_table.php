@@ -14,7 +14,7 @@ class AddShippDesToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->boolean('shipp_des')->nullable();
+            $table->string('shipp_des')->nullable()->change();
         });
     }
 

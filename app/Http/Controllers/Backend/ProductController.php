@@ -131,7 +131,6 @@ class ProductController extends Controller
         $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
-        $discount = $cal/100;
         $cal1 = $request->e_money*$request->sale_price;
         $price1 = $cal1/100;
         $data->update([
@@ -143,9 +142,9 @@ class ProductController extends Controller
             'size'=>$request->size,
             'qty'=>$request->qty,
             'pur_price'=>$request->pur_price,
-            'sale_price'=>$price,
+            'sale_price'=>$request->sale_price,
             'promo_price'=>$request->promo_price,
-            'discount'=>$discount,
+            'discount'=>$price,
             'indoor_charge'=>$request->indoor_charge,
             'outdoor_charge'=>$request->outdoor_charge,
             'e_money'=>$price1,

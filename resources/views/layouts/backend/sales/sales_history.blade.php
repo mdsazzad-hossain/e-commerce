@@ -118,10 +118,22 @@
                                             <td class="sorting_1">{{ $sale->get_product->pur_price }}</td>
                                             <td class="sorting_1">{{ $sale->get_product->sale_price }}</td>
                                             <td class="sorting_1">{{ $sale->get_product->discount }}</td>
+                                            @if($sale->get_product->shipp_des == 'indoor')
                                             <td class="sorting_1">
-                                                <span><strong>{{ $sale->get_orders->amount }}</strong></span><br>
-                                                <small>Qty : {{ $sale->qty }} + shipp.C</small>
+                                                <span><strong>{{ $sale->get_orders->total }}</strong></span><br>
+                                            <small>Qty : {{ $sale->qty }} + {{$sale->get_product->indoor_charge}}</small>
                                             </td>
+                                            @elseif($sale->get_product->shipp_des == 'outdoor')
+                                            <td class="sorting_1">
+                                                <span><strong>{{ $sale->get_orders->total }}</strong></span><br>
+                                                <small>Qty : {{ $sale->qty }} + {{$sale->get_product->outdoor_charge}}</small>
+                                            </td>
+                                            @else 
+                                            <td class="sorting_1">
+                                                <span><strong>{{ $sale->get_orders->total }}</strong></span><br>
+                                                <small>Qty : {{ $sale->qty }} + F.Ship.C</small>
+                                            </td>
+                                            @endif
                                             @php
                                                 $total += $sale->qty*$sale->get_product->pur_price;
                                                 $profit += $sale->get_orders->amount-$total;
