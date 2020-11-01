@@ -22,7 +22,7 @@
             <div class="dashboard">
                 <div class="container">
                     <div class="row">
-                        <aside class="col-md-4 col-lg-3">
+                        <aside class="col-md-3 col-lg-2">
                             <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab"
@@ -51,7 +51,7 @@
                             </ul>
                         </aside><!-- End .col-lg-3 -->
 
-                        <div class="col-md-8 col-lg-9">
+                        <div class="col-md-9 col-lg-10">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                     aria-labelledby="tab-dashboard-link">
@@ -69,11 +69,14 @@
                                                 <th>Address</th>
                                                 <th>Status</th>
                                                 <th>Payment</th>
+                                                <th>Refund</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orderDetails as $order)
+                                            @if ($order->order_id == $order->get_orders->id && $order->get_orders->delivery_status == 'pending')
+
                                             @if($order->product_id != null)
                                                 <tr>
                                                     <td style="width: 10% !important">
@@ -106,6 +109,12 @@
                                                     <td style="width: 10% !important">
                                                         <p class="badge badge-success">{{$order->get_orders->payment}}</p>
                                                     </td>
+                                                    @if ($order->get_orders->payment == 'cash on delivery')
+                                                        <td style="width: 10% !important">
+                                                            <p style="cursor: pointer;" onclick="refund({{$order->get_orders->id}})" class="badge badge-danger">Refund</p>
+                                                        </td>
+                                                    @endif
+                                                    
                                                     <td class="remove-col">
                                                         <button class="btn-remove"><i
                                                                 class="icon-close"></i>
@@ -151,12 +160,16 @@
                                                     <td>
                                                         <p class="badge badge-success">{{$order->get_orders->payment}}</p>
                                                     </td>
+                                                    <td>
+                                                        <p class="badge badge-danger">Refund</p>
+                                                    </td>
                                                     <td class="remove-col">
                                                         <button class="btn-remove"><i
                                                                 class="icon-close"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
+                                                @endif
                                                 @endif
                                             @endforeach
                                         </tbody>
@@ -310,6 +323,20 @@
                 $("#getPhn").text(order.phone);
                 $("#getAmount").text(order.amount);
                 $("#getAddress").text(order.address);
+            }
+
+            function refund(id){
+                $.ajax({
+                    url: "{{ route('product.refund') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": id
+                    },
+                    success: function(response) {
+                        window.location.reload();
+                    }
+                });
             }
         </script>
     @endsection

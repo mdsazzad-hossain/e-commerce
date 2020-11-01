@@ -51,9 +51,11 @@ class ProductController extends Controller
         $data = auth()->user();
 
         $sales = OrderDetails::latest()->with('get_orders','get_product','get_vendor_product')->get();
+        $count = Orders::where('delivery_status','pending')->count();
         return view('layouts.backend.sales.sales_history',[
             'data'=>$data,
-            'sales'=>$sales
+            'sales'=>$sales,
+            'count'=>$count
         ]);
     }
 

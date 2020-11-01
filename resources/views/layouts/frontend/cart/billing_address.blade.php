@@ -368,13 +368,7 @@
                 $("#trans_cost").val($("#cost").val());
             }
 
-            function productShippDes(val){
-                
-                // var input = document.getElementsByName('shipp_charge[]'); 
-                // for (var i = 0; i < input.length; i++) { 
-                //     var a = input[i]; 
-                    
-                // } 
+            function productShippDes(val){ 
                 $.ajax({
                     url: "{{ route('product.shipp.des') }}",
                     type: "POST",

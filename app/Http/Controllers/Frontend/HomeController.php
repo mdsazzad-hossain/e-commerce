@@ -259,9 +259,29 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function delivery(Request $request)
     {
-        //
+        Orders::where('id',$request->id)->update([
+            'delivery_status'=>'delivered'
+        ]);
+        toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        
+        return response()->json([
+            'msg'=>'success'
+        ]);
+    }
+
+    public function refund(Request $request)
+    {
+        Orders::where('id',$request->id)->update([
+            'delivery_status'=>'refund'
+        ]);
+
+        toast('Product refund successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+        
+        return response()->json([
+            'msg'=>'success'
+        ]);
     }
 
     /**

@@ -36,6 +36,8 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
 
     Route::post('product-shipp-update', 'HomeController@updateProductShipp')->name('product.shipp.des');
+    //product delivery
+    Route::post('product-delivered', 'HomeController@delivery')->name('product.delivery');
 
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');
@@ -43,6 +45,10 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/vendor/product/{name}', 'HomeController@show_vendor_products')->name('vendor.all.products');
     Route::get('/view/{slug}', 'HomeController@product_quick_view')->name('product.quick');
     Route::get('/quick/view/{slug}', 'HomeController@quick_view')->name('quick');
+
+    //order refund
+    Route::post('order-refund', 'HomeController@refund')->name('product.refund');
+
 
 });
 
@@ -146,6 +152,11 @@ Route::group(["namespace"=>"Backend"],function() {
         //sales vendor
         Route::get('vendor-sales-history', 'VendorProductController@sales_history')->name('vendor.sales.history');
         Route::get('vendor-sales-refund', 'VendorProductController@sales_refund')->name('vendor.sales.refund');
+
+        //orders
+        //sales vendor
+        Route::post('order/{id}', 'OrdersController@delete_single_order')->name('single.order.delete');
+        Route::get('order-refunds', 'OrdersController@refundView')->name('refund.view');
     });
 
 });

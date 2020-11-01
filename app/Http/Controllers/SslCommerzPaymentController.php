@@ -99,14 +99,38 @@ class SslCommerzPaymentController extends Controller
                     $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
 
                     foreach ($carts as $key => $value) {
+                        $product = Product::where('id',$value->product_id)->first();
+                         if ($product->shipp_des == 'indoor') {
+                             if ($value->qty<=3) {
+                                $shipp_cost = $product->indoor_charge;
+                             }elseif($value->qty>3 && $value->qty<=6){
+                                $shipp_cost =2*$product->indoor_charge;
+                             }elseif($value->qty>6 && $value->qty<=9){
+                                $shipp_cost =3*$product->indoor_charge;
+                             }elseif($value->qty>9 && $value->qty<= 10){
+                                $shipp_cost =4*$product->indoor_charge;
+                             }
+                         }elseif($product->shipp_des == 'outdoor'){
+                            if ($value->qty<=3) {
+                                $shipp_cost = $product->outdoor_charge;
+                             }elseif($value->qty>3 && $value->qty<=6){
+                                $shipp_cost =2*$product->outdoor_charge;
+                             }elseif($value->qty>6 && $value->qty<=9){
+                                $shipp_cost =3*$product->outdoor_charge;
+                             }elseif($value->qty>9 && $value->qty<= 10){
+                                $shipp_cost =4*$product->outdoor_charge;
+                             }
+                         };
+
                         if($value->vendor_product_id == null && $value->product_id != null){
-                         $data = OrderDetails::create([
+
+                          $data = OrderDetails::create([
                              'order_id'=>$orderData->id,
                              'product_id'=>$value->product_id,
                              'user_id'=>$orderData->user_id,
                              'qty'=>$value->qty,
                              'total'=>$value->total,
-                             'shipp_charge'=>$request->shipp_charge
+                             'shipp_charge'=>$shipp_cost
                          ]);
  
                          $qty = Product::where('id',$data->product_id)->first();
@@ -123,7 +147,7 @@ class SslCommerzPaymentController extends Controller
                              'vendor_product_id'=>$value->vendor_product_id,
                              'qty'=>$value->qty,
                              'total'=>$value->total,
-                             'shipp_charge'=>$request->shipp_charge
+                             'shipp_charge'=>$shipp_cost
                          ]);
                          $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
                          $qty->update([
@@ -139,7 +163,7 @@ class SslCommerzPaymentController extends Controller
                              'vendor_product_id'=>$value->vendor_product_id,
                              'qty'=>$value->qty,
                              'total'=>$value->total,
-                             'shipp_charge'=>$request->shipp_charge
+                             'shipp_charge'=>$shipp_cost
                          ]);
                          
                          $qty = Product::where('id',$data->product_id)->first();
@@ -198,122 +222,150 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        return dd($request->input('shipp_charge'));
-        // $tran_id = $request->input('tran_id');
-        // $amount = $request->input('amount');
-        // $currency = $request->input('currency');
+        $tran_id = $request->input('tran_id');
+        $amount = $request->input('amount');
+        $currency = $request->input('currency');
 
-        // $sslc = new SslCommerzNotification();
+        $sslc = new SslCommerzNotification();
 
-        // #Check order status in order tabel against the transaction id or order id.
-        // $order_detials = DB::table('orders')
-        //     ->where('transaction_id', $tran_id)
-        //     ->select('transaction_id', 'status', 'currency', 'amount')->first();
+        #Check order status in order tabel against the transaction id or order id.
+        $order_detials = DB::table('orders')
+            ->where('transaction_id', $tran_id)
+            ->select('transaction_id', 'status', 'currency', 'amount')->first();
 
-        // if ($order_detials->status == 'Pending') {
-        //     $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
+        if ($order_detials->status == 'Pending') {
+            $validation = $sslc->orderValidate($tran_id, $amount, $currency, $request->all());
 
-        //     if ($validation == TRUE) {
-        //         /*
-        //         That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
-        //         in order table as Processing or Complete.
-        //         Here you can also sent sms or email for successfull transaction to customer
-        //         */
-        //         $update_product = DB::table('orders')
-        //             ->where('transaction_id', $tran_id)
-        //             ->update([
-        //                 'status' => 'Processing',
-        //                 'payment' => $request->card_type
-        //             ]);
+            if ($validation == TRUE) {
+                /*
+                That means IPN did not work or IPN URL was not set in your merchant panel. Here you need to update order status
+                in order table as Processing or Complete.
+                Here you can also sent sms or email for successfull transaction to customer
+                */
+                $update_product = DB::table('orders')
+                    ->where('transaction_id', $tran_id)
+                    ->update([
+                        'status' => 'Processing',
+                        'payment' => $request->card_type
+                    ]);
 
-        //         if($update_product){
-        //             $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
-        //             $id = Orders::orderBy('id','DESC')->first();
+                if($update_product){
+                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
+                    $id = Orders::orderBy('id','DESC')->first();
                     
-        //             foreach ($carts as $key => $value) {
-        //                if($value->vendor_product_id == null && $value->product_id != null){
-        //                 $data = OrderDetails::create([
-        //                     'order_id'=>$id->id,
-        //                     'product_id'=>$value->product_id,
-        //                     'user_id'=>$id->user_id,
-        //                     'qty'=>$value->qty,
-        //                     'total'=>$value->total
-        //                 ]);
+                    foreach ($carts as $key => $value) {
+                        $product = Product::where('id',$value->product_id)->first();
+                        if ($product->shipp_des == 'indoor') {
+                            if ($value->qty<=3) {
+                               $shipp_cost = $product->indoor_charge;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$product->indoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$product->indoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$product->indoor_charge;
+                            }
+                        }elseif($product->shipp_des == 'outdoor'){
+                           if ($value->qty<=3) {
+                               $shipp_cost = $product->outdoor_charge;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$product->outdoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$product->outdoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$product->outdoor_charge;
+                            }
+                        };
+                       if($value->vendor_product_id == null && $value->product_id != null){
+                        $data = OrderDetails::create([
+                            'order_id'=>$id->id,
+                            'product_id'=>$value->product_id,
+                            'user_id'=>$id->user_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total,
+                            'shipp_charge'=>$shipp_cost
+                        ]);
 
-        //                 $qty = Product::where('id',$data->product_id)->first();
-        //                 $qty->update([
-        //                     'qty'=>$qty->qty-$data->qty
-        //                 ]);
+                        $qty = Product::where('id',$data->product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty,
+                            'shipp_des'=>NULL,
+                        ]);
                         
                         
-        //                }elseif($value->product_id == null && $value->vendor_product_id != null){
-        //                 $data = OrderDetails::create([
-        //                     'order_id'=>$id->id,
-        //                     'user_id'=>$id->user_id,
-        //                     'vendor_product_id'=>$value->vendor_product_id,
-        //                     'qty'=>$value->qty,
-        //                     'total'=>$value->total
-        //                 ]);
-        //                 $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
-        //                 $qty->update([
-        //                     'qty'=>$qty->qty-$data->qty
-        //                 ]);
+                       }elseif($value->product_id == null && $value->vendor_product_id != null){
+                        $data = OrderDetails::create([
+                            'order_id'=>$id->id,
+                            'user_id'=>$id->user_id,
+                            'vendor_product_id'=>$value->vendor_product_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total,
+                            'shipp_charge'=>$shipp_cost
+                        ]);
+                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty,
+                            'shipp_des'=>NULL,
+                        ]);
 
-        //                }else{
-        //                 $data = OrderDetails::create([
-        //                     'order_id'=>$id->id,
-        //                     'user_id'=>$id->user_id,
-        //                     'product_id'=>$value->product_id,
-        //                     'vendor_product_id'=>$value->vendor_product_id,
-        //                     'qty'=>$value->qty,
-        //                     'total'=>$value->total
-        //                 ]);
+                       }else{
+                        $data = OrderDetails::create([
+                            'order_id'=>$id->id,
+                            'user_id'=>$id->user_id,
+                            'product_id'=>$value->product_id,
+                            'vendor_product_id'=>$value->vendor_product_id,
+                            'qty'=>$value->qty,
+                            'total'=>$value->total,
+                            'shipp_charge'=>$shipp_cost
+                        ]);
                         
-        //                 $qty = Product::where('id',$data->product_id)->first();
-        //                 $qty->update([
-        //                     'qty'=>$qty->qty-$data->qty
-        //                 ]);
+                        $qty = Product::where('id',$data->product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty,
+                            'shipp_des'=>NULL,
+                        ]);
 
-        //                 $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
-        //                 $qty->update([
-        //                     'qty'=>$qty->qty-$data->qty
-        //                 ]);
-        //                }
-        //             }
-        //             $money = User::where('id',$id->user_id)->first();
-        //             User::where('id',$id->user_id)->update([
-        //                 'e_money'=>$money->e_money+$id->total_emoney
-        //             ]);
-        //             Cart::where('user_id',$data->user_id)->delete();
-        //             toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                        $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
+                        $qty->update([
+                            'qty'=>$qty->qty-$data->qty,
+                            'shipp_des'=>NULL,
+                        ]);
+                       }
+                    }
+                    $money = User::where('id',$id->user_id)->first();
+                    User::where('id',$id->user_id)->update([
+                        'e_money'=>$money->e_money+$id->total_emoney
+                    ]);
+                    Cart::where('user_id',$data->user_id)->delete();
+                    toast('Transection successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
-        //             // echo "<br >Transaction is successfully Completed";
-        //             return redirect()->route('home');
+                    // echo "<br >Transaction is successfully Completed";
+                    return redirect()->route('home');
                     
-        //         }
+                }
 
                 
-        //     } else {
-        //         /*
-        //         That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
-        //         Here you need to update order status as Failed in order table.
-        //         */
-        //         $update_product = DB::table('orders')
-        //             ->where('transaction_id', $tran_id)
-        //             ->update(['status' => 'Failed']);
-        //             return redirect()->route('cart');
-        //     }
-        // } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-        //     /*
-        //      That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
-        //      */
-        //     // echo "Transaction is successfully Completed";
-        //     return redirect()->route('cart');
+            } else {
+                /*
+                That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
+                Here you need to update order status as Failed in order table.
+                */
+                $update_product = DB::table('orders')
+                    ->where('transaction_id', $tran_id)
+                    ->update(['status' => 'Failed']);
+                    return redirect()->route('cart');
+            }
+        } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
+            /*
+             That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
+             */
+            // echo "Transaction is successfully Completed";
+            return redirect()->route('cart');
 
-        // } else {
-        //     #That means something wrong happened. You can redirect customer to your product page.
-        //     echo "Invalid Transaction";
-        // }
+        } else {
+            #That means something wrong happened. You can redirect customer to your product page.
+            echo "Invalid Transaction";
+        }
 
 
     }
