@@ -125,21 +125,36 @@
                                     </div>
                                 </div>
                                 <div class="form-group row col-12">
-                                    <div class="form-group col-2">
+                                    <div class="form-group col-4">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Discount Price</label>
                                         <input value="{{ $product->discount }}" id="discount" step="any" name="discount"
                                             type="number" class="form-control" placeholder="0.00%" />
                                     </div>
-                                    <div class="form-group col-2">
+                                    <div class="form-group col-4">
                                         <label style="font-size: 13px !important; class="mr-sm-2" for="inlineFormCustomSelect">Admin Commission</label>
                                         <input value="{{ $product->admin_percent }}" id="admin_percent" name="admin_percent"
                                             type="number" step="any" class="form-control"
                                             placeholder="0.00%" />
                                     </div>
-                                    <div class="form-group col-3">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                        >Indoor Shipp.Charge</label
-                                        >
+
+                                    <div class="form-group col-4">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Select Size For Showing</label>
+                                        <select class="form-control" name="size_show" id="size_show">
+                                            @if ($product->size != null)
+                                                <option value="{{ $product->size }}" selected="selected">
+                                                    {{ $product->size }}</option>
+                                            @else
+                                                <option value="" selected="selected" hidden>select size</option>
+                                            @endif
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row col-12">
+                                    <div class="form-group col-4">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                            Indoor Shipping Charege
+                                        </label>
                                         <input
                                             value="{{$product->indoor_charge}}"
                                             id="indoor_charge"
@@ -150,10 +165,10 @@
                                             placeholder="indoor charge"
                                         />
                                     </div>
-                                    <div class="form-group col-2">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                            >Outdoot Shipp.Charge</label
-                                            >
+                                    <div class="form-group col-4">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                            Outdoor Shipping Charege
+                                        </label>
                                         <input
                                             value="{{$product->outdoor_charge}}"
                                             id="outdoor_charge"
@@ -164,24 +179,22 @@
                                             placeholder="outdoor charge"
                                         />
                                     </div>
-                                    <div class="form-group col-3">
-                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Select Position</label>
-                                        <select class="form-control" name="position" id="position">
-                                            @if ($product->position != null)
-                                                <option value="{{ $product->position }}" selected="selected">
-                                                    {{ $product->position }}</option>
-                                            @else
-                                                <option value="" selected="selected" hidden>select view position</option>
-                                            @endif
-                                            <option value="flash sale">flash sale</option>
-                                            <option value="vendor">vendor</option>
-                                            <option value="upcoming product">upcoming product</option>
-                                            <option value="just for you">just for you</option>
-                                            <option value="own mall">own mall</option>
-                                            <option value="global product">global product</option>
-                                        </select>
+                                    
+                                    <div class="form-group col-4">
+                                        <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                        >Position</label
+                                        >
+                                        <input
+                                            readonly
+                                            value="{{$product->position}}"
+                                            id="position"
+                                            name="position"
+                                            type="text"
+                                            step="any"
+                                            class="form-control"
+                                            placeholder="position"
+                                        />
                                     </div>
-
                                 </div>
                                 <div class="form-group row col-12">
                                     <div class="col-12">

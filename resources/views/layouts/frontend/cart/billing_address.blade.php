@@ -300,8 +300,9 @@
                                     </label>
                                 </div>
                                 <input type="hidden" value="{{ csrf_token() }}" name="_token" />
-                                <input id="amount" type="hidden" name="amount" value="{{$total}}" style="border: none;text-align: end;">
-                                <input id="total_emoney" type="hidden" name="total_emoney" value="{{$e_money}}" style="border: none;text-align: end;">
+                                <input id="amount" type="hidden" name="amount" value="{{$total}}">
+                                <input id="total_emoney" type="hidden" name="total_emoney" value="{{$e_money}}">
+                                <input id="qty" type="hidden" name="qty" value="{{$count1}}">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <label for="firstName">Full name</label>

@@ -62,6 +62,7 @@ class VendorProductController extends Controller
             'pur_price'=>$request->pur_price,
             'sale_price'=>$request->sale_price,
             'promo_price'=>$request->promo_price,
+            'position'=>'vendor',
             'description'=>$request->description,
             'total_price'=>$request->qty*$request->sale_price
         ]);
@@ -125,6 +126,7 @@ class VendorProductController extends Controller
             'discount'=>$price,
             'promo_price'=>$request->promo_price,
             'admin_percent'=>$price1,
+            'size_show'=>$request->size_show,
             'description'=>$request->description,
             'indoor_charge'=>$request->indoor_charge,
             'outdoor_charge'=>$request->outdoor_charge,

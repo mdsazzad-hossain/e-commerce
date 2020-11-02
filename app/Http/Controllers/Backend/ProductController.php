@@ -52,10 +52,12 @@ class ProductController extends Controller
 
         $sales = OrderDetails::latest()->with('get_orders','get_product','get_vendor_product')->get();
         $count = Orders::where('delivery_status','pending')->count();
+        $count_refund = Orders::where('delivery_status','refund')->count();
         return view('layouts.backend.sales.sales_history',[
             'data'=>$data,
             'sales'=>$sales,
-            'count'=>$count
+            'count'=>$count,
+            'count_refund'=>$count_refund
         ]);
     }
 
@@ -151,6 +153,7 @@ class ProductController extends Controller
             'outdoor_charge'=>$request->outdoor_charge,
             'e_money'=>$price1,
             'description'=>$request->description,
+            'size_show'=>$request->size_show,
             'total_price'=>$request->qty*$request->sale_price,
             'position'=>$request->position
         ]);

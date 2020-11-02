@@ -96,14 +96,8 @@
                             >Select Product Size</label
                             >
                             <select class="form-control" name="size" id="size">
-                                <option value="{{$product->size}}" selected="selected" hidden>{{$product->size}}</option>
-                                <option value="xs">xs</option>
-                                <option value="xs">xs</option>
-                                <option value="x">x</option>
-                                <option value="xm">xm</option>
-                                <option value="m">m</option>
-                                <option value="xl">xl</option>
-                                <option value="xll">xll</option>
+                                <option value="{{$product->size}}" selected="selected">{{$product->size}}</option>
+                                
                             </select>
                         </div>
                     </div>
@@ -166,7 +160,7 @@
                         </div>
                     </div>
                     <div class="form-group row col-12">
-                        <div class="form-group col-2">
+                        <div class="form-group col-4">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Discount Price</label
                                 >
@@ -180,7 +174,7 @@
                                 placeholder="0.00%"
                             />
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-4">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >E-Money</label
                                 >
@@ -194,52 +188,65 @@
                                 placeholder="0.00%"
                             />
                         </div>
-                        <div class="form-group col-2">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect">
-                                Indoor Ship.Ch
-                            </label>
-                            <input
-                                value="{{$product->indoor_charge}}"
-                                id="indoor_charge"
-                                name="indoor_charge"
-                                type="number"
-                                step="any"
-                                class="form-control"
-                                placeholder="indoor charge"
-                            />
-                        </div>
-                        <div class="form-group col-3">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect">
-                                Outdoor Ship.Ch
-                            </label>
-                            <input
-                                value="{{$product->outdoor_charge}}"
-                                id="outdoor_charge"
-                                name="outdoor_charge"
-                                type="number"
-                                step="any"
-                                class="form-control"
-                                placeholder="outdoor charge"
-                            />
+                        <div class="form-group col-4">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                            >Select Size For Showing</label
+                            >
+                            <select class="form-control" name="size_show" id="size_show">
+                                <option value="{{$product->size}}" selected="selected">{{$product->size}}</option>
+                                
+                            </select>
                         </div>
                         
-                        <div class="form-group col-3">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect"
-                            >Select Position</label
-                            >
-                            <select class="form-control" name="position" id="position">
-                                @if($product->position == null)
-                                <option value="" selected="selected" hidden>select view position</option>
-                                @else
-                                <option value="{{$product->position}}" selected="selected" hidden>{{$product->position}}</option>
-                                @endif
-                                <option value="flash sale">flash sale</option>
-                                <option value="vendor">vendor</option>
-                                <option value="upcoming product">upcoming product</option>
-                                <option value="just for you">just for you</option>
-                                <option value="own mall">own mall</option>
-                                <option value="global product">global product</option>
-                            </select>
+
+                        <div class="form-group row col-12">
+                            <div class="form-group col-4">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                    Indoor Shipping Charege
+                                </label>
+                                <input
+                                    value="{{$product->indoor_charge}}"
+                                    id="indoor_charge"
+                                    name="indoor_charge"
+                                    type="number"
+                                    step="any"
+                                    class="form-control"
+                                    placeholder="indoor charge"
+                                />
+                            </div>
+                            <div class="form-group col-4">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">
+                                    Outdoor Shipping Charege
+                                </label>
+                                <input
+                                    value="{{$product->outdoor_charge}}"
+                                    id="outdoor_charge"
+                                    name="outdoor_charge"
+                                    type="number"
+                                    step="any"
+                                    class="form-control"
+                                    placeholder="outdoor charge"
+                                />
+                            </div>
+                            
+                            <div class="form-group col-4">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                >Select Position</label
+                                >
+                                <select class="form-control" name="position" id="position">
+                                    @if($product->position == null)
+                                    <option value="" selected="selected" hidden>select view position</option>
+                                    @else
+                                    <option value="{{$product->position}}" selected="selected" hidden>{{$product->position}}</option>
+                                    @endif
+                                    <option value="flash sale">flash sale</option>
+                                    <option value="vendor">vendor</option>
+                                    <option value="upcoming product">upcoming product</option>
+                                    <option value="just for you">just for you</option>
+                                    <option value="own mall">own mall</option>
+                                    <option value="global product">global product</option>
+                                </select>
+                            </div>
                         </div>
                         
                     </div>

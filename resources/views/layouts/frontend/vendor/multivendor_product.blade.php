@@ -91,7 +91,7 @@
                                     @foreach ($pro->get_vendor_product_avatar as $avtr)
                                     <figure class="product-media">
                                         <span class="product-label label-new">New</span>
-                                        <a href="{{route('product.quick',$avtr->slug)}}">
+                                        <a href="{{route('product.quick',$pro->slug)}}">
                                             <img src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
                                                 class="product-image">
                                         </a>

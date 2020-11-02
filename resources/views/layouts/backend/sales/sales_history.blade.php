@@ -38,16 +38,20 @@
                         border: 1px solid #ddd;
                         box-shadow: 1px 1px #ddd;
                         border-radius: 5px;display: inline-flex;">
-                        <button class="btn btn-warning" onclick="showRefundOrders()" style="padding: 10px;">
+                        <a href="{{route('refund.view')}}" class="btn btn-warning" style="padding: 10px;">
                             
-                                <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fas fa-times"></i>
-                        </button>
+                            <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fas fa-times"></i>
+                        </a>
                         <p style="margin-left: 5px;
                         font-weight: 700;
                         margin-bottom: 0px;">Refund Orders
                             <span style="float: left;
                         margin-left: 15px;" class="badge badge-warning">
+                            @if ($count_refund)
+                            {{$count_refund}}
+                        @else 
                             0/0
+                        @endif
                         </span>
                         </p>
                     </div>
@@ -66,9 +70,12 @@
     <section class="content">
         <div class="row">
             <div id="pendingHistory" class="card col-12" style="border: 1px solid #ddd;display:none;">
-                <div class="card-header">
+                <div class="card-header" style="color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                box-shadow: none;">
                     <h3 class="card-title"><strong>Pending Orders History</strong></h3>
-                    <button onclick="hidetbl()" class="close" aria-label="Close">
+                    <button style="color: #fff;" onclick="hidetbl()" class="close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -450,6 +457,8 @@
                     <br>
                     <Strong style="display: inline-flex">Payment Type : <p style="margin-left: 20px;" id="getPay"></p></Strong>
                     <br>
+                    <Strong style="display: inline-flex">Quantity : <p style="margin-left: 20px;" id="qty"></p></Strong>
+                    <br>
                     <Strong style="display: inline-flex">Name : <p style="margin-left: 20px;" id="getName"></p></Strong>
                     <br>
                     <Strong style="display: inline-flex">Email : <p style="margin-left: 20px;" id="getEmail"></p></Strong>
@@ -481,6 +490,7 @@
             $("#getPhn").text(order.phone);
             $("#getAmount").text(order.amount);
             $("#getAddress").text(order.address);
+            $("#qty").text(order.qty);
         }
 
         function delivery(id){

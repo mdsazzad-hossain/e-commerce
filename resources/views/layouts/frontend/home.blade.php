@@ -264,38 +264,6 @@
                                 }
                             }">
 
-
-
-                        <!-- End .product -->
-
-
-
-                        <!-- End .product -->
-
-
-
-
-
-
-
-
-
-                        <!-- End .product -->
-
-
-
-
-
-
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
                         <div class="owl-stage-outer">
 
                             <div class="owl-stage"
@@ -307,7 +275,7 @@
                                     <div class="product">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
-                                            <a href="{{route('quick',$pro_avatar->slug)}}">
+                                            <a href="{{route('quick',$product->slug)}}">
                                                 <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>
@@ -529,41 +497,18 @@
                             }
                         }">
 
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-                            <div class="product">
-
-
-                            <!-- End .product -->
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
-                                    <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                        @foreach ($products as $product)
+                                    @foreach ($products as $product)
                                         @if ($product->position == 'own mall')
+                                    <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
+                                        
                                         <div class="product">
                                             @foreach ($product->get_product_avatars as $pro_avatar)
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
-                                                <a href="product.html">
+                                                <a href="{{route('quick',$product->slug)}}">
                                                     <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                         alt="Product image" class="product-image">
                                                 </a>
@@ -593,22 +538,13 @@
                                                 <div class="product-price">
                                                     {{$product->sale_price}}TK
                                                 </div>
-                                                <!-- End .product-price -->
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 80%;"></div>
-                                                        <!-- End .ratings-val -->
-                                                    </div>
-                                                    <!-- End .ratings -->
-                                                    <span class="ratings-text">( 12 )</span>
-                                                </div>
-                                                <!-- End .rating-container -->
                                             </div>
                                             <!-- End .product-body -->
                                         </div>
-                                        @endif
-                                        @endforeach
+                                        
                                     </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
@@ -735,27 +671,6 @@
                             }
                         }">
 
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-                            <!-- End .product -->
-
-
-
-
-
-
-                            <!-- End .product -->
-                            <!-- End .product -->
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
@@ -767,7 +682,7 @@
                                             @foreach ($product->get_product_avatars as $pro_avatar)
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
-                                                <a href="{{route('quick',$pro_avatar->slug)}}">
+                                                <a href="{{route('quick',$product->slug)}}">
                                                     <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                         alt="Product image" class="product-image">
                                                 </a>
@@ -797,16 +712,6 @@
                                                 <div class="product-price">
                                                     {{$product->sale_price}}TK
                                                 </div>
-                                                <!-- End .product-price -->
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 80%;"></div>
-                                                        <!-- End .ratings-val -->
-                                                    </div>
-                                                    <!-- End .ratings -->
-                                                    <span class="ratings-text">( 12 )</span>
-                                                </div>
-                                                <!-- End .rating-container -->
                                             </div>
                                             <!-- End .product-body -->
                                         </div>
@@ -874,26 +779,6 @@
                                 }
                             }
                         }">
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
-
-                        <!-- End .product -->
-
-
-
-
-                        <!-- End .product -->
-                        <!-- End .product -->
                         <div class="owl-stage-outer">
                             <div class="owl-stage"
                                 style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
@@ -905,7 +790,7 @@
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
-                                            <a href="{{route('quick',$pro_avatar->slug)}}">
+                                            <a href="{{route('quick',$product->slug)}}">
                                                 <img style="height: 203px !important" src="{{ asset('/images/' . $pro_avatar->front) }}"
                                                     alt="Product image" class="product-image">
                                             </a>
@@ -935,16 +820,6 @@
                                             <div class="product-price">
                                                 {{$product->sale_price}}TK
                                             </div>
-                                            <!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 80%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div>
-                                                <!-- End .ratings -->
-                                                <span class="ratings-text">( 12 )</span>
-                                            </div>
-                                            <!-- End .rating-container -->
                                         </div>
                                         <!-- End .product-body -->
                                     </div>

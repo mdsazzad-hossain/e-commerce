@@ -12,43 +12,26 @@
                         border: 1px solid #ddd;
                         box-shadow: 1px 1px #ddd;
                         border-radius: 5px;display: inline-flex;">
-                        <button class="btn btn-primary" onclick="showPendingOrders()" style="padding: 10px;">
+                        <a href="{{route('sales.history')}}" class="btn btn-primary" style="padding: 10px;">
                             <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fa fa-star"
                                 style="margin-right: 5px;"></i>
-                        </button>
+                        </a>
                         <p style="margin-left: 5px;
                         font-weight: 700;
                         margin-bottom: 0px;">Pending Orders
                             <span style="float: left;
                         margin-left: 15px;" class="badge badge-warning">
-                            0/0
+                            @if ($count)
+                                {{$count}}
+                            @else 
+                                0/0
+                            @endif
                         </span>
                         </p>
                     </div>
 
                 </div>
-                <div class="col-sm-3">
-                    <div id="disableDiv" style="width: 80%;
-                        padding: 10px;
-                        background-color: white;
-                        border: 1px solid #ddd;
-                        box-shadow: 1px 1px #ddd;
-                        border-radius: 5px;display: inline-flex;">
-                        <button class="btn btn-warning" onclick="showRefundOrders()" style="padding: 10px;">
-                            
-                                <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fas fa-times"></i>
-                        </button>
-                        <p style="margin-left: 5px;
-                        font-weight: 700;
-                        margin-bottom: 0px;">Refund Orders
-                            <span style="float: left;
-                        margin-left: 15px;" class="badge badge-warning">
-                            0/0
-                        </span>
-                        </p>
-                    </div>
-
-                </div>
+                
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -152,9 +135,9 @@
                                             $total = 0;
                                         @endphp
                                         @foreach ($sales as $sale)
-                                        @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'refund')
+                                        @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'refund' || $sale->status == 1)
                                         <tr role="row" class="odd">
-                                            <td class="sorting_1">
+                                            <td class="sorting_1" style="width: 15%;">
                                                 <span><strong>{{ $sale->get_product->product_name }}</strong></span><br>
                                                 <small>C : {{ $sale->get_product->color }}</small><br>
                                                 <small>S : {{ $sale->get_product->size }}</small>
@@ -173,11 +156,11 @@
                                             @endphp
                                             <td class="sorting_1">{{ $profit }} TK</td>
                                             <td>
-                                                <p onclick="getAddress({{$sale->get_orders}})" style="cursor: pointer;"
+                                                <p onclick="getAddress({{$sale->get_orders}},{{$sale->order_id}})" style="cursor: pointer;"
                                                 data-toggle="modal" data-target="#exampleModalCenter1" class="badge badge-warning">Address</p>
                                             </td>
                                             <td>
-                                                <p class="badge badge-danger">Refund</p>
+                                                <p style="cursor: pointer;" onclick="refundProduct({{$sale}})" class="badge badge-danger">Refund</p>
                                                 
                                             </td>
                                             <td style="display: inline-flex;">
@@ -185,7 +168,7 @@
                                                     style="margin-right: 5px;" class="btn btn-primary">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <form action="{{route('single.order.delete',$sale->id)}}" method="POST">
+                                                <form action="{{route('single.order.delete',$sale)}}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-danger">
                                                         <i class="fa fa-trash"></i>
@@ -256,9 +239,12 @@
             </div>
             <div class="modal-body">
                 <div style="padding: 20px 50px;">
+                   
                     <Strong style="display: inline-flex">Transection Id : <p style="margin-left: 20px;" id="getTran"></p></Strong>
                     <br>
                     <Strong style="display: inline-flex">Payment Type : <p style="margin-left: 20px;" id="getPay"></p></Strong>
+                    <br>
+                    <Strong style="display: inline-flex">Quantity : <p style="margin-left: 20px;" id="qty"></p></Strong>
                     <br>
                     <Strong style="display: inline-flex">Name : <p style="margin-left: 20px;" id="getName"></p></Strong>
                     <br>
@@ -283,7 +269,7 @@
 
 @section('js')
     <script>
-        function getAddress(order){
+        function getAddress(order,sale){
             $("#getTran").text(order.transaction_id);
             $("#getPay").text(order.payment);
             $("#getName").text(order.name);
@@ -291,21 +277,25 @@
             $("#getPhn").text(order.phone);
             $("#getAmount").text(order.amount);
             $("#getAddress").text(order.address);
+            $("#qty").text(order.qty);
         }
 
-        // function delivery(id){
-        //     $.ajax({
-        //         url: "{{ route('product.delivery') }}",
-        //         type: "POST",
-        //         data: {
-        //             "_token": "{{ csrf_token() }}",
-        //             "id": id
-        //         },
-        //         success: function(response) {
-        //             window.location.reload();
-        //         }
-        //     });
-        // }
+        function refundProduct(sale){
+
+            $.ajax({
+                url: "{{ route('product.refunded') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "product_id": sale.product_id,
+                    "vendor_product_id": sale.vendor_product_id,
+                    "qty": sale.qty
+                },
+                success: function(response) {
+                    window.location.reload();
+                }
+            });
+        }
 
         // function showPendingOrders(){
            

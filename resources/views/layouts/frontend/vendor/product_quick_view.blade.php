@@ -32,6 +32,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="product-gallery">
+                                        @foreach ($product->get_vendor_product_avatar as $avatar)
                                         <figure class="product-main-image">
                                             <span class="product-label label-top">Top</span>
                                             <img id="product-zoom" src="{{ asset('/images/' . $avatar->front) }}"
@@ -68,12 +69,13 @@
                                                 <img src="{{ asset('/images/' . $avatar->right) }}" alt="product back">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
+                                        @endforeach
                                     </div><!-- End .product-gallery -->
                                 </div><!-- End .col-md-6 -->
 
                                 <div class="col-md-6">
                                     <div class="product-details product-details-sidebar">
-                                        <h1 class="product-title">{{ $avatar->get_vendor_product->product_name }}</h1>
+                                        <h1 class="product-title">{{ $product->product_name }}</h1>
                                         <!-- End .product-title -->
 
                                         <div class="ratings-container">
@@ -85,15 +87,15 @@
                                         </div><!-- End .rating-container -->
 
                                         <div class="product-price">
-                                            {{ $avatar->get_vendor_product->sale_price }}
+                                            {{ $product->sale_price }}
                                         </div><!-- End .product-price -->
 
                                         <div class="product-content">
-                                            <p>{{ $avatar->get_vendor_product->description }}</p>
+                                            <p>{{ $product->description }}</p>
                                         </div><!-- End .product-content -->
 
                                         <div class="details-filter-row details-row-size">
-                                            <label>Color:{{ $avatar->get_vendor_product->color }}</label>
+                                            <label>Color:{{ $product->color }}</label>
 
                                             <div class="product-nav product-nav-dots">
                                                 <a href="#" class="active" style="background: #333333;"><span
@@ -107,8 +109,8 @@
                                             <label for="size">Size:</label>
                                             <div class="select-custom">
                                                 <select name="size" id="size" class="form-control">
-                                                    <option value="{{ $avatar->get_vendor_product->size }}" selected="selected"
-                                                        hidden>{{ $avatar->get_vendor_product->size }}</option>
+                                                    <option value="{{ $product->size }}" selected="selected"
+                                                        hidden>{{ $product->size }}</option>
                                                     <option value="s">s</option>
                                                     <option value="m">m</option>
                                                     <option value="l">x</option>
@@ -139,13 +141,13 @@
                                                     </div>
                                                 </div><!-- End .product-details-quantity -->
 
-                                                <button onclick="addToCart({{ $avatar->get_vendor_product }})"
+                                                <button onclick="addToCart({{ $product }})"
                                                     class="btn-product btn-cart"><span>add to cart</span></button>
                                             </div><!-- End .details-action-col -->
 
                                             <div class="details-action-wrapper">
                                                 <button class="btn-product btn-wishlist"
-                                                    onclick="addWishList({{ $avatar->get_vendor_product }}) title="
+                                                    onclick="addWishList({{ $product }}) title="
                                                     Wishlist"><span>Add to Wishlist</span></button>
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->

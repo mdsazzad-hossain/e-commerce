@@ -56,7 +56,7 @@
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
                                     aria-labelledby="tab-dashboard-link">
                                     <h6>Recent Orders</h6>
-                                    <h6 style="    margin-top: -31px;" class="pull-right">Total E-Money : <span class="badge badge-success">{{auth()->user()->e_money}}</span></h6>
+                                    <h6 style="margin-top: -31px;" class="pull-right">Total E-Money : <span class="badge badge-success">{{auth()->user()->e_money}}</span></h6>
                                     <hr>
                                     <table class="table table-cart table-mobile">
                                         <thead>
@@ -69,13 +69,13 @@
                                                 <th>Address</th>
                                                 <th>Status</th>
                                                 <th>Payment</th>
-                                                <th>Refund</th>
+                                                <th style="width: 10%;">Refund</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($orderDetails as $order)
-                                            @if ($order->order_id == $order->get_orders->id && $order->get_orders->delivery_status == 'pending')
+                                            @if ($order->order_id == $order->get_orders->id && $order->get_orders->delivery_status == 'pending' && $order->status == 0)
 
                                             @if($order->product_id != null)
                                                 <tr>
@@ -111,7 +111,7 @@
                                                     </td>
                                                     @if ($order->get_orders->payment == 'cash on delivery')
                                                         <td style="width: 10% !important">
-                                                            <p style="cursor: pointer;" onclick="refund({{$order->get_orders->id}})" class="badge badge-danger">Refund</p>
+                                                            <p style="cursor: pointer;" onclick="refund({{$order->product_id}},{{$order->get_orders->id}})" class="badge badge-danger">Refund</p>
                                                         </td>
                                                     @endif
                                                     
@@ -161,7 +161,7 @@
                                                         <p class="badge badge-success">{{$order->get_orders->payment}}</p>
                                                     </td>
                                                     <td>
-                                                        <p class="badge badge-danger">Refund</p>
+                                                        <p style="cursor: pointer;" onclick="refund({{$order->vendor_product_id}},{{$order->get_orders->id}})" class="badge badge-danger">Refund</p>
                                                     </td>
                                                     <td class="remove-col">
                                                         <button class="btn-remove"><i
@@ -190,6 +190,8 @@
                                                 <div style="padding: 20px 50px;">
                                                     <Strong style="display: inline-flex">Transection Id : <p style="margin-left: 20px;" id="getTran"></p></Strong>
                                                     <br>
+                                                    <Strong style="display: inline-flex">Quantity : <p style="margin-left: 20px;" id="qty"></p></Strong>
+                                                    <br>
                                                     <Strong style="display: inline-flex">Name : <p style="margin-left: 20px;" id="getName"></p></Strong>
                                                     <br>
                                                     <Strong style="display: inline-flex">Email : <p style="margin-left: 20px;" id="getEmail"></p></Strong>
@@ -199,12 +201,13 @@
                                                     <Strong style="display: inline-flex">Total Amount : <p style="margin-left: 20px;" id="getAmount"></p></Strong>
                                                     <br>
                                                     <Strong style="display: inline-flex">Address : <p style="margin-left: 20px;" id="getAddress"></p></Strong>
-                                                    
+                                                    <input type="hidden" id="id" name="id">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            
+                                            <button id="hideRefund" onclick="refund()" class="btn btn-danger">Refund</button>
                                             </div>
                                         </div>
                                         </div>
@@ -319,24 +322,61 @@
             function getAddress(order){
                 $("#getTran").text(order.transaction_id);
                 $("#getName").text(order.name);
+                $("#qty").text(order.qty);
                 $("#getEmail").text(order.email);
                 $("#getPhn").text(order.phone);
                 $("#getAmount").text(order.amount);
                 $("#getAddress").text(order.address);
+                $("#id").val(order.id);
+                if (order.payment != 'cash on delivery') {
+                    $("#hideRefund").hide();
+                    
+                }else{
+                    $("#hideRefund").show();
+
+                }
             }
 
-            function refund(id){
-                $.ajax({
-                    url: "{{ route('product.refund') }}",
-                    type: "POST",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "id": id
-                    },
-                    success: function(response) {
-                        window.location.reload();
-                    }
-                });
+            function refund(order,order_id){
+                if ($("#id").val() != null && order == undefined) {
+                    $.ajax({
+                        url: "{{ route('product.refund') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "id": $("#id").val()
+                        },
+                        success: function(response) {
+                            window.location.reload();
+                        }
+                    });
+                }else if(order,order_id){
+                    $.ajax({
+                        url: "{{ route('product.refund') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "product_id": order,
+                            "order_id": order_id
+                        },
+                        success: function(response) {
+                            window.location.reload();
+                        }
+                    });
+                }else if(order,order_id){
+                    $.ajax({
+                        url: "{{ route('product.refund') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "vendor_product_id": order,
+                            "order_id": order_id
+                        },
+                        success: function(response) {
+                            window.location.reload();
+                        }
+                    });
+                }
             }
         </script>
     @endsection

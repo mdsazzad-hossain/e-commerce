@@ -53,6 +53,7 @@ class SslCommerzPaymentController extends Controller
         $post_data['cus_postcode'] = "";
         $post_data['cus_country'] = "Bangladesh";
         $post_data['cus_phone'] = $request->customer_phone;
+        $post_data['qty'] = $request->qty;
         $post_data['cus_fax'] = "";
 
         # SHIPMENT INFORMATION
@@ -92,6 +93,7 @@ class SslCommerzPaymentController extends Controller
                     'address' => $post_data['cus_add1'],
                     'transaction_id' => $post_data['tran_id'],
                     'payment' => $post_data['payment'],
+                    'qty' => $post_data['qty'],
                     'currency' => $post_data['currency']
                 ]);
                 $orderData = DB::table('orders')->where('transaction_id', $post_data['tran_id'])->first();
@@ -204,6 +206,7 @@ class SslCommerzPaymentController extends Controller
                     'status' => 'Pending',
                     'address' => $post_data['cus_add1'],
                     'transaction_id' => $post_data['tran_id'],
+                    'qty' => $post_data['qty'],
                     'currency' => $post_data['currency']
                 ]);
 

@@ -162,9 +162,7 @@ class HomeController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
-        $avatar = VendorProductAvatar::where([
-            'front'=>$slug
-        ])->first();
+        $product = VendorProduct::where('slug',$slug)->with('get_vendor_product_avatar')->first();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $products = VendorProduct::all();
         return view('layouts.frontend.vendor.product_quick_view',[
@@ -173,7 +171,7 @@ class HomeController extends Controller
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart,
-            'avatar'=>$avatar,
+            'product'=>$product,
             'products'=>$products,
             'orders'=>$orders
         ]);
@@ -187,18 +185,16 @@ class HomeController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
-        $avatar = ProductAvatar::where([
-            'front'=>$slug
-        ])->first();
+        $product = Product::where('slug',$slug)->with('get_product_avatars','get_brand')->first();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        $products = VendorProduct::all();
+        $products = Product::with('get_brand','get_product_avatars')->get();
         return view('layouts.frontend.quick_view',[
             'categories'=>$categories,
             'ads'=>$ads,
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart,
-            'avatar'=>$avatar,
+            'product'=>$product,
             'products'=>$products,
             'orders'=>$orders
         ]);
@@ -273,9 +269,26 @@ class HomeController extends Controller
 
     public function refund(Request $request)
     {
-        Orders::where('id',$request->id)->update([
-            'delivery_status'=>'refund'
-        ]);
+        if ($request->id != null) {
+            Orders::where('id',$request->id)->update([
+                'delivery_status'=>'refund'
+            ]);
+        }elseif($request->product_id != null){
+            OrderDetails::where([
+                'product_id'=>$request->product_id,
+                'order_id'=>$request->order_id
+            ])->update([
+                'status'=>1
+            ]);
+        }elseif($request->vendor_product_id != null){
+            OrderDetails::where([
+                'vendor_product_id',$request->vendor_product_id,
+                'order_id',$request->order_id
+                ])->update([
+                'status'=>1
+            ]);
+        }
+        
 
         toast('Product refund successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
         

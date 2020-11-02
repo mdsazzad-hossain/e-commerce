@@ -14,7 +14,8 @@ class AddPaymentToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('payment')->nullable();
+            $table->string('payment',150)->nullable()->change();
+            $table->integer('qty')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddPaymentToOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('payment');
+            $table->dropColumn('qty');
         });
     }
 }

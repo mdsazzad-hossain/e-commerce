@@ -157,6 +157,7 @@ Route::group(["namespace"=>"Backend"],function() {
         //sales vendor
         Route::post('order/{id}', 'OrdersController@delete_single_order')->name('single.order.delete');
         Route::get('order-refunds', 'OrdersController@refundView')->name('refund.view');
+        Route::post('order-refunded', 'OrdersController@refunded')->name('product.refunded');
     });
 
 });
