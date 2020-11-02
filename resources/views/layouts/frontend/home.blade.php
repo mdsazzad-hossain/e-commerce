@@ -447,7 +447,7 @@
 
         <!-- <div class="mb-4"></div> -->
 
-        
+
 
         <div class="mb-2"></div>
         <div class="bg-light">
@@ -503,7 +503,7 @@
                                     @foreach ($products as $product)
                                         @if ($product->position == 'own mall')
                                     <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
-                                        
+
                                         <div class="product">
                                             @foreach ($product->get_product_avatars as $pro_avatar)
                                             <figure class="product-media">
@@ -541,7 +541,7 @@
                                             </div>
                                             <!-- End .product-body -->
                                         </div>
-                                        
+
                                     </div>
                                     @endif
                                     @endforeach
@@ -995,45 +995,6 @@
 
                     }
                 })
-            }
-
-            function search(){
-                q = $("#q").val();
-                $.ajax({
-                    url: "{{ route('search') }}",
-                    type: "POST",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        'q': q
-                    },
-                    success:function(response)
-                    {
-                        if(response.search){
-                            if($("#q").val() !=""){
-                                $("#searchData").css('display','block');
-                                response.search.forEach(element => {
-                                    $("#item").css({
-                                        "border-bottom":"1px solid #ddd"
-                                    });
-                                    $("#item").append("<p>"+element.product_name+"</p>");
-                                });
-                            }else if($("#q").val() == ""){
-                                $("#searchData").css('display','none');
-                                $("#item").text("");
-
-                            }
-                        }
-
-
-                        // window.location.reload();
-
-
-                    }
-                });
-            }
-
-            function selectItem(){
-                $("#q").val($("p").text());
             }
         </script>
 

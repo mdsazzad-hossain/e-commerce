@@ -56,34 +56,21 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        if ($request->q != null) {
-            $search = Product::where('product_name','LIKE','%'.$request->q.'%')->get();
+        $search = $request->get('q');
+        $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
 
-            return response()->json([
-                'search'=>$search
-            ],200);
-        }else{
-            $banars = Banar::select('id','image','image1','image2','image3')->first();
-            $categories = Category::with('get_child_category')->get();
-            $products = Product::with('get_brand','get_product_avatars')->get();
-            $ads = AdManager::all();
-            $vendors = Vendor::all();
-            $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-            $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-            $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-            
-            return view('layouts.frontend.home',[
-                'banars'=>$banars,
-                'categories'=>$categories,
-                'products'=>$products,
-                'ads'=>$ads,
-                'vendors'=>$vendors,
-                'count'=>$count,
-                'count1'=>$count1,
-                'cart'=>$cart
-            ]);
-        }
+        return response()->json([
+            'search'=>$search
+        ],200);
 
+    }
+
+    public function search_result(Request $request,$search)
+    {
+        $search = Product::where('product_name',$search)->get();
+        return response()->json([
+            'search'=>$search
+        ],200);
     }
 
     /**
@@ -209,7 +196,7 @@ class HomeController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
-        
+
         $single_vendor = SingleVendor::where('brand_name',$name ?? '')->first();
         $products = VendorProduct::where([
             'vendor_id'=>$single_vendor->vendor_id,
@@ -241,7 +228,7 @@ class HomeController extends Controller
         foreach ($carts as $key => $cart) {
             $data = Product::where('id',$cart->product_id)->update([
                 'shipp_des'=>$request->val
-            ]);          
+            ]);
         }
 
         return response()->json([
@@ -261,7 +248,7 @@ class HomeController extends Controller
             'delivery_status'=>'delivered'
         ]);
         toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        
+
         return response()->json([
             'msg'=>'success'
         ]);
@@ -288,10 +275,10 @@ class HomeController extends Controller
                 'status'=>1
             ]);
         }
-        
+
 
         toast('Product refund successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        
+
         return response()->json([
             'msg'=>'success'
         ]);
