@@ -81,10 +81,11 @@ export default {
         selectItem(item){
             this.search = item.product_name;
             $("#allItem").hide();
-            axios.post('search-result/'+this.search)
+            axios.get('search?q='+this.search)
             .then((response)=>{
-                console.log(response.data.search);
-
+                if (response.data.search) {
+                    window.location.href = 'search-result/'+this.search
+                }
             })
         }
     }

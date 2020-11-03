@@ -49,7 +49,8 @@ Route::group(["namespace"=>"Frontend"],function() {
     //order refund
     Route::post('order-refund', 'HomeController@refund')->name('product.refund');
     //search product
-    Route::post('search-result/{search}', 'HomeController@search_result');
+    Route::get('search-result/{search}', 'HomeController@search_result')->name('search.result');
+    Route::post('load/{item}', 'HomeController@load')->name('load');
 
 
 });

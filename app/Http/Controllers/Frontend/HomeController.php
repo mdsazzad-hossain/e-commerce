@@ -57,19 +57,56 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $search = $request->get('q');
-        $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
-
-        return response()->json([
-            'search'=>$search
-        ],200);
+        if($search){
+            $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
+            return response()->json([
+                'search'=>$search
+            ],200);
+        }
+        // $categories = Category::with('get_child_category')->get();
+        // $ads = AdManager::all();
+        // $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        // $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        // $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        // $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        // return view('layouts.frontend.search-results',[
+        //     'categories'=>$categories,
+        //     'count'=>$count,
+        //     'count1'=>$count1,
+        //     'cart'=>$cart,
+        //     'orders'=>$orders,
+        //     'ads'=>$ads,
+        //     'search'=>$search
+        // ]);
 
     }
 
-    public function search_result(Request $request,$search)
+    public function search_result($search)
     {
-        $search = Product::where('product_name',$search)->get();
-        return response()->json([
+        $search = Product::where('product_name','LIKE','%'.$search.'%')->with('get_brand.get_product')->get();
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        return view('layouts.frontend.search-results',[
+            'categories'=>$categories,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'orders'=>$orders,
+            'ads'=>$ads,
             'search'=>$search
+        ]);
+    }
+
+    public function load(Request $request,$item)
+    {
+
+        $load = Product::latest()->limit(8+$item)->with('get_product_avatars')->get();
+        return response()->json([
+            'load'=>$load
         ],200);
     }
 
