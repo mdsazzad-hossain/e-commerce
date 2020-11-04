@@ -14,8 +14,9 @@ class AddShippDesToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('shipp_des')->nullable()->change();
-            $table->string('size_show')->nullable();
+            $table->string('shipp_des',150)->nullable()->change();
+            $table->renameColumn('size_show','flash_timing')->nullable();
+            $table->boolean('flash_status')->nullable();
         });
     }
 
@@ -28,7 +29,8 @@ class AddShippDesToProductsTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('shipp_des');
-            $table->dropColumn('size_show');
+            $table->dropColumn('flash_timing');
+            $table->dropColumn('flash_status');
         });
     }
 }

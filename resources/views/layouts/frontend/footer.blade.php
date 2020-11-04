@@ -582,7 +582,7 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/demos/demo-13.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.elevateZoom.min.js') }}"></script>
-<script src="{{ asset('/js/app.js') }}"></script>
+{{-- <script src="{{ asset('/js/app.js') }}"></script> --}}
 @yield('js')
 
 <script>

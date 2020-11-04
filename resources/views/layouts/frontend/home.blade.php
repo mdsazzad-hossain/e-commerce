@@ -225,9 +225,6 @@
                             <span id="s" class="seconds"></span>
                             <div class="smalltext">Seconds</div>
                         </div>
-                        <div id="clock">
-
-                        </div>
                     </div>
                     <!-- End .title -->
                 </div>
@@ -276,7 +273,9 @@
                         <div class="owl-stage"
                             style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
                             @foreach ($products as $product)
-                            @if ($product->position == 'flash sale')
+                            @if ($product->position == 'flash sale' && $product->flash_timing != null && $product->flash_status == 1)
+                            
+                            <input type="hidden" id="time" value="{{$product->flash_timing}}">
                             <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
                                 <div class="product">
@@ -907,30 +906,41 @@
 <script>
     window.onload = displayClock();
     function displayClock(){
-        var countDownDate = new Date("Nov 3, 2020 20:44:10").getTime();
+        var countDownDate = document.getElementById("time").value;
 
         // Update the count down every 1 second
         var x = setInterval(function() {
 
-        // Get today's date and time
-        var now = new Date().getTime();
+            // Get today's date and time
+            var now = new Date().getTime();
 
-        // Find the distance between now and the count down date
-        var distance = countDownDate - now;
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
 
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        $("#d").text(days);
-        $("#h").text(hours);
-        $("#m").text(minutes);
-        $("#s").text(seconds);
+            $("#d").text(days);
+            $("#h").text(hours);
+            $("#m").text(minutes);
+            $("#s").text(seconds);
             if (distance < 0) {
                 clearInterval(x);
                 $("#clockdiv").hide();
+                $.ajax({
+                    url: "{{ route('product.flash.update') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success:function(response)
+                    {
+                        window.location.reload();
+                    }
+                })
             }
         }, 1000);
     }

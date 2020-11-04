@@ -112,6 +112,7 @@
                                 id="qty"
                                 name="qty"
                                 type="number"
+                                min="0" 
                                 class="form-control"
                                 placeholder="00"
                             />
@@ -125,6 +126,7 @@
                                 id="pur_price"
                                 name="pur_price"
                                 type="number"
+                                min="0" 
                                 step="any"
                                 class="form-control"
                                 placeholder="0.00tk"
@@ -139,6 +141,7 @@
                                 id="sale_price"
                                 name="sale_price"
                                 type="number"
+                                min="0" 
                                 step="any"
                                 class="form-control"
                                 placeholder="0.00tk"
@@ -154,6 +157,7 @@
                                 step="any"
                                 name="promo_price"
                                 type="number"
+                                min="0" 
                                 class="form-control"
                                 placeholder="0.00 tk"
                             />
@@ -170,6 +174,7 @@
                                 step="any"
                                 name="discount"
                                 type="number"
+                                min="0" 
                                 class="form-control"
                                 placeholder="0.00%"
                             />
@@ -183,6 +188,7 @@
                                 id="e_money"
                                 name="e_money"
                                 type="number"
+                                min="0" 
                                 step="any"
                                 class="form-control"
                                 placeholder="0.00%"
@@ -190,17 +196,26 @@
                         </div>
                         <div class="form-group col-4">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
-                            >Select Size For Showing</label
+                            >Select Position</label
                             >
-                            <select class="form-control" name="size_show" id="size_show">
-                                <option value="{{$product->size}}" selected="selected">{{$product->size}}</option>
-                                
+                            <select class="form-control" name="position" id="position">
+                                @if($product->position == null)
+                                <option value="" selected="selected" hidden>select view position</option>
+                                @else
+                                <option value="{{$product->position}}" selected="selected" hidden>{{$product->position}}</option>
+                                @endif
+                                <option value="flash sale">flash sale</option>
+                                <option value="vendor">vendor</option>
+                                <option value="upcoming product">upcoming product</option>
+                                <option value="just for you">just for you</option>
+                                <option value="own mall">own mall</option>
+                                <option value="global product">global product</option>
                             </select>
                         </div>
                         
 
                         <div class="form-group row col-12">
-                            <div class="form-group col-4">
+                            <div class="form-group col-6">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">
                                     Indoor Shipping Charege
                                 </label>
@@ -209,12 +224,14 @@
                                     id="indoor_charge"
                                     name="indoor_charge"
                                     type="number"
+                                    min="0" 
+
                                     step="any"
                                     class="form-control"
                                     placeholder="indoor charge"
                                 />
                             </div>
-                            <div class="form-group col-4">
+                            <div class="form-group col-6">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">
                                     Outdoor Shipping Charege
                                 </label>
@@ -223,29 +240,12 @@
                                     id="outdoor_charge"
                                     name="outdoor_charge"
                                     type="number"
+                                    min="0" 
+
                                     step="any"
                                     class="form-control"
                                     placeholder="outdoor charge"
                                 />
-                            </div>
-                            
-                            <div class="form-group col-4">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect"
-                                >Select Position</label
-                                >
-                                <select class="form-control" name="position" id="position">
-                                    @if($product->position == null)
-                                    <option value="" selected="selected" hidden>select view position</option>
-                                    @else
-                                    <option value="{{$product->position}}" selected="selected" hidden>{{$product->position}}</option>
-                                    @endif
-                                    <option value="flash sale">flash sale</option>
-                                    <option value="vendor">vendor</option>
-                                    <option value="upcoming product">upcoming product</option>
-                                    <option value="just for you">just for you</option>
-                                    <option value="own mall">own mall</option>
-                                    <option value="global product">global product</option>
-                                </select>
                             </div>
                         </div>
                         
@@ -281,4 +281,9 @@
            
         </div>
         </div>
+    @section('js')
+        <script>
+            
+        </script>
+    @endsection
 @endsection

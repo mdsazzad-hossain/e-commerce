@@ -134,9 +134,37 @@ class ProductController extends Controller
     {
         $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
-        $price = $request->sale_price-($cal/100);
         $cal1 = $request->e_money*$request->sale_price;
         $price1 = $cal1/100;
+
+        if ($request->sale_price > ($cal/100)) {
+            $price = $request->sale_price-($cal/100);
+        }else{
+            $data->update([
+                'brand_id'=>$request->brand_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'promo_price'=>$request->promo_price,
+                'discount'=>$request->discount,
+                'indoor_charge'=>$request->indoor_charge,
+                'outdoor_charge'=>$request->outdoor_charge,
+                'e_money'=>$request->e_money,
+                'description'=>$request->description,
+                'flash_timing'=>$request->flash_timing,
+                'total_price'=>$request->qty*$request->sale_price,
+                'position'=>$request->position
+            ]);
+            toast('Product Updated successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+            return redirect()->route('products');
+        };
+        
         $data->update([
             'brand_id'=>$request->brand_id,
             'product_name'=>$request->product_name,
@@ -153,7 +181,7 @@ class ProductController extends Controller
             'outdoor_charge'=>$request->outdoor_charge,
             'e_money'=>$price1,
             'description'=>$request->description,
-            'size_show'=>$request->size_show,
+            'flash_timing'=>$request->flash_timing,
             'total_price'=>$request->qty*$request->sale_price,
             'position'=>$request->position
         ]);
@@ -163,6 +191,48 @@ class ProductController extends Controller
         return redirect()->route('products');
     }
 
+    public function flash_update(Request $request)
+    {
+        $flash_status = Product::where('flash_status',1)->first();
+        if ($request->flash_timing != null && !$flash_status) {
+            Product::where('position','flash sale')->update([
+                'flash_timing'=>$request->flash_timing,
+                'flash_status'=>1
+            ]);
+            toast('Product flash sale timing running successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+            return response()->json([
+                'msg'=>'success'
+            ]);
+        }elseif($request->flash_timing != null && $flash_status){
+            Product::where([
+                ['position','=','flash sale'],
+                ['flash_timing','=',null],
+                ['flash_status','=',null]
+            ])->update([
+                'flash_timing'=>$request->flash_timing,
+                'flash_status'=>0
+            ]);
+            Alert::warning('Warning','Product already in flash sale.Try again later.');
+            return response()->json([
+                'msg'=>'success'
+            ]);
+        }else{
+            Product::where([
+                'position'=>'flash sale',
+                'flash_status'=>1,
+            ])->update([
+                'flash_timing'=>null,
+                'flash_status'=>null,
+                'position'=>null
+            ]);
+            
+            return response()->json([
+                'msg'=>'success'
+            ]);
+        }
+        
+    }
 
     public function destroy($id)
     {

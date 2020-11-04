@@ -482,6 +482,9 @@
                         <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
                             Promo/Price
                         </th>
+                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
+                            Flash Timing
+                        </th>
                         <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
                             Status
                         </th>
@@ -502,6 +505,18 @@
                                 <td class="sorting_1">{{$pro->pur_price}}</td>
                                 <td class="sorting_1">{{$pro->sale_price}}</td>
                                 <td class="sorting_1">{{$pro->promo_price}}</td>
+                                <td class="sorting_1">
+                                    @if ($pro->position == 'flash sale' && $pro->flash_timing == null && $pro->flash_status == null)
+                                    <p style="cursor: pointer;"
+                                    data-toggle="modal" data-target="#flashTimingModal" class="badge badge-danger">Set Timing</p>
+                                    @elseif($pro->position == 'flash sale' && $pro->flash_timing != null && $pro->flash_status == 0)
+                                    <p style="cursor: pointer;" class="badge badge-warning" data-toggle="modal" data-target="#flashTimingModal">Start</p>
+                                    @elseif($pro->flash_timing != null && $pro->flash_status == 1)
+                                    <p class="badge badge-success">Running</p>
+                                    @else 
+                                    <p class="badge badge-info">Not flash sale</p>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($pro->status == 0)
                                     <button class="badge badge-warning">Inactive</button>
@@ -510,6 +525,7 @@
                                     @endif
                                 <a href="{{route('product.avatars',$pro->slug)}}" class="badge badge-info">Images</a>
                                 </td>
+
                                 <td style="display: inline-flex;">
                                     <a href="{{route('product.edit',$pro->slug)}}" style="margin-right: 5px;" class="btn btn-primary">
                                         <i class="fa fa-edit"></i>
@@ -537,7 +553,36 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="flashTimingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Flash Timing</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-md-8 offset-2">
+                        <div class="form-group" style="width: 100%">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                            >Flash Timing</label
+                            >
+                            <input onchange="getData()" type="date" class="form-control" id="date" step="2">
+                            <input onchange="getData()" type="time" class="form-control" id="time" step="1">
+                            <input type="hidden" name="flash_timing" class="form-control" id="dateTime">
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="updateFlashSale()" style="width: 100%;" class="btn btn-success">Start Timing</button>
+
+                </div>
+            </div>
+            </div>
         </div>
+    </div>
 
     @section('js')
         <script>
@@ -553,6 +598,29 @@
             });
         </script>
       <script>
+            function updateFlashSale(){
+
+                $.ajax({
+                    url: "{{ route('product.flash.update') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "flash_timing": $("#dateTime").val() ? $("#dateTime").val() : ''
+                    },
+                    success:function(response)
+                    {
+                       window.location.reload();
+
+                    }
+                })
+            }
+
+            function getData(){
+                var countDownDate = new Date(document.getElementById("date").value +" "+ document.getElementById("time").value).getTime();
+                
+                document.getElementById("dateTime").value = countDownDate;
+            }
+
           function getId(){
 
               $.ajax({

@@ -113,6 +113,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('product-edit/{slug}', 'ProductController@edit')->name('product.edit');
         Route::post('product-update/{slug}', 'ProductController@update')->name('product.update');
         Route::post('product-delete/{id}', 'ProductController@destroy')->name('product.delete');
+        Route::post('product-flash-update', 'ProductController@flash_update')->name('product.flash.update');
 
         //product avatars
         Route::get('products/avatars', 'ProductAvatarController@index')->name('avatars');
