@@ -131,7 +131,7 @@ class SslCommerzPaymentController extends Controller
                              'product_id'=>$value->product_id,
                              'user_id'=>$orderData->user_id,
                              'qty'=>$value->qty,
-                             'total'=>$value->total,
+                             'total'=>$value->total+$shipp_cost,
                              'shipp_charge'=>$shipp_cost
                          ]);
  
@@ -148,7 +148,7 @@ class SslCommerzPaymentController extends Controller
                              'user_id'=>$orderData->user_id,
                              'vendor_product_id'=>$value->vendor_product_id,
                              'qty'=>$value->qty,
-                             'total'=>$value->total,
+                             'total'=>$value->total+$shipp_cost,
                              'shipp_charge'=>$shipp_cost
                          ]);
                          $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
@@ -164,7 +164,7 @@ class SslCommerzPaymentController extends Controller
                              'product_id'=>$value->product_id,
                              'vendor_product_id'=>$value->vendor_product_id,
                              'qty'=>$value->qty,
-                             'total'=>$value->total,
+                             'total'=>$value->total+$shipp_cost,
                              'shipp_charge'=>$shipp_cost
                          ]);
                          
@@ -285,7 +285,7 @@ class SslCommerzPaymentController extends Controller
                             'product_id'=>$value->product_id,
                             'user_id'=>$id->user_id,
                             'qty'=>$value->qty,
-                            'total'=>$value->total,
+                            'total'=>$value->total+$shipp_cost,
                             'shipp_charge'=>$shipp_cost
                         ]);
 
@@ -302,7 +302,7 @@ class SslCommerzPaymentController extends Controller
                             'user_id'=>$id->user_id,
                             'vendor_product_id'=>$value->vendor_product_id,
                             'qty'=>$value->qty,
-                            'total'=>$value->total,
+                            'total'=>$value->total+$shipp_cost,
                             'shipp_charge'=>$shipp_cost
                         ]);
                         $qty = VendorProduct::where('id',$data->vendor_product_id)->first();
@@ -318,7 +318,7 @@ class SslCommerzPaymentController extends Controller
                             'product_id'=>$value->product_id,
                             'vendor_product_id'=>$value->vendor_product_id,
                             'qty'=>$value->qty,
-                            'total'=>$value->total,
+                            'total'=>$value->total+$shipp_cost,
                             'shipp_charge'=>$shipp_cost
                         ]);
                         

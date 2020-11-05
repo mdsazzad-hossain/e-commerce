@@ -5,20 +5,20 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-3">
-            <div style="width: 80%;
-                    padding: 10px;
+          <div class="col-sm-3" style="max-width: 19% !important;">
+            <div style="width: 100%;
+                    padding: 5px;
                     background-color: white;
                     border: 1px solid #ddd;
                     box-shadow: 1px 1px #ddd;
                     border-radius: 5px;display: inline-flex;">
-                    <button class="btn btn-primary" onclick="showProductForm()" style="padding: 10px;">
+                    <button class="btn btn-primary" onclick="addVendorLogo()" style="padding: 10px;">
                         <i class="fa fa-plus" style="margin-right: 5px;font-size: 25px;margin-left: 5px;"></i>
 
                     </button>
                     <p style="margin-left: 5px;
                     font-weight: 700;
-                    margin-bottom: 0px;">Add Product
+                    margin-bottom: 0px;">Add Vendor Logo
                         <span style="float: left;
                         margin-left: 15px;" class="badge badge-warning">0/0</span>
                     </p>
@@ -26,16 +26,66 @@
 
           </div>
 
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Blank Page</li>
-            </ol>
-          </div>
+          <div class="col-sm-2">
+            <div id="disableDiv" style="width: 100%;
+                padding: 5px;
+                background-color: white;
+                border: 1px solid #ddd;
+                box-shadow: 1px 1px #ddd;
+                border-radius: 5px;display: inline-flex;">
+                <button class="btn btn-primary" onclick="addBrand()" style="padding: 10px;">
+                    <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fa fa-plus"
+                        style="margin-right: 5px;"></i>
+                </button>
+                <p style="margin-left: 5px;
+                font-weight: 700;
+                margin-bottom: 0px;">Add Brnad
+                    <span style="float: left;
+                margin-left: 15px;" class="badge badge-warning">0/0</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div id="disableDiv" style="width: 100%;
+                padding: 5px;
+                background-color: white;
+                border: 1px solid #ddd;
+                box-shadow: 1px 1px #ddd;
+                border-radius: 5px;display: inline-flex;">
+                <button class="btn btn-primary" onclick="addProduct()" style="padding: 10px;">
+                    <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fa fa-plus"
+                        style="margin-right: 5px;"></i>
+                </button>
+                <p style="margin-left: 5px;
+                font-weight: 700;
+                margin-bottom: 0px;">Add Product
+                    <span style="float: left;
+                margin-left: 15px;" class="badge badge-warning">0/0</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="disableDiv" style="width: 85%;
+                padding: 5px;
+                background-color: white;
+                border: 1px solid #ddd;
+                box-shadow: 1px 1px #ddd;
+                border-radius: 5px;display: inline-flex;">
+                <button class="btn btn-primary" onclick="addProductAvatar()" style="padding: 10px;">
+                    <i style="margin-right: 5px;font-size: 25px;margin-left: 5px;" class="fa fa-plus"
+                        style="margin-right: 5px;"></i>
+                </button>
+                <p style="margin-left: 5px;
+                font-weight: 700;
+                margin-bottom: 0px;">Add Product Images
+                    <span style="float: left;
+                margin-left: 15px;" class="badge badge-warning">0/0</span>
+                </p>
+            </div>
+        </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
-    <hr>
     <section class="content">
         <div class="row">
             <div id="addProductForm" class="card card-primary col-10 offset-1" style="padding-top: 8px;
@@ -45,7 +95,7 @@
                 ">
                 <div class="card-header" style="background-color: #007bff;
                 color: #fff;">
-                  <h3 class="card-title">Add New Product</h3>
+                  <h3 class="card-title">Add New Product Info</h3>
                   <button
                     onclick="formClose()"
                     class="close"
@@ -54,29 +104,6 @@
                     <span style="color: #fff" aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="row col-10 offset-1" style="margin-top: 20px;">
-                    <div class="col-3">
-                        <button onclick="addVendorLogo()" class="btn btn-primary">
-                            <i style="margin-right:5px;" class="fa fa-plus"></i>Add Vendor Logo
-                        </button>
-                    </div>
-                    <div class="col-3">
-                        <button onclick="addBrand()" class="btn btn-primary">
-                            <i style="margin-right:5px;" class="fa fa-plus"></i>Add Brand
-                        </button>
-                    </div>
-                    <div class="col-3">
-                        <button onclick="addProduct()" class="btn btn-warning">
-                            <i style="margin-right:5px;" class="fa fa-plus"></i>Add Product
-                        </button>
-                    </div>
-                    <div class="col-3">
-                        <button onclick="addProductAvatar()" class="btn btn-success" style="width: 173px;">
-                            <i style="margin-right:5px;" class="fa fa-plus"></i>Add Product Image
-                        </button>
-                    </div>
-                </div>
-                <hr>
                 @include('layouts.backend.vendor.add_vendor_brand')
                 <div class="card-body row col-4 offset-4" id="vendorlogoInfo" style="display: none;border: 1px solid #ddd;">
                     <form  role="form" method="POST" id="upload_form" enctype="multipart/form-data">
@@ -785,64 +812,49 @@
             document.getElementById("addProductForm").style.display = "none";
             document.getElementById("product_table").style.display = "block";
           }
-          function showProductForm(){
-            document.getElementById("addProductForm").style.display = "block";
-            document.getElementById("product_table").style.display = "none";
-          }
+
         function editProduct(){
-          if(document.getElementById("addProductForm"))
           document.getElementById("addProductForm").style.display = "none";
           document.getElementById("editProductForm").style.display = "block";
-        //   $('#edit_child_category_id').val(item.get_child_category.id);
-        //   $('#edit_sub_child_name').val(item.sub_child_name);
-        //   $('#id').val(item.id);
         }
         function closeForm(){
-          if( document.getElementById("editProductForm"))
           document.getElementById("editProductForm").style.display = "none";
           document.getElementById("addProductForm").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
         }
 
         function addProduct(){
-          if(document.getElementById("addBrandForm"))
-          document.getElementById("productInfo").style.display = "block";
-          document.getElementById("addBrandForm").style.display = "none";
-          document.getElementById("vendorlogoInfo").style.display = "none";
-          document.getElementById("productAvatarInfo").style.display = "none";
-        //   $('#edit_child_category_id').val(item.get_child_category.id);
-        //   $('#edit_sub_child_name').val(item.sub_child_name);
-        //   $('#id').val(item.id);
+            document.getElementById("addProductForm").style.display = "block";
+            document.getElementById("product_table").style.display = "none";
+            document.getElementById("productInfo").style.display = "block";
+            document.getElementById("addBrandForm").style.display = "none";
+            document.getElementById("vendorlogoInfo").style.display = "none";
+            document.getElementById("productAvatarInfo").style.display = "none";
         }
         function addVendorLogo(){
-          if( document.getElementById("productInfo"))
+            document.getElementById("addProductForm").style.display = "block";
+            document.getElementById("product_table").style.display = "none";
           document.getElementById("productInfo").style.display = "none";
           document.getElementById("productAvatarInfo").style.display = "none";
           document.getElementById("addBrandForm").style.display = "none";
           document.getElementById("vendorlogoInfo").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
         }
 
         function addBrand(){
-          if( document.getElementById("productInfo"))
+            document.getElementById("addProductForm").style.display = "block";
+            document.getElementById("product_table").style.display = "none";
           document.getElementById("productInfo").style.display = "none";
           document.getElementById("productAvatarInfo").style.display = "none";
           document.getElementById("vendorlogoInfo").style.display = "none";
           document.getElementById("addBrandForm").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
         }
 
         function addProductAvatar(){
-          if( document.getElementById("productInfo"))
+            document.getElementById("addProductForm").style.display = "block";
+            document.getElementById("product_table").style.display = "none";
           document.getElementById("productInfo").style.display = "none";
           document.getElementById("addBrandForm").style.display = "none";
           document.getElementById("vendorlogoInfo").style.display = "none";
           document.getElementById("productAvatarInfo").style.display = "block";
-        //   $('#edit_child_category_id').val();
-        //   $('#edit_sub_child_name').val();
         }
 
 

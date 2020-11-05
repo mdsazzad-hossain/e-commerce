@@ -205,11 +205,10 @@ class ProductController extends Controller
                 'msg'=>'success'
             ]);
         }elseif($request->flash_timing != null && $flash_status){
-            Product::where([
-                ['position','=','flash sale'],
-                ['flash_timing','=',null],
-                ['flash_status','=',null]
-            ])->update([
+            Product::where('position','flash sale')
+                ->whereNull('flash_timing')
+                ->whereNull('flash_status')
+                ->update([
                 'flash_timing'=>$request->flash_timing,
                 'flash_status'=>0
             ]);
@@ -225,6 +224,13 @@ class ProductController extends Controller
                 'flash_timing'=>null,
                 'flash_status'=>null,
                 'position'=>null
+            ]);
+
+            Product::where([
+                'position'=>'flash sale',
+                'flash_status'=>0,
+            ])->update([
+                'flash_status'=>1
             ]);
             
             return response()->json([

@@ -428,9 +428,9 @@
                 @foreach ($categories as $cat)
                 @if ($cat->explor == 1 && $cat->status == 1)
 
-                <div class="col-12 col-sm-8 col-lg-4" style="margin-bottom: 10px;">
+                <div class="col-12 col-sm-8 col-lg-3" style="margin-bottom: 10px;">
                     <a href="{{route('category',$cat->cat_name)}}" class="icon-box icon-box-side"
-                        style="border: 1px solid #ddd; padding-top:1rem !important; padding-bottom: 1rem !important;">
+                        style="border: 1px solid #ddd; padding-top:0rem !important; padding-bottom: 0rem !important;">
                         <h3 class="icon-box-title" style="margin: auto;">{{$cat->cat_name}}</h3>
                         <img style="width: 40px; margin: auto;height: 40px;" src="{{ asset('/images/' . $cat->cover) }}"
                             alt="">
@@ -811,16 +811,17 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                            <button onclick="addWishList({{$product}}) class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                     to wishlist</span></a>
-                                            <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
+                                            <button href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                                 title="Quick view"><span>Quick view</span></a>
                                         </div>
                                         <!-- End .product-action-vertical -->
 
                                         <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to
-                                                    cart</span></a>
+                                            <button onclick="addToCart({{$product}})" class="btn-product btn-cart" title="Add to cart"><span>add to
+                                                    cart</span>
+                                            </button>
                                         </div>
                                         <!-- End .product-action -->
                                     </figure>

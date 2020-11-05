@@ -33,107 +33,114 @@
               </a>
           </li>
           @if ($data->role == 'super_admin')
-
-          <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-star"></i>
-                <p>
-                  User Management
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                  <a href="{{route('user.list')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>User List</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{route('vendor.list')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Vendor List</p>
-                  </a>
-                </li>
-              </ul>
-          </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-star"></i>
+              <i class="nav-icon fa fa-user text-orange"></i>
               <p>
-                Slide Management
+                Manage User
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a href="{{route('banar.list')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Banar List</p>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('user.list')}}" class="nav-link">
+                  <i class="fa fa-check-circle nav-icon" aria-hidden="true"></i>
+                  <p>User</p>
+                </a>
+              </li>
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('vendor.list')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Vendor List</p>
                 </a>
               </li>
             </ul>
           </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-star"></i>
-            <p>
-              Store Management
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-              <a href="{{route('categories')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Category List</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{route('child.category')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Sub Category List</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-star"></i>
-            <p>
-              Inventory Management
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-              <a href="{{route('products')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Product List</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-star"></i>
+                <i class="nav-icon fas fa-sliders-h text-blue"></i>
+
+              <p>
+                Manage Slide
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('banar.list')}}" class="nav-link">
+                    <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Banner List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-sitemap text-info"></i>
+              <p>
+                Manage Category
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('categories')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Main Category</p>
+                </a>
+              </li>
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('child.category')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Child Category</p>
+                </a>
+              </li>
+              <li class="nav-item" style="font-size: 15px;">
+                  <a href="{{route('sub.child.category')}}" class="nav-link">
+                    <i class="fas fa-check-circle nav-icon"></i>
+                    <p>Child of Child-category</p>
+                  </a>
+                </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fab fa-product-hunt text-green"></i>
+  
+              <p>
+                Manage Product
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('products')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Product List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-dolly-flatbed text-blue"></i>
               <p>
                 Sales Management
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
                 <a href="{{route('sales.history')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-check-circle nav-icon"></i>
                   <p>Sales List</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" style="font-size: 15px;">
                 <a href="{{route('refund.view')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-check-circle nav-icon"></i>
                   <p>Refund List</p>
                 </a>
               </li>
@@ -141,55 +148,55 @@
         </li>
         @endif
         @if($data->role == 'vendor' || $data->role == 'super_admin')
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-star"></i>
-            <p>
-              Vendor
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-              <a href="{{route('vendors')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Vendor List</p>
-              </a>
-            </li>
-            <li class="nav-item">
-            <a href="{{route('vendor.products')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Vendor Product List</p>
-              </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('vendor.sales.history')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales List</p>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-users-cog text-green"></i>
+              <p>
+                Vendor
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('vendors')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Vendor List</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{route('vendor.sales.refund')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Refund List</p>
+              <li class="nav-item" style="font-size: 15px;">
+              <a href="{{route('vendor.products')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Vendor Product List</p>
                 </a>
               </li>
-          </ul>
-        </li>
+              <li class="nav-item" style="font-size: 15px;">
+                  <a href="{{route('vendor.sales.history')}}" class="nav-link">
+                    <i class="fas fa-check-circle nav-icon"></i>
+                    <p>Sales List</p>
+                  </a>
+                </li>
+                <li class="nav-item" style="font-size: 15px;">
+                  <a href="{{route('vendor.sales.refund')}}" class="nav-link">
+                    <i class="fas fa-check-circle nav-icon"></i>
+                    <p>Refund List</p>
+                  </a>
+                </li>
+            </ul>
+          </li>
         @endif
         @if($data->role == 'super_admin')
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-star"></i>
+            <i class="nav-icon fas fa-ad text-info"></i>
             <p>
               Ads Management
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
+          <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+            <li class="nav-item" style="font-size: 15px;">
               <a href="{{route('ads')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
+                <i class="fas fa-check-circle nav-icon"></i>
                 <p>Ads List</p>
               </a>
             </li>

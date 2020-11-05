@@ -16,14 +16,6 @@
   </footer>
 
 </div>
-<script>
-    $(function () {
-        $("#example1").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-        });
-    });
-</script>
 <script src="{{ asset('backend/plugins/jquery/jquery.min.js')}}"></script>
 <script src="{{ asset('backend/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <script>
@@ -41,13 +33,11 @@
 <script src="{{ asset('backend/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script src="{{ asset('backend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <script src="{{ asset('backend/dist/js/adminlte.js')}}"></script>
-<script src="{{ asset('backend/dist/js/pages/dashboard.js')}}"></script>
-<script src="{{ asset('backend/dist/js/demo.js')}}"></script>
+{{-- <script src="{{ asset('backend/dist/js/pages/dashboard.js')}}"></script> --}}
+{{-- <script src="{{ asset('backend/dist/js/demo.js')}}"></script> --}}
 <script src="{{ asset('backend/dist/js/dropzone.js')}}"></script>
-<script src="{{ asset('backend/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{ asset('backend/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{ asset('backend/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{ asset('backend/plugins/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 
 
 @yield('js')
