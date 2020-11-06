@@ -22,4 +22,9 @@ class Brand extends Model
     {
         return $this->belongsTo(ChildCategory::class,'child_category_id');
     }
+
+    public function get_category()
+    {
+        return $this->belongsTo(Category::class,'category_id');
+    }
 }

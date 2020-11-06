@@ -16,7 +16,7 @@ class Product extends Model
     //     'sale_price',
     // ];
         protected $guarded =[];
-        
+
     public function get_brand()
     {
         return $this->belongsTo(Brand::class,'brand_id');
@@ -25,5 +25,9 @@ class Product extends Model
     public function get_product_avatars()
     {
         return $this->hasMany(ProductAvatar::class,'product_id');
+    }
+
+    public function getTableColumns() {
+        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
 }

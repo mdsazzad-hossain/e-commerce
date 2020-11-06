@@ -57,33 +57,17 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $search = $request->get('q');
-        if($search){
-            $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
-            return response()->json([
-                'search'=>$search
-            ],200);
-        }
-        // $categories = Category::with('get_child_category')->get();
-        // $ads = AdManager::all();
-        // $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        // $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        // $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        // $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
-        // return view('layouts.frontend.search-results',[
-        //     'categories'=>$categories,
-        //     'count'=>$count,
-        //     'count1'=>$count1,
-        //     'cart'=>$cart,
-        //     'orders'=>$orders,
-        //     'ads'=>$ads,
-        //     'search'=>$search
-        // ]);
+        $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
+        $product=new Product;
+        return response()->json([
+            'search'=>$search
+        ],200);
 
     }
 
     public function search_result($search)
     {
-        $search = Product::where('product_name','LIKE','%'.$search.'%')->with('get_brand.get_product')->get();
+        $search = Product::where('product_name',$search)->with('get_brand.get_category.get_brand.get_product')->get();
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();

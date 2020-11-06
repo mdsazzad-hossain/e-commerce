@@ -33,53 +33,53 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        
-        
+
+
         if (Auth::attempt([
-            'email'=>$request->email, 
+            'email'=>$request->email,
             'password'=>$request->password,
             'verified'=> 1,
             'role'=> 'super_admin'
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('home');
+            return redirect()->back();
         }elseif (Auth::attempt([
-            'email'=>$request->email, 
+            'email'=>$request->email,
             'password'=>$request->password,
             'verified'=> 1,
             'role'=> 'admin'
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('home');
+            return redirect()->back();
         }elseif (Auth::attempt([
-            'email'=>$request->email, 
+            'email'=>$request->email,
             'password'=>$request->password,
             'verified'=> 1,
             'role'=> 'vendor'
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('home');
+            return redirect()->back();
         }elseif (Auth::attempt([
-            'email'=>$request->email, 
+            'email'=>$request->email,
             'password'=>$request->password,
             'verified'=> 1,
             'role'=> 'sub-vendor'
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('home');
+            return redirect()->back();
         }elseif (Auth::attempt([
-            'email'=>$request->email, 
+            'email'=>$request->email,
             'password'=>$request->password,
             'verified'=> 1,
             'role'=> 'user'
         ])) {
 
             toast('Signed in successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return redirect()->route('home');
+            return redirect()->back();
         }
         else{
             Alert::warning('Opps!','Access Denied.');
@@ -106,7 +106,7 @@ class LoginController extends Controller
             'address' => $request['address'],
             'phn' => $request['phn'],
             'password' => Hash::make($data['password']),
-            'verification_token'=> Str::random(32), 
+            'verification_token'=> Str::random(32),
         ]);
 
         Mail::to($user->email)->send(new UserVerification($user));
@@ -124,7 +124,7 @@ class LoginController extends Controller
             ]);
 
         toast('Account Verified Successfully.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-        
+
         return redirect()->route('home');
     }
 
@@ -156,6 +156,6 @@ class LoginController extends Controller
 
             return redirect()->route('home');
         }
-        
+
     }
 }

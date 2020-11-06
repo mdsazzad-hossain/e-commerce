@@ -274,7 +274,7 @@
                             style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
                             @foreach ($products as $product)
                             @if ($product->position == 'flash sale' && $product->flash_timing != null && $product->flash_status == 1)
-                            
+
                             <input type="hidden" id="time" value="{{$product->flash_timing}}">
                             <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
