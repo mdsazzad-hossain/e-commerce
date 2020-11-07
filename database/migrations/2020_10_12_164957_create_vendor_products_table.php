@@ -33,6 +33,7 @@ class CreateVendorProductsTable extends Migration
             $table->decimal('outdoor_charge',8,2)->nullable();
             $table->text('description')->nullable();
             $table->decimal('total_price',8,2)->nullable();
+            $table->string('shipp_des')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

@@ -50,6 +50,7 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('order-refund', 'HomeController@refund')->name('product.refund');
     //search product
     Route::get('search-result/{search}', 'HomeController@search_result')->name('search.result');
+    Route::get('search-result/search-data/{name}', 'HomeController@get_result');
     Route::post('load/{item}', 'HomeController@load')->name('load');
 
 

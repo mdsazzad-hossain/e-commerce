@@ -67,7 +67,9 @@ class HomeController extends Controller
 
     public function search_result($search)
     {
-        $search = Product::where('product_name',$search)->with('get_brand.get_category.get_brand.get_product')->get();
+        
+        $search = Product::where('product_name',$search)->with('get_brand.get_child_category.get_sub_child_category','get_brand.get_sub_child_category.get_brand','get_brand.get_sub_child_category.get_brand.get_product','get_brand.get_sub_child_category.get_brand.get_product.get_product_avatars','get_product_avatars')->get();
+
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
@@ -83,6 +85,34 @@ class HomeController extends Controller
             'ads'=>$ads,
             'search'=>$search
         ]);
+    }
+
+    public function get_result($name)
+    {
+        if($name != null){
+            $data = SubChildCategory::where('sub_child_name',$name)->with('get_brand','get_brand.get_product','get_brand.get_product.get_product_avatars')->get();
+            return response()->json([
+                'data'=>$data
+            ],200);
+
+        }
+        // $search = Product::where('product_name',$search)->with('get_brand.get_category.get_brand.get_product')->get();
+
+        // $categories = Category::with('get_child_category')->get();
+        // $ads = AdManager::all();
+        // $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        // $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        // $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        // $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        // return view('layouts.frontend.search-results',[
+        //     'categories'=>$categories,
+        //     'count'=>$count,
+        //     'count1'=>$count1,
+        //     'cart'=>$cart,
+        //     'orders'=>$orders,
+        //     'ads'=>$ads,
+        //     'search'=>$search
+        // ]);
     }
 
     public function load(Request $request,$item)

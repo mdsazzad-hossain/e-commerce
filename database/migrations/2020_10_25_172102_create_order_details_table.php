@@ -21,6 +21,7 @@ class CreateOrderDetailsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('qty')->default(0);
             $table->decimal('total',8,2)->default(0.00);
+            $table->decimal('shipp_charge',8,2)->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

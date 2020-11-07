@@ -27,7 +27,7 @@ class Product extends Model
         return $this->hasMany(ProductAvatar::class,'product_id');
     }
 
-    public function getTableColumns() {
-        return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
-    }
+    // public function getTableColumns() {
+    //     return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
+    // }
 }

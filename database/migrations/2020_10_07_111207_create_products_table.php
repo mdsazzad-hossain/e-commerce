@@ -32,10 +32,15 @@ class CreateProductsTable extends Migration
             $table->decimal('outdoor_charge',8,2)->nullable();
             $table->text('description')->nullable();
             $table->decimal('total_price',8,2)->nullable();
+            $table->string('shipp_des',150)->nullable();
+            $table->string('flash_timing')->nullable();
+            $table->boolean('flash_status')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
+
+            
 
     /**
      * Reverse the migrations.

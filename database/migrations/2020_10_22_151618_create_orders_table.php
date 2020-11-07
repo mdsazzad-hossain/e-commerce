@@ -26,9 +26,12 @@ class CreateOrdersTable extends Migration
             $table->string('status');
             $table->string('transaction_id');
             $table->string('currency');
+            $table->string('payment',150)->nullable();
+            $table->integer('qty')->nullable();
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.
