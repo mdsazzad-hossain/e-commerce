@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <div id="disableDiv" style="width: 100%;
+                        <div id="disableDiv" style="width: 102%;
                             padding: 5px;
                             background-color: white;
                             border: 1px solid #ddd;
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div id="disableDiv" style="width: 85%;
+                        <div id="disableDiv" style="width: 88%;
                             padding: 5px;
                             background-color: white;
                             border: 1px solid #ddd;
@@ -432,8 +432,23 @@
                                             @else
                                                 <button class="badge badge-success">Active</button>
                                             @endif
-                                            <a href="{{ route('product.avatars', $pro->slug) }}"
-                                                class="badge badge-info">Images</a>
+
+                                            @php
+                                                $id = null;    
+                                            @endphp
+                                            @foreach ($pro->get_product_avatars  as $avtr)
+                                                @php
+                                                    $id = $avtr->product_id;
+                                                @endphp
+                                                <a href="{{ route('product.avatars', $pro->slug) }}"
+                                                    class="badge badge-info">Images</a>
+                                            @endforeach
+
+                                            @if ($pro->id != $id)
+                                            <p style="cursor: pointer" onclick="addProductAvatar()"
+                                                class="badge badge-danger">Images</p>
+                                            @endif
+                                            
                                         </td>
 
                                         <td style="display: inline-flex;">

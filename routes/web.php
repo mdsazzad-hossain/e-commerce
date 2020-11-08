@@ -163,6 +163,13 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('order/{id}', 'OrdersController@delete_single_order')->name('single.order.delete');
         Route::get('order-refunds', 'OrdersController@refundView')->name('refund.view');
         Route::post('order-refunded', 'OrdersController@refunded')->name('product.refunded');
+
+        //invoice
+        Route::post('order-invoice', 'OrdersController@invoice')->name('order.invoice');
+
+        //table data search daily,weekly,monthly,yearly
+        Route::post('table-data-search', 'ProductController@table_search')->name('table-search');
+
     });
 
 });

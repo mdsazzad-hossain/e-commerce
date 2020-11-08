@@ -6,16 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    // protected $fillable =[
-    //     'brand_id',
-    //     'product_name',
-    //     'color',
-    //     'size',
-    //     'qty',
-    //     'pur_price',
-    //     'sale_price',
-    // ];
-        protected $guarded =[];
+    protected $guarded =[];
 
     public function get_brand()
     {

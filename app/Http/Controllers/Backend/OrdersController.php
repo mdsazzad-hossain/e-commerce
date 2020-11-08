@@ -8,7 +8,7 @@ use App\Models\Orders;
 use App\Models\Product;
 use App\Models\VendorProduct;
 use App\Models\OrderDetails;
-
+use PDF;
 class OrdersController extends Controller
 {
     /**
@@ -88,9 +88,17 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function invoice(Request $request)
     {
-        //
+        $datas = Orders::where('transaction_id',$request->tran_id)->with('get_order_details')->first();
+
+        return view('layouts.backend.invoice.order_invoice',[
+            
+            'datas'=>$datas
+        ]);
+
+        // $pdf = PDF::loadView('layouts.backend.invoice.order_invoice',['datas'=>$datas]);
+        // return $pdf->stream('invoice.pdf');
     }
 
     /**

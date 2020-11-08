@@ -187,6 +187,30 @@
                 <div class="card col-12" id="deliveredHistory" style="border: 1px solid #ddd;display: block">
                     <div class="card-header">
                         <h3 class="card-title"><strong>Delivered History is here</strong></h3>
+                            <div class="col-md-3" style="float: right;
+                            display: inline-flex;position:relative;margin-right: -9px;">
+                                
+                                <form action="{{route('table-search')}}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="badge badge-info"
+                                    style="
+                                    position: absolute;
+                                    z-index: 9999;
+                                    padding: 7px;
+                                    margin-top: 2px;
+                                    margin-left: 74%;">
+                                        Search
+                                    </button>
+                                    <select name="search" class="custom-select custom-select-sm form-control form-control-sm">
+                                        <option value="" selected="selected" hidden>daily,weekly,monthly,yearly</option>
+                                        <strong><option value="daily">daily</option></strong>
+                                        <strong><option value="weekly">weekly</option></strong>
+                                        <strong><option value="monthly">monthly</option></strong>
+                                        <strong><option value="yearly">yearly</option></strong>
+                                    </select>
+                                </form>
+                                
+                            </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -331,7 +355,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <form action="{{route('order.invoice',)}}" method="POST">
+                            @csrf
+                            <input type="hidden" id="tran_id" name="tran_id" value="">
+                            <button type="submit" class="btn btn-primary">Invoice</button>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -390,6 +419,7 @@
             $("#getAmount").text(order.amount);
             $("#getAddress").text(order.address);
             $("#qty").text(order.qty);
+            $("#tran_id").val(order.transaction_id);
         }
 
         function delivery(id) {

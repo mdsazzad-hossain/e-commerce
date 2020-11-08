@@ -701,17 +701,19 @@
                                             </a>
 
                                             <div class="product-action-vertical">
-                                                <a href="#"
-                                                    class="btn-product-icon btn-wishlist btn-expandable"><span>add to
-                                                        wishlist</span></a>
+                                                <p onclick="addWishList({{$product}})" class="btn-product-icon btn-wishlist btn-expandable">
+                                                    <span>
+                                                        add to wishlist
+                                                    </span>
+                                                </p>
                                                 <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                                     title="Quick view"><span>Quick view</span></a>
                                             </div>
                                             <!-- End .product-action-vertical -->
 
                                             <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
-                                                        to cart</span></a>
+                                                <p onclick="addToCart({{$product}})" class="btn-product btn-cart" title="Add to cart"><span>add
+                                                        to cart</span></p>
                                             </div>
                                             <!-- End .product-action -->
                                         </figure>
@@ -811,7 +813,7 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <button onclick="addWishList({{$product}}) class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                            <button onclick="addWishList({{$product}})" class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                     to wishlist</span></a>
                                             <button href="popup/quickView.html" class="btn-product-icon btn-quickview"
                                                 title="Quick view"><span>Quick view</span></a>
