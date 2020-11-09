@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/', 'HomeController@index')->name('home');
-    Route::get('search', 'HomeController@search');
+    Route::post('search', 'HomeController@search')->name("search");
     Route::get('/category/{slug}', 'HomeController@category')->name('category');
     Route::get('/{user}/wishlist', 'WishListController@index')->name('wishlist');
     Route::post('/wishlist/store', 'WishListController@store')->name('wishlist.store');
@@ -51,6 +51,7 @@ Route::group(["namespace"=>"Frontend"],function() {
     //search product
     Route::get('search-result/{search}', 'HomeController@search_result')->name('search.result');
     Route::get('search-result/search-data/{name}', 'HomeController@get_result');
+    Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
     Route::post('load/{item}', 'HomeController@load')->name('load');
 
 
@@ -105,7 +106,7 @@ Route::group(["namespace"=>"Backend"],function() {
          //Brand
         //  Route::get('products', 'ProductController@index')->name('products');
          Route::post('brand-create', 'BrandController@store')->name('brand.add');
-         // Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
+         Route::post('get-cat-subCat', 'BrandController@getCatSubCat')->name('get.cat.subCat');
          // Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
 
         //product
@@ -115,6 +116,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('product-update/{slug}', 'ProductController@update')->name('product.update');
         Route::post('product-delete/{id}', 'ProductController@destroy')->name('product.delete');
         Route::post('product-flash-update', 'ProductController@flash_update')->name('product.flash.update');
+        Route::post('product-status', 'ProductController@product_status')->name('product.status');
 
         //product avatars
         Route::get('products/avatars', 'ProductAvatarController@index')->name('avatars');

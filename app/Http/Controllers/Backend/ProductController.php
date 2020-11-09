@@ -16,6 +16,8 @@ use App\Models\OrderDetails;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+
 class ProductController extends Controller
 {
     /**
@@ -99,24 +101,45 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create([
-            'brand_id'=>$request->brand_id,
-            'product_name'=>$request->product_name,
-            'slug'=> $request->product_name,
-            'product_code'=>$request->product_code,
-            'color'=>$request->color,
-            'size'=>$request->size,
-            'qty'=>$request->qty,
-            'pur_price'=>$request->pur_price,
-            'sale_price'=>$request->sale_price,
-            'promo_price'=>$request->promo_price,
-            'description'=>$request->description,
-            'total_price'=>$request->qty*$request->sale_price
+        $validator = Validator::make($request->all(), [
+            'brand_id' => 'required',
+            'product_name' => 'required|unique:"products"',
+            'product_code' => 'required',
+            'color' => 'required',
+            'size' => 'required',
+            'qty' => 'required',
+            'pur_price' => 'required',
+            'sale_price' => 'required'
         ]);
 
-        toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
-        return redirect()->back();
+        if ($validator->fails()) {
+            if ($validator->messages()->all()[0] == "The product name has already been taken.") {
+                Alert::warning('Opps!','Product name already taken.');
+                return redirect()->back();
+            }else{
+                Alert::warning('Opps!','Please fillup all field.');
+                return redirect()->back();
+            }
+        }else{
+            Product::create([
+                'brand_id'=>$request->brand_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'promo_price'=>$request->promo_price,
+                'description'=>$request->description,
+                'total_price'=>$request->qty*$request->sale_price
+            ]);
+    
+            toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+    
+            return redirect()->back();
+        }
     }
 
     /**
@@ -125,9 +148,25 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function product_status(Request $request)
     {
-        //
+        $data = Product::where('id',$request->id)->first();
+        if ($data->status == 0) {
+           $data->update([
+               'status'=>1
+           ]);
+            toast('Product active successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+    
+            return redirect()->back();
+        }elseif($data->status == 1){
+            $data->update([
+                'status'=>0
+            ]);
+            toast('Product deactive successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+    
+            return redirect()->back();
+        }
+        
     }
 
     /**

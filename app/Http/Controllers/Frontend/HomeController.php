@@ -32,7 +32,7 @@ class HomeController extends Controller
 
             $banars = Banar::select('id','image','image1','image2','image3')->first();
             $categories = Category::with('get_child_category')->get();
-            $products = Product::with('get_brand','get_product_avatars')->get();
+            $products = Product::where('status','=',1)->with('get_brand','get_product_avatars')->get();
             $ads = AdManager::all();
             $vendors = Vendor::all();
             $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
@@ -56,19 +56,27 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->get('q');
+        $search = $request->val;
         $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
-        $product=new Product;
+
+    
+
+        $html = array();
+
+        foreach ($search as $key => $value) {
+            $html = '<ul><li style="cursor:pointer;" onclick="selectItem()">'.$value->product_name.'</li></ul>';
+        }
         return response()->json([
-            'search'=>$search
+            'search'=>$html
         ],200);
+
 
     }
 
     public function search_result($search)
     {
         
-        $search = Product::where('product_name',$search)->with('get_brand.get_child_category.get_sub_child_category','get_brand.get_sub_child_category.get_brand','get_brand.get_sub_child_category.get_brand.get_product','get_brand.get_sub_child_category.get_brand.get_product.get_product_avatars','get_product_avatars')->get();
+        $search = Product::where('product_name',$search)->with('get_brand.get_sub_child_category','get_brand.get_child_category.get_sub_child_category','get_brand.get_sub_child_category.get_brand','get_brand.get_sub_child_category.get_brand.get_product','get_brand.get_sub_child_category.get_brand.get_product.get_product_avatars','get_product_avatars')->get();
 
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
@@ -90,30 +98,35 @@ class HomeController extends Controller
     public function get_result($name)
     {
         if($name != null){
-            $data = SubChildCategory::where('sub_child_name',$name)->with('get_brand','get_brand.get_product','get_brand.get_product.get_product_avatars')->get();
+            $data = SubChildCategory::where('sub_child_name',$name)->with(
+                'get_brand',
+                'get_brand.get_product',
+                'get_brand.get_product.get_product_avatars'
+            )->get();
             return response()->json([
                 'data'=>$data
             ],200);
 
         }
-        // $search = Product::where('product_name',$search)->with('get_brand.get_category.get_brand.get_product')->get();
-
-        // $categories = Category::with('get_child_category')->get();
-        // $ads = AdManager::all();
-        // $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        // $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
-        // $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        // $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
-        // return view('layouts.frontend.search-results',[
-        //     'categories'=>$categories,
-        //     'count'=>$count,
-        //     'count1'=>$count1,
-        //     'cart'=>$cart,
-        //     'orders'=>$orders,
-        //     'ads'=>$ads,
-        //     'search'=>$search
-        // ]);
     }
+
+    public function search_product_by_brand($id)
+    {
+        $data = Product::where('brand_id',$id)->with('get_product_avatars')->get();
+        return response()->json([
+            'data'=>$data
+        ],200);
+    }
+
+    // public function search_product_by_size($size)
+    // {
+    //     $data = Product::where('brand_id',$id)->with(
+    //         'get_product_avatars'
+    //     )->get();
+    //     return response()->json([
+    //         'data'=>$data
+    //     ],200);
+    // }
 
     public function load(Request $request,$item)
     {

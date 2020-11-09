@@ -10,6 +10,7 @@
             <h1>Blank Page</h1>
 
           </div>
+          @if($data->role == 'super_admin')
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <a href="{{route('user.role')}}" class="btn btn-primary">
@@ -18,6 +19,7 @@
               </a>
             </ol>
           </div>
+          @endif
         </div>
       </div><!-- /.container-fluid -->
     </section>

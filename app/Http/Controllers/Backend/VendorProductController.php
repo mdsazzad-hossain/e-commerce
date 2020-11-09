@@ -49,27 +49,47 @@ class VendorProductController extends Controller
     {
         // $cal = $request->discount*$request->sale_price;
         // $price = $cal/100;
-
-        VendorProduct::create([
-            'single_vendor_id'=>$request->single_vendor_id,
-            'vendor_id'=>$request->vendor_id,
-            'product_name'=>$request->product_name,
-            'slug'=> $request->product_name,
-            'product_code'=>$request->product_code,
-            'color'=>$request->color,
-            'size'=>$request->size,
-            'qty'=>$request->qty,
-            'pur_price'=>$request->pur_price,
-            'sale_price'=>$request->sale_price,
-            'promo_price'=>$request->promo_price,
-            'position'=>'vendor',
-            'description'=>$request->description,
-            'total_price'=>$request->qty*$request->sale_price
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required|unique:"vendor_products"',
+            'product_code' => 'required',
+            'color' => 'required',
+            'size' => 'required',
+            'qty' => 'required',
+            'pur_price' => 'required',
+            'sale_price' => 'required'
         ]);
 
-        toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
-        return redirect()->back();
+        if ($validator->fails()) {
+            if ($validator->messages()->all()[0] == "The product name has already been taken.") {
+                Alert::warning('Opps!','Product name already taken.');
+                return redirect()->back();
+            }else{
+                Alert::warning('Opps!','Please fillup all field.');
+                return redirect()->back();
+            }
+        }else{
+            VendorProduct::create([
+                'single_vendor_id'=>$request->single_vendor_id,
+                'vendor_id'=>$request->vendor_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'promo_price'=>$request->promo_price,
+                'position'=>'vendor',
+                'description'=>$request->description,
+                'total_price'=>$request->qty*$request->sale_price
+            ]);
+    
+            toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+    
+            return redirect()->back();
+        }
+        
     }
 
 
@@ -107,31 +127,73 @@ class VendorProductController extends Controller
      */
     public function update(Request $request, $slug)
     {
+        $data = Product::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
         $cal1 = $request->admin_percent*$request->sale_price;
         $price1 = $cal1/100;
-
-        VendorProduct::where('product_name',$slug)->update([
-            'single_vendor_id'=>$request->single_vendor_id,
-            'vendor_id'=>$request->vendor_id,
-            'product_name'=>$request->product_name,
-            'slug'=> $request->product_name,
-            'product_code'=>$request->product_code,
-            'color'=>$request->color,
-            'size'=>$request->size,
-            'qty'=>$request->qty,
-            'pur_price'=>$request->pur_price,
-            'sale_price'=>$request->sale_price,
-            'discount'=>$price,
-            'promo_price'=>$request->promo_price,
-            'admin_percent'=>$price1,
-            'size_show'=>$request->size_show,
-            'description'=>$request->description,
-            'indoor_charge'=>$request->indoor_charge,
-            'outdoor_charge'=>$request->outdoor_charge,
-            'total_price'=>$request->qty*$request->sale_price
-        ]);
+        if ($data->discount != $request->discount && $data->admin_percent == $request->admin_percent) {
+            VendorProduct::where('product_name',$slug)->update([
+                'single_vendor_id'=>$request->single_vendor_id,
+                'vendor_id'=>$request->vendor_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'discount'=>$price,
+                'promo_price'=>$request->promo_price,
+                'size_show'=>$request->size_show,
+                'description'=>$request->description,
+                'indoor_charge'=>$request->indoor_charge,
+                'outdoor_charge'=>$request->outdoor_charge,
+                'total_price'=>$request->qty*$request->sale_price
+            ]);
+        }elseif($data->discount == $request->discount && $data->admin_percent != $request->admin_percent){
+            VendorProduct::where('product_name',$slug)->update([
+                'single_vendor_id'=>$request->single_vendor_id,
+                'vendor_id'=>$request->vendor_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'promo_price'=>$request->promo_price,
+                'admin_percent'=>$price1,
+                'size_show'=>$request->size_show,
+                'description'=>$request->description,
+                'indoor_charge'=>$request->indoor_charge,
+                'outdoor_charge'=>$request->outdoor_charge,
+                'total_price'=>$request->qty*$request->sale_price
+            ]);
+        }else{
+            VendorProduct::where('product_name',$slug)->update([
+                'single_vendor_id'=>$request->single_vendor_id,
+                'vendor_id'=>$request->vendor_id,
+                'product_name'=>$request->product_name,
+                'slug'=> $request->product_name,
+                'product_code'=>$request->product_code,
+                'color'=>$request->color,
+                'size'=>$request->size,
+                'qty'=>$request->qty,
+                'pur_price'=>$request->pur_price,
+                'sale_price'=>$request->sale_price,
+                'discount'=>$price,
+                'promo_price'=>$request->promo_price,
+                'admin_percent'=>$price1,
+                'size_show'=>$request->size_show,
+                'description'=>$request->description,
+                'indoor_charge'=>$request->indoor_charge,
+                'outdoor_charge'=>$request->outdoor_charge,
+                'total_price'=>$request->qty*$request->sale_price
+            ]);
+        }
 
         toast('Product Update successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 

@@ -1053,6 +1053,29 @@
             }
         })
     }
+
+    function searchData(){
+        $.ajax({
+            url: "{{ route('search') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'val': $("#search").val()
+            },
+            success:function(response)
+            {
+                // window.location.reload();
+                $("#allItem").show();
+                $("#allItem").html(response.search);
+                console.log(response.search);
+
+            }
+        })
+    }
+
+    function selectItem(){
+        $("#search").val($("#item").text());
+    }
 </script>
 
 @endsection

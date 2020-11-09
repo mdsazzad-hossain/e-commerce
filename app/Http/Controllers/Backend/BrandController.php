@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Brand;
+use App\Models\SubChildCategory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
 {
@@ -25,9 +27,12 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getCatSubCat(Request $request)
     {
-        //
+        $datas = SubChildCategory::where('id',$request->id)->with('get_child_category.get_category','get_child_category')->first();
+        return response()->json([
+            'datas'=>$datas
+        ]);
     }
 
     /**
@@ -38,7 +43,21 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->category_id && $request->child_category_id && $request->sub_child_category_id) {
+        $validator = Validator::make($request->all(), [
+            'sub_child_category_id' => 'required',
+            'brand_name' => 'required|unique:"brands"'
+
+        ]);
+
+        if ($validator->fails()) {
+            if ($validator->messages()->all()[0] == "The brand name has already been taken.") {
+                Alert::warning('Opps!','Brand name already taken.');
+                return redirect()->back();
+            }else{
+                Alert::warning('Opps!','Please fillup all field.');
+                return redirect()->back();
+            }
+        }else{
             Brand::create([
                 'category_id'=>$request->category_id,
                 'child_category_id'=>$request->child_category_id,
@@ -48,22 +67,28 @@ class BrandController extends Controller
                 'slug'=>$request->brand_name,
                 'br_description'=>$request->br_description
             ]);
-        }elseif($request->category_id && !$request->child_category_id && !$request->sub_child_category_id){
-            Brand::create([
-                'category_id'=>$request->category_id,
-                'brand_name'=>$request->brand_name,
-                'slug'=> $request->brand_name,
-                'br_description'=>$request->br_description
-            ]);
-        }elseif($request->category_id && $request->child_category_id && !$request->sub_child_category_id){
-            Brand::create([
-                'category_id'=>$request->category_id,
-                'child_category_id'=>$request->child_category_id,
-                'brand_name'=>$request->brand_name,
-                'slug'=> $request->brand_name,
-                'br_description'=>$request->br_description
-            ]);
         }
+
+
+
+        // if ($request->category_id && $request->child_category_id && $request->sub_child_category_id) {
+            
+        // }elseif($request->category_id && !$request->child_category_id && !$request->sub_child_category_id){
+        //     Brand::create([
+        //         'category_id'=>$request->category_id,
+        //         'brand_name'=>$request->brand_name,
+        //         'slug'=> $request->brand_name,
+        //         'br_description'=>$request->br_description
+        //     ]);
+        // }elseif($request->category_id && $request->child_category_id && !$request->sub_child_category_id){
+        //     Brand::create([
+        //         'category_id'=>$request->category_id,
+        //         'child_category_id'=>$request->child_category_id,
+        //         'brand_name'=>$request->brand_name,
+        //         'slug'=> $request->brand_name,
+        //         'br_description'=>$request->br_description
+        //     ]);
+        // }
         
 
         toast('Brand Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();

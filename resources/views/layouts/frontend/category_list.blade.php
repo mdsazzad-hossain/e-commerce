@@ -99,7 +99,7 @@
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
                                             <a href="{{route('product.quick',$avtr->slug)}}">
-                                                <img src="{{ asset('/images/' . $avtr->front) }}"
+                                                <img style="height: 203px !important;" src="{{ asset('/images/' . $avtr->front) }}"
                                                     class="product-image">
                                             </a>
 
@@ -124,30 +124,6 @@
                                             <div class="product-price">
                                                 {{$pro->sale_price}}
                                             </div><!-- End .product-price -->
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 20%;"></div>
-                                                    <!-- End .ratings-val -->
-                                                </div><!-- End .ratings -->
-                                                <span class="ratings-text">( 2 Reviews )</span>
-                                            </div><!-- End .rating-container -->
-                                            @foreach ($pro->get_product_avatars as $avtr)
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active">
-                                                    <img src="{{ asset('/images/' . $avtr->back) }}"
-                                                        alt="">
-                                                </a>
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->left) }}"
-                                                        alt="">
-                                                </a>
-
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->right) }}"
-                                                        alt="">
-                                                </a>
-                                            </div><!-- End .product-nav -->
-                                            @endforeach
                                         </div><!-- End .product-body -->
                                     </div><!-- End .product -->
                                 </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->

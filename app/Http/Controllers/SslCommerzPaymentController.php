@@ -356,18 +356,19 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'Failed']);
+                    Alert::warning('Opps!','Transaction is Failed');
                     return redirect()->route('cart');
             }
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
-            // echo "Transaction is successfully Completed";
+            Alert::warning('Opps!','Transaction already successfull');
             return redirect()->route('cart');
 
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
+            Alert::warning('Opps!','Transaction is Invalid');
         }
 
 
@@ -385,11 +386,15 @@ class SslCommerzPaymentController extends Controller
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Failed']);
-            echo "Transaction is Falied";
+            Alert::warning('Opps!','Transaction is Falied');
+            return redirect()->route('home');
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-            echo "Transaction is already Successful";
+            
+            Alert::warning('Opps!','Transaction is already Successful');
+            return redirect()->route('home');
         } else {
-            echo "Transaction is Invalid";
+            Alert::warning('Opps!','Transaction is Invalid');
+            return redirect()->route('home');
         }
 
     }
@@ -406,11 +411,14 @@ class SslCommerzPaymentController extends Controller
             $update_product = DB::table('orders')
                 ->where('transaction_id', $tran_id)
                 ->update(['status' => 'Canceled']);
-            echo "Transaction is Cancel";
+            Alert::warning('Opps!','Transaction is Cancel');
+            return redirect()->route('home');
         } else if ($order_detials->status == 'Processing' || $order_detials->status == 'Complete') {
-            echo "Transaction is already Successful";
+            Alert::warning('Opps!','Transaction is already Successful');
+            return redirect()->route('home');
         } else {
-            echo "Transaction is Invalid";
+            Alert::warning('Opps!','Transaction is Invalid');
+            return redirect()->route('home');
         }
 
 

@@ -69,35 +69,7 @@
 
                         <ul class="top-menu">
                             <li>
-                                <a href="#">Links</a>
                                 <ul>
-                                    <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">USD</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">Eur</a></li>
-                                                    <li><a href="#">Usd</a></li>
-                                                </ul>
-                                            </div>
-                                            <!-- End .header-menu -->
-                                        </div>
-                                        <!-- End .header-dropdown -->
-                                    </li>
-                                    <li>
-                                        <div class="header-dropdown">
-                                            <a href="#">Engligh</a>
-                                            <div class="header-menu">
-                                                <ul>
-                                                    <li><a href="#">English</a></li>
-                                                    <li><a href="#">French</a></li>
-                                                    <li><a href="#">Spanish</a></li>
-                                                </ul>
-                                            </div>
-                                            <!-- End .header-menu -->
-                                        </div>
-                                        <!-- End .header-dropdown -->
-                                    </li>
                                     @guest
                                         <li class="login">
                                             <a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a>
@@ -148,7 +120,7 @@
                                                                         <div class="col-md-6">
 
                                                                                 <div class="menu-title">
-                                                                                    <a href="#">{{ $child->child_name }}</a>
+                                                                                    <a href="{{route('category',$cat->cat_name)}}">{{ $child->child_name }}</a>
                                                                                 </div>
                                                                                 <!-- End .menu-title -->
 
@@ -156,7 +128,7 @@
                                                                                     @foreach ($child->get_sub_child_category as $sub_child)
 
                                                                                         <li>
-                                                                                            <a href="#">{{ $sub_child->sub_child_name }}</a>
+                                                                                            <a href="{{route('category',$cat->cat_name)}}">{{ $sub_child->sub_child_name }}</a>
                                                                                         </li>
                                                                                     @endforeach
                                                                                 </ul>
@@ -196,7 +168,50 @@
                             <!-- End .category-dropdown -->
                         </div>
                         <!-- End .col-lg-3 -->
-                        <home-search></home-search>
+                        <div class="header-center" style="display: block; position: relative">
+                            <div
+                              class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block"
+                            >
+                              <a href="#" class="search-toggle" role="button"
+                                ><i class="icon-search"></i
+                              ></a>
+                              <form action="#" method="get">
+                                <div class="header-search-wrapper search-wrapper-wide">
+                                  <!-- End .select-custom -->
+                                  <label for="q" class="sr-only">Search</label>
+                                  <input
+                                    type="search"
+                                    onkeyup="searchData()"
+                                    class="form-control"
+                                    name="search"
+                                    id="search"
+                                    value=""
+                                    placeholder="Search product ..."
+                                  />
+                                  <button class="btn btn-primary" type="submit">
+                                    <i class="icon-search"></i>
+                                  </button>
+                                </div>
+                      
+                                <!-- End .header-search-wrapper -->
+                              </form>
+                            </div>
+                            <div
+                              id="allItem"
+                              style="
+                                display: none;
+                                position: absolute;
+                                background-color: #ddd;
+                                z-index: 9999;
+                                width: 45%;
+                                padding: 5px;
+                              "
+                            >
+                             
+                            </div>
+                      
+                            <!-- End .main-nav -->
+                          </div>
                         <!-- End .col-lg-9 -->
                         <div class="header-right">
                             <span style="background-color: #2edc53;

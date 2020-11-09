@@ -101,10 +101,10 @@
             <div class="products mb-3">
               <div
                 class="row justify-content-center"
-                v-show="cat_search_product"
+                v-show="cat_search_product && !brandSearchData"
                 v-for="sub_child in cat_search_data"
                 :key="sub_child.id"
-              >
+               >
                 <div
                   class="col-6 col-md-4 col-lg-4 col-xl-3"
                   v-for="brand in sub_child.get_brand"
@@ -186,6 +186,87 @@
               </div>
               <div
                 class="row justify-content-center"
+                v-show="brandSearchData"
+               >
+                <div
+                  class="col-6 col-md-4 col-lg-4 col-xl-3"
+                  v-for="product in show_by_brand"
+                  :key="product.id"
+                >
+                  <div
+                    class="product product-7 text-center"
+                  >
+                    <figure
+                      class="product-media"
+                      v-for="avtr in product.get_product_avatars"
+                      :key="avtr.id"
+                    >
+                      <span class="product-label label-new">New</span>
+                      <a href="product.html">
+                        <img
+                          style="height: 203px !important"
+                          :src="ourImage(avtr.front)"
+                          alt="Product image"
+                          class="product-image"
+                        />
+                      </a>
+
+                      <div class="product-action-vertical">
+                        <a
+                          href="#"
+                          class="btn-product-icon btn-wishlist btn-expandable"
+                          ><span>add to wishlist</span></a
+                        >
+                        <a
+                          href="popup/quickView.html"
+                          class="btn-product-icon btn-quickview"
+                          title="Quick view"
+                          ><span>Quick view</span></a
+                        >
+                      </div>
+
+                      <div class="product-action">
+                        <a href="#" class="btn-product btn-cart"
+                          ><span>add to cart</span></a
+                        >
+                      </div>
+                    </figure>
+                    <div class="product-body">
+                      <div class="product-cat">
+                        <a href="#">Women</a>
+                      </div>
+                      <!-- End .product-cat -->
+                      <h3 class="product-title">
+                        <a href="product.html">{{ product.product_name }}</a>
+                      </h3>
+                      <!-- End .product-title -->
+                      <div class="product-price">
+                        {{ product.sale_price }}
+                      </div>
+                      <!-- End .product-price -->
+
+                      <div
+                        class="product-nav product-nav-thumbs"
+                        v-for="avtr in product.get_product_avatars"
+                        :key="avtr.id"
+                      >
+                        <a href="#" class="active">
+                          <img :src="ourImage(avtr.back)" alt="product desc" />
+                        </a>
+                        <a href="#">
+                          <img :src="ourImage(avtr.left)" alt="product desc" />
+                        </a>
+
+                        <a href="#">
+                          <img :src="ourImage(avtr.right)" alt="product desc" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row justify-content-center"
                 v-show="!cat_search_product"
                
               >
@@ -242,24 +323,6 @@
                       <!-- End .product-title -->
                       <div class="product-price">
                         {{ item.sale_price }}
-                      </div>
-                      <!-- End .product-price -->
-
-                      <div
-                        class="product-nav product-nav-thumbs"
-                        v-for="avtr in item.get_product_avatars"
-                        :key="avtr.id"
-                      >
-                        <a href="#" class="active">
-                          <img :src="ourImage(avtr.back)" alt="product desc" />
-                        </a>
-                        <a href="#">
-                          <img :src="ourImage(avtr.left)" alt="product desc" />
-                        </a>
-
-                        <a href="#">
-                          <img :src="ourImage(avtr.right)" alt="product desc" />
-                        </a>
                       </div>
                     </div>
                   </div>
@@ -477,6 +540,7 @@
                 <div class="collapse show" id="widget-2">
                   <div class="widget-body">
                     <div
+                    v-show="!brandSearchData"
                       class="filter-items"
                       v-for="item in search"
                       :key="item.id"
@@ -485,6 +549,34 @@
                         class="filter-item"
                         v-for="itm in item.get_brand.get_sub_child_category
                           .get_brand"
+                        :key="itm.id"
+                      >
+                        <div class="custom-control custom-checkbox">
+                          <input
+                            @click.prevent="searchProductByBrand(itm.id)"
+                            type="checkbox"
+                            class="custom-control-input"
+                            :id="itm.brand_name"
+                          />
+                          <label
+                            class="custom-control-label"
+                            :for="itm.brand_name"
+                            >{{ itm.brand_name }}</label
+                          >
+                        </div>
+                        <!-- End .custom-checkbox -->
+                      </div>
+                    </div>
+
+                    <div
+                      v-show="brandSearchData"
+                      class="filter-items"
+                      v-for="item in cat_search_data"
+                      :key="item.id"
+                     >
+                      <div
+                        class="filter-item"
+                        v-for="itm in item.get_brand"
                         :key="itm.id"
                       >
                         <div class="custom-control custom-checkbox">
@@ -525,6 +617,7 @@
 
                 <div class="collapse show" id="widget-3">
                   <div
+                    v-show="!brandSearchData"
                     class="widget-body"
                     v-for="item in search"
                     :key="item.id"
@@ -554,7 +647,37 @@
                     </div>
                     <!-- End .filter-colors -->
                   </div>
-                  <!-- End .widget-body -->
+
+                  <div
+                    v-show="brandSearchData"
+                    class="widget-body"
+                    v-for="item in cat_search_data"
+                    :key="item.id"
+                  >
+                    <div
+                      class="filter-colors"
+                      v-for="itm in item.get_brand"
+                      :key="itm.id"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                        v-for="product in itm.get_product"
+                        :key="product.id"
+                      >
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          :id="product.size"
+                        />
+                        <label
+                          class="custom-control-label"
+                          :for="product.size"
+                          >{{ product.size }}</label
+                        >
+                      </div>
+                    </div>
+                    <!-- End .filter-colors -->
+                  </div>
                 </div>
                 <!-- End .collapse -->
               </div>
@@ -663,7 +786,9 @@ export default {
   data() {
     return {
       cat_search_product: false,
+      brandSearchData:false,
       cat_search_data: "",
+      show_by_brand:""
     };
   },
 
@@ -673,6 +798,15 @@ export default {
       axios.get("search-data/" + name).then((response) => {
         this.cat_search_product = true;
         this.cat_search_data = response.data.data;
+        this.brandSearchData = true;
+      });
+    },
+    searchProductByBrand(id){
+       axios.get("search-product-by-brand/" + id)
+       .then((response) => {
+        this.cat_search_product = false;
+        this.show_by_brand = response.data.data;
+        this.brandSearchData = true;
       });
     },
     ourImage(img) {

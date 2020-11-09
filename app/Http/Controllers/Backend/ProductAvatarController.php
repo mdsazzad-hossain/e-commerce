@@ -286,7 +286,32 @@ class ProductAvatarController extends Controller
                 }
             }
 
-        }else{
+        }elseif($request->file('front') != null && $request->file('back') == null &&
+        $request->file('left') == null && $request->file('right') == null){
+            $image = $request->file('front');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('front'));
+            $upload_path = public_path()."/images/";
+
+            \File::delete(public_path('images/' . $data->front));
+
+            if($new_name)
+            {
+                $data = ProductAvatar::where('slug',$request->slug)->update([
+                    'front'=>$new_name,
+                    'slug'=>$new_name
+                ]);
+                if($data){
+                    $img->save($upload_path.$new_name);
+
+                    toast('Product image update successfully','success')
+                    ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                    return response()->json([
+                        'message'=>'success'
+                    ],200);
+                }
+            }
+        } else{
             Alert::error('Opps...', 'Please fillup all field');
             return response()->json([
                 'message'=>'success'

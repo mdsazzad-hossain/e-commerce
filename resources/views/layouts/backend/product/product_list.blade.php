@@ -85,31 +85,22 @@
                         <div class="card-body row col-12">
                             <div class="row col-12">
                                 <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select Category</label>
-                                    <select class="form-control" name="category_id" id="category_id">
-                                        <option value="" selected="selected">select</option>
-                                        @foreach ($categories as $cat)
-                                            <option value="{{ $cat->id }}">
-                                                {{ $cat->cat_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
+                                    <input id="cat" type="text" class="form-control"
+                                    placeholder="Enter category name" readonly required/>
+                                    <input type="hidden" id="get_category_id" name="category_id" value="">
                                 </div>
                                 <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select SubCategory</label>
-                                    <select class="form-control" name="child_category_id" id="child_category_id">
-                                        <option value="" selected="selected">select</option>
-                                        @foreach ($childs as $sub_cat)
-                                            <option value="{{ $sub_cat->id }}">
-                                                {{ $sub_cat->child_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">ChildCategory</label>
+                                    <input id="child" type="text" class="form-control"
+                                    placeholder="Enter child name" readonly required/>
+                                    <input type="hidden" id="get_child_category_id" name="child_category_id" value="">
+
                                 </div>
                                 <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select Sub SubCategory</label>
-                                    <select class="form-control" name="sub_child_category_id" id="sub_child_category_id">
-                                        <option value="" selected="selected">select</option>
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select Child ChildCategory</label>
+                                    <select onchange="subChildId()" class="form-control" name="sub_child_category_id" id="sub_child_category_id">
+                                        <option value="" hidden selected="selected">select</option>
                                         @foreach ($sub_childs as $sub_child)
                                             <option value="{{ $sub_child->id }}">
                                                 {{ $sub_child->sub_child_name }}
@@ -428,9 +419,9 @@
                                         </td>
                                         <td>
                                             @if ($pro->status == 0)
-                                                <button class="badge badge-warning">Inactive</button>
+                                                <p onclick="productStatus({{$pro->id}})" style="cursor: pointer;margin: 0px;" class="badge badge-warning">Inactive</p>
                                             @else
-                                                <button class="badge badge-success">Active</button>
+                                                <p onclick="productStatus({{$pro->id}})" style="cursor: pointer;margin: 0px;" class="badge badge-success">Active</p>
                                             @endif
 
                                             @php
@@ -534,7 +525,38 @@
 
     </script>
     <script>
-        
+        function productStatus(id){
+            $.ajax({
+                url: "{{ route('product.status') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": id
+                },
+                success: function(response) {
+                    window.location.reload();
+
+                }
+            })
+        }
+
+        function subChildId(){
+            $.ajax({
+                url: "{{ route('get.cat.subCat') }}",
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": $('#sub_child_category_id option:selected').val() ? $('#sub_child_category_id option:selected').val() : ''
+                },
+                success: function(response) {
+                    $('#cat').val(response.datas.get_child_category.get_category.cat_name);
+                    $('#child').val(response.datas.get_child_category.child_name);
+                    $('#get_category_id').val(response.datas.category_id);
+                    $('#get_child_category_id').val(response.datas.child_category_id);
+
+                }
+            })
+        }
         function updateFlashSale() {
 
             $.ajax({
