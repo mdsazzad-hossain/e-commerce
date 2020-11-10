@@ -1,9 +1,9 @@
 <template>
   <div>
 
-    <div class="products mb-3" id="loadData" style="display:none;">
+    <div class="products mb-2" id="loadData" style="display:none;">
       <div class="row justify-content-center">
-        <div v-for="item in getItem" :key="item.id" class="col-6 col-md-4 col-lg-4 col-xl-3">
+        <div v-for="item in getItem" :key="item.id" class="col-6 col-md-4 col-lg-4 col-xl-2">
           <div class="product product-7 text-center">
             <figure v-for="avtr in item.get_product_avatars" :key="avtr.id" class="product-media">
               <span class="product-label label-new">New</span>
@@ -45,19 +45,6 @@
               <!-- End .product-title -->
               <div class="product-price">{{ item.sale_price }}</div>
               <!-- End .product-price -->
-
-              <div v-for="avtr in item.get_product_avatars" :key="avtr.id" class="product-nav product-nav-thumbs">
-                <a href="#" class="active">
-                  <img :src="viewImage(avtr.back)" alt="product desc" />
-                </a>
-                <a href="#">
-                  <img :src="viewImage(avtr.left)" alt="product desc" />
-                </a>
-
-                <a href="#">
-                  <img :src="viewImage(avtr.right)" alt="product desc" />
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -81,6 +68,18 @@ export default {
             getItem:""
 
         }
+    },
+    mounted(){
+      axios.post('load/'+this.item)
+        .then((response)=>{
+            if (response.data.load) {
+                $("#loadData").show();
+                this.item = response.data.load.length;
+                this.getItem = response.data.load;
+            }else{
+            }
+
+        })
     },
     methods:{
         load(){

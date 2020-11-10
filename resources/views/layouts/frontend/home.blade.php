@@ -230,11 +230,7 @@
                 </div>
                 <!-- End .heading-left -->
 
-                <div class="heading-right">
-                    <a href="category-4cols.html" class="btn btn-outline-primary-2">
-                        <span>Shop More</span>
-                    </a>
-                </div>
+                
                 <!-- End .heading-right -->
             </div>
             <!-- End .heading -->
@@ -469,11 +465,7 @@
                 </div>
                 <!-- End .heading-left -->
 
-                <div class="heading-right">
-                    <a href="category-4cols.html" class="btn btn-outline-primary-2">
-                        <span>Shop More</span>
-                    </a>
-                </div>
+                
                 <!-- End .heading-right -->
             </div>
             <!-- End .heading -->
@@ -640,15 +632,6 @@
                     <h2 class="title">Upcoming Product</h2>
                     <!-- End .title -->
                 </div>
-                <!-- End .heading-left -->
-
-                <div class="heading-right">
-                    <div class="heading-right">
-                        <a href="category-4cols.html" class="btn btn-outline-primary-2">
-                            <span>Shop More</span>
-                        </a>
-                    </div>
-                </div>
                 <!-- End .heading-right -->
             </div>
             <!-- End .heading -->
@@ -740,8 +723,6 @@
                         <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
                                     class="icon-angle-left"></i></button><button type="button" role="presentation"
                                 class="owl-next"><i class="icon-angle-right"></i></button></div>
-                        <div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button
-                                role="button" class="owl-dot"><span></span></button></div>
                     </div>
                     <!-- End .owl-carousel -->
                 </div>
@@ -759,7 +740,7 @@
     <div class="container furniture">
         <div class="heading heading-flex heading-border mb-3">
             <div class="heading-left">
-                <h2 class="title">Just For You</h2>
+                <h2 class="title">Global Product</h2>
                 <!-- End .title -->
             </div>
             <!-- End .heading-left -->
@@ -799,7 +780,7 @@
                         <div class="owl-stage"
                             style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1369px;">
                             @foreach ($products as $product)
-                            @if ($product->position == 'just for you')
+                            @if ($product->position == 'global product')
                             <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
                                 <div class="product">
@@ -850,8 +831,6 @@
                     <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i
                                 class="icon-angle-left"></i></button><button type="button" role="presentation"
                             class="owl-next"><i class="icon-angle-right"></i></button></div>
-                    <div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button
-                            role="button" class="owl-dot"><span></span></button></div>
                 </div>
                 <!-- End .owl-carousel -->
             </div>
@@ -864,6 +843,13 @@
     <!-- End .container -->
     <div class="mb-2"></div>
     <div class="container furniture">
+        <div class="heading heading-flex heading-border mb-3">
+            <div class="heading-left">
+                <h2 class="title">Just For You</h2>
+                <!-- End .title -->
+            </div>
+            <!-- End .heading-left -->
+        </div>
         <load-product></load-product>
     </div>
 
@@ -1054,28 +1040,6 @@
         })
     }
 
-    function searchData(){
-        $.ajax({
-            url: "{{ route('search') }}",
-            type: "POST",
-            data: {
-                "_token": "{{ csrf_token() }}",
-                'val': $("#search").val()
-            },
-            success:function(response)
-            {
-                // window.location.reload();
-                $("#allItem").show();
-                $("#allItem").html(response.search);
-                console.log(response.search);
-
-            }
-        })
-    }
-
-    function selectItem(){
-        $("#search").val($("#item").text());
-    }
 </script>
 
 @endsection

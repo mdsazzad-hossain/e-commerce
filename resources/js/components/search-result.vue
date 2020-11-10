@@ -97,23 +97,20 @@
               <!-- End .toolbox-right -->
             </div>
             <!-- End .toolbox -->
-
             <div class="products mb-3">
               <div
                 class="row justify-content-center"
-                v-show="cat_search_product && !brandSearchData"
-                v-for="sub_child in cat_search_data"
-                :key="sub_child.id"
+                v-show="cat_search_product"
+                v-for="brand in cat_search_data.get_brand"
+                  :key="brand.id"
                >
                 <div
                   class="col-6 col-md-4 col-lg-4 col-xl-3"
-                  v-for="brand in sub_child.get_brand"
-                  :key="brand.id"
+                   v-for="pro in brand.get_product"
+                    :key="pro.id"
                 >
                   <div
                     class="product product-7 text-center"
-                    v-for="pro in brand.get_product"
-                    :key="pro.id"
                   >
                     <figure
                       class="product-media"
@@ -161,24 +158,6 @@
                       <!-- End .product-title -->
                       <div class="product-price">
                         {{ pro.sale_price }}
-                      </div>
-                      <!-- End .product-price -->
-
-                      <div
-                        class="product-nav product-nav-thumbs"
-                        v-for="avtr in pro.get_product_avatars"
-                        :key="avtr.id"
-                      >
-                        <a href="#" class="active">
-                          <img :src="ourImage(avtr.back)" alt="product desc" />
-                        </a>
-                        <a href="#">
-                          <img :src="ourImage(avtr.left)" alt="product desc" />
-                        </a>
-
-                        <a href="#">
-                          <img :src="ourImage(avtr.right)" alt="product desc" />
-                        </a>
                       </div>
                     </div>
                   </div>
@@ -243,31 +222,13 @@
                       <div class="product-price">
                         {{ product.sale_price }}
                       </div>
-                      <!-- End .product-price -->
-
-                      <div
-                        class="product-nav product-nav-thumbs"
-                        v-for="avtr in product.get_product_avatars"
-                        :key="avtr.id"
-                      >
-                        <a href="#" class="active">
-                          <img :src="ourImage(avtr.back)" alt="product desc" />
-                        </a>
-                        <a href="#">
-                          <img :src="ourImage(avtr.left)" alt="product desc" />
-                        </a>
-
-                        <a href="#">
-                          <img :src="ourImage(avtr.right)" alt="product desc" />
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div
                 class="row justify-content-center"
-                v-show="!cat_search_product"
+                v-show="showByName"
                
               >
                 <div
@@ -392,33 +353,6 @@
                           <div class="product-price">
                             {{ product.sale_price }}
                           </div>
-                          <!-- End .product-price -->
-
-                          <div
-                            class="product-nav product-nav-thumbs"
-                            v-for="avtr in product.get_product_avatars"
-                            :key="avtr.id"
-                          >
-                            <a href="#" class="active">
-                              <img
-                                :src="ourImage(avtr.back)"
-                                alt="product desc"
-                              />
-                            </a>
-                            <a href="#">
-                              <img
-                                :src="ourImage(avtr.left)"
-                                alt="product desc"
-                              />
-                            </a>
-
-                            <a href="#">
-                              <img
-                                :src="ourImage(avtr.right)"
-                                alt="product desc"
-                              />
-                            </a>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -540,11 +474,12 @@
                 <div class="collapse show" id="widget-2">
                   <div class="widget-body">
                     <div
-                    v-show="!brandSearchData"
+                      v-show="showByName"
                       class="filter-items"
                       v-for="item in search"
                       :key="item.id"
-                    >
+                     >
+                     
                       <div
                         class="filter-item"
                         v-for="itm in item.get_brand.get_sub_child_category
@@ -567,28 +502,26 @@
                         <!-- End .custom-checkbox -->
                       </div>
                     </div>
-
                     <div
-                      v-show="brandSearchData"
+                      v-show="cat_search_product"
                       class="filter-items"
-                      v-for="item in cat_search_data"
-                      :key="item.id"
                      >
                       <div
                         class="filter-item"
-                        v-for="itm in item.get_brand"
-                        :key="itm.id"
+                         v-for="item in cat_search_data.get_brand"
+                        :key="item.id"
                       >
                         <div class="custom-control custom-checkbox">
                           <input
+                            @click="searchProductByBrand(item.id)"
                             type="checkbox"
                             class="custom-control-input"
-                            :id="itm.brand_name"
+                            :id="item.brand_name"
                           />
                           <label
                             class="custom-control-label"
-                            :for="itm.brand_name"
-                            >{{ itm.brand_name }}</label
+                            :for="item.brand_name"
+                            >{{ item.brand_name }}</label
                           >
                         </div>
                         <!-- End .custom-checkbox -->
@@ -787,6 +720,7 @@ export default {
     return {
       cat_search_product: false,
       brandSearchData:false,
+      showByName:true,
       cat_search_data: "",
       show_by_brand:""
     };
@@ -797,15 +731,17 @@ export default {
     searchData(name) {
       axios.get("search-data/" + name).then((response) => {
         this.cat_search_product = true;
-        this.cat_search_data = response.data.data;
+        this.showByName = false;
+        this.cat_search_data = response.data.datas;
         this.brandSearchData = true;
       });
     },
     searchProductByBrand(id){
        axios.get("search-product-by-brand/" + id)
        .then((response) => {
-        this.cat_search_product = false;
-        this.show_by_brand = response.data.data;
+        this.cat_search_product = true;
+        this.showByName = false;
+        this.cat_search_data = response.data.data;
         this.brandSearchData = true;
       });
     },

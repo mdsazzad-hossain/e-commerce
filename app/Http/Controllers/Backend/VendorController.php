@@ -77,7 +77,6 @@ class VendorController extends Controller
         $img = Image::make($request->file('vendor_logo'))->fit(100,100);
         $upload_path1 = public_path()."/images/";
 
-
         if($new_name){
             $data = Vendor::create([
                 'user_id'=>auth()->user()->id,
@@ -129,30 +128,46 @@ class VendorController extends Controller
      */
     public function update(Request $request)
     {
+        
+        if ($request->logo != '') {
+            $image = $request->file('logo');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $img = Image::make($request->file('logo'))->fit(103,24);
+            $upload_path1 = public_path()."/images/";
 
-        $image = $request->file('logo');
-        $new_name = rand() . '.' . $image->getClientOriginalExtension();
-        $img = Image::make($request->file('logo'))->fit(103,24);
-        $upload_path1 = public_path()."/images/";
+            $exist = Vendor::where('slug',$request->slug)->first();
+            \File::delete(public_path('images/' . $exist->logo));
 
-        $exist = Vendor::where('slug',$request->slug)->first();
-        \File::delete(public_path('images/' . $exist->logo));
+            $data = Vendor::where('slug',$request->slug)->update([
+                'brand_name'=>$request->brand_name,
+                'multi_vendor'=>$request->multi_vendor,
+                'logo'=>$new_name,
+                'slug'=>$request->brand_name,
+            ]);
+            if($data){
+                $img->save($upload_path1.$new_name);
 
-        $data = Vendor::where('slug',$request->slug)->update([
-            'brand_name'=>$request->brand_name,
-            'multi_vendor'=>$request->multi_vendor,
-            'logo'=>$new_name,
-            'slug'=>$request->brand_name,
-        ]);
-        if($data){
-            $img->save($upload_path1.$new_name);
-
-            toast('Vendor Updated successfully','success')
-            ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-            return response()->json([
-                'message'=>'success'
-            ],200);
+                toast('Vendor Updated successfully','success')
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
+            }
+        }else{
+            $data = Vendor::where('slug',$request->slug)->update([
+                'brand_name'=>$request->brand_name,
+                'multi_vendor'=>$request->multi_vendor,
+                'slug'=>$request->brand_name,
+            ]);
+            if($data){
+                toast('Vendor Updated successfully','success')
+                ->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+                return response()->json([
+                    'message'=>'success'
+                ],200);
+            }
         }
+        
         
     }
 

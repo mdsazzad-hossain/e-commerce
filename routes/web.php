@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/', 'HomeController@index')->name('home');
-    Route::post('search', 'HomeController@search')->name("search");
     Route::get('/category/{slug}', 'HomeController@category')->name('category');
     Route::get('/{user}/wishlist', 'WishListController@index')->name('wishlist');
     Route::post('/wishlist/store', 'WishListController@store')->name('wishlist.store');
@@ -49,7 +48,9 @@ Route::group(["namespace"=>"Frontend"],function() {
     //order refund
     Route::post('order-refund', 'HomeController@refund')->name('product.refund');
     //search product
-    Route::get('search-result/{search}', 'HomeController@search_result')->name('search.result');
+    Route::get('search', 'HomeController@search');
+    Route::get('{optional?}/search', 'HomeController@search');
+    Route::get('search-result/{search}', 'HomeController@search_result')->name("search");
     Route::get('search-result/search-data/{name}', 'HomeController@get_result');
     Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
     Route::post('load/{item}', 'HomeController@load')->name('load');

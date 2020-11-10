@@ -833,10 +833,10 @@
         function addVendorLogo(){
             document.getElementById("addProductForm").style.display = "block";
             document.getElementById("product_table").style.display = "none";
-          document.getElementById("productInfo").style.display = "none";
-          document.getElementById("productAvatarInfo").style.display = "none";
-          document.getElementById("addBrandForm").style.display = "none";
-          document.getElementById("vendorlogoInfo").style.display = "block";
+            document.getElementById("productInfo").style.display = "none";
+            document.getElementById("productAvatarInfo").style.display = "none";
+            document.getElementById("addBrandForm").style.display = "none";
+            document.getElementById("vendorlogoInfo").style.display = "block";
         }
 
         function addBrand(){

@@ -8,18 +8,6 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Products</a></li>
                 </ol>
-
-                <nav class="product-pager ml-auto" aria-label="Product">
-                    <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
-                        <i class="icon-angle-left"></i>
-                        <span>Prev</span>
-                    </a>
-
-                    <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
-                        <span>Next</span>
-                        <i class="icon-angle-right"></i>
-                    </a>
-                </nav><!-- End .pager-nav -->
             </div><!-- End .container -->
         </nav><!-- End .breadcrumb-nav -->
 
@@ -76,15 +64,6 @@
                                 <div class="col-md-6">
                                     <div class="product-details product-details-sidebar">
                                         <h1 class="product-title">{{ $product->product_name }}</h1>
-                                        <!-- End .product-title -->
-
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews
-                                                )</a>
-                                        </div><!-- End .rating-container -->
 
                                         <div class="product-price">
                                             {{ $product->sale_price }}
@@ -134,7 +113,7 @@
 
                                             <div class="details-action-wrapper">
                                                 <button class="btn-product btn-wishlist"
-                                                    onclick="addWishList({{$product}}) title="
+                                                    onclick="addWishList({{$product}})" title="
                                                     Wishlist"><span>Add to Wishlist</span></button>
                                             </div><!-- End .details-action-wrapper -->
                                         </div><!-- End .product-details-action -->
@@ -185,17 +164,18 @@
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 891px;">
-                                    <div class="owl-item active" style="width: 202.75px; margin-right: 20px;">
-                                        @foreach ($products as $pro)
+                                    @foreach ($products as $pro)
                                         @if ($pro->get_brand->category_id == $product->get_brand->category_id)
+                                    <div class="owl-item active" style="width: 202.75px; margin-right: 20px;">
+                                        
                                         <div class="product product-7 text-center">
                                             @foreach ($pro->get_product_avatars as $avtr)
                                            
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
                                                 <a href="{{route('quick',$pro->slug)}}">
-                                                    <img style="width: 121px !important;
-                                                    height: 80px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
+                                                    <img style="width: 100%;
+                                                    height: 202px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
                                                         class="product-image">
                                                 </a>
 
@@ -222,20 +202,12 @@
                                                 <div class="product-price">
                                                     {{$pro->sale_price}}
                                                 </div><!-- End .product-price -->
-
-                                                <div class="product-nav product-nav-dots">
-                                                    <a href="#" class="active" style="background: #cc9966;"><span
-                                                            class="sr-only">Color name</span></a>
-                                                    <a href="#" style="background: #7fc5ed;"><span class="sr-only">{{$pro->color}}
-                                                            name</span></a>
-                                                    <a href="#" style="background: #e8c97a;"><span class="sr-only">Color
-                                                            name</span></a>
-                                                </div><!-- End .product-nav -->
                                             </div><!-- End .product-body -->
                                         </div>
-                                        @endif
-                                        @endforeach
+                                        
                                     </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="owl-nav disabled"><button type="button" role="presentation"
@@ -282,20 +254,7 @@
                                     @endif
                                     @endforeach
                                 </div><!-- End .products -->
-
-                                <a href="category.html" class="btn btn-outline-dark-3"><span>View More Products</span><i
-                                        class="icon-long-arrow-right"></i></a>
                             </div><!-- End .widget widget-products -->
-
-                            <div class="widget widget-banner-sidebar">
-                                <div class="banner-sidebar-title">ad box 280 x 280</div><!-- End .ad-title -->
-
-                                <div class="banner-sidebar banner-overlay">
-                                    <a href="#">
-                                        <img src="assets/images/blog/sidebar/banner.jpg" alt="banner">
-                                    </a>
-                                </div><!-- End .banner-ad -->
-                            </div><!-- End .widget -->
                         </div><!-- End .sidebar sidebar-product -->
                     </aside><!-- End .col-lg-3 -->
                 </div><!-- End .row -->

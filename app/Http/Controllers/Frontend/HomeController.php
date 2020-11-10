@@ -56,18 +56,11 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->val;
+        $search = $request->get('q');
         $search = Product::where('product_name','LIKE','%'.$search.'%')->get();
 
-    
-
-        $html = array();
-
-        foreach ($search as $key => $value) {
-            $html = '<ul><li style="cursor:pointer;" onclick="selectItem()">'.$value->product_name.'</li></ul>';
-        }
         return response()->json([
-            'search'=>$html
+            'search'=>$search
         ],200);
 
 
@@ -98,16 +91,17 @@ class HomeController extends Controller
     public function get_result($name)
     {
         if($name != null){
-            $data = SubChildCategory::where('sub_child_name',$name)->with(
+            $datas = SubChildCategory::where('sub_child_name',$name)->with(
                 'get_brand',
                 'get_brand.get_product',
                 'get_brand.get_product.get_product_avatars'
-            )->get();
+            )->first();
             return response()->json([
-                'data'=>$data
+                'datas'=>$datas
             ],200);
 
         }
+        
     }
 
     public function search_product_by_brand($id)
@@ -131,7 +125,7 @@ class HomeController extends Controller
     public function load(Request $request,$item)
     {
 
-        $load = Product::latest()->limit(8+$item)->with('get_product_avatars')->get();
+        $load = Product::latest()->limit(6+$item)->with('get_product_avatars')->get();
         return response()->json([
             'load'=>$load
         ],200);

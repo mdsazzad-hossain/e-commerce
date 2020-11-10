@@ -29,11 +29,25 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Blank Page</li>
-                        </ol>
+
+                    <div class="col-sm-3">
+                        <div style="width: 80%;
+                        padding: 10px;
+                        background-color: white;
+                        border: 1px solid #ddd;
+                        box-shadow: 1px 1px #ddd;
+                        border-radius: 5px;display: inline-flex;">
+                            <button id="createBtn" class="btn btn-primary" onclick="createVendor()" style="padding: 10px;">
+                                <i class="fa fa-plus" style="margin-right: 5px;font-size: 25px;margin-left: 5px;"></i>
+
+                            </button>
+                            <p style="margin-left: 5px;
+                        font-weight: 700;
+                        margin-bottom: 0px;">Create Vendor
+                                <span style="float: left;
+                            margin-left: 15px;" class="badge badge-warning">00</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -41,6 +55,74 @@
         <hr>
         <section class="content">
             <div class="row">
+                <div id="addProductForm" class="card card-primary col-4" style="padding-top: 8px;
+                    border: 1px solid #ddd;
+                    padding-bottom: 8px;
+                    display: none;
+                ">
+                <div class="card-header" style="background-color: #007bff;
+                color: #fff;">
+                  <h3 class="card-title">Create Vendor</h3>
+                  <button
+                    onclick="formClose()"
+                    class="close"
+                    aria-label="Close"
+                  >
+                    <span style="color: #fff" aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="card-body row col-12">
+                    <form  role="form" method="POST" id="upload_form" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                >Brand Name</label
+                                >
+                            <input
+                                id="brand_name"
+                                name="brand_name"
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter brand name"
+                            />
+                        </div>
+                        <div class="row col-12">
+                            <div class="form-group col-6">
+                                <label for="image" class="mr-sm-2">logo</label>
+                                <div style="height: 100px;
+                                    border: dashed 1.5px blue;
+                                    background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+                                    width: 100% !important;
+                                    cursor: pointer;">
+                                <input style="opacity: 0;
+                                    height: 100px;
+                                    cursor: pointer;
+                                    padding: 0px;" id="vendor_logo" type="file" class="form-control" name="vendor_logo">
+                                <img src="#" id="create-vendor-logo" style="height: 100px;
+                                    width: 100% !important;
+                                    cursor: pointer;
+                                    margin-top: -134px;"/>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect"
+                                >Vendor Type</label
+                                >
+                                <select class="form-control" name="status" id="status">
+                                        <option value="" selected="selected" hidden>Select</option>
+                                        <option value="1">Group</option>
+                                        <option value="0">Single</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%" type="submit">Submit</button>
+                    </form>
+                </div>
+                
+
+              </div>
                 <div class="card-body col-4" id="vendorlogoInfo" style="border: 1px solid rgb(221, 221, 221);
                     height: 350px;
                     background-color: #fff;">
@@ -55,7 +137,7 @@
                         @csrf
                         <div class="form-group">
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Name</label>
-                            <input id="brand_name" name="brand_name" type="text" class="form-control"
+                            <input id="br_name" name="brand_name" type="text" class="form-control"
                                 placeholder="Enter brand name" />
                         </div>
                         <div class="row col-12">
@@ -104,151 +186,73 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="example1_length"><label>Show <select
-                                                name="example1_length" aria-controls="example1"
-                                                class="custom-select custom-select-sm form-control form-control-sm">
-                                                <option value="10">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select> entries</label></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search"
-                                                class="form-control form-control-sm" placeholder=""
-                                                aria-controls="example1"></label></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid"
-                                        aria-describedby="example1_info">
-                                        <thead>
-                                            <tr role="row">
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Vendor Name
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Logo
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Status
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Vendor Type
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-label="CSS grade: activate to sort column ascending"
-                                                    style="width: 99px;">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                        <table id="example3" class="table table-bordered table-striped">
+                            <thead>
+                                <tr role="row">
+                                    <th>
+                                        Vendor Name
+                                    </th>
+                                    <th>
+                                        Logo
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Vendor Type
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                            @foreach ($vendors as $ven)
+                                @foreach ($vendors as $ven)
 
+                                    @if ($ven->status == 0)
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">{{ $ven->brand_name }}</td>
+                                            <td class="sorting_1">
+                                                <img style="height: 50px;width: 120px;"
+                                                    src="{{ asset('/images/' . $ven->logo) }}" />
+
+                                            </td>
+                                            <td>
                                                 @if ($ven->status == 0)
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">{{ $ven->brand_name }}</td>
-                                                        <td class="sorting_1">
-                                                            <img style="height: 50px;width: 120px;"
-                                                                src="{{ asset('/images/' . $ven->logo) }}" />
+                                                    <input hidden type="text" id="id" name="id">
+                                                    <p style="cursor: pointer;"
+                                                        onclick="approveVendor({{ $ven }})"
+                                                        class="badge badge-warning">Pending</p>
 
-                                                        </td>
-                                                        <td>
-                                                            @if ($ven->status == 0)
-                                                                <input hidden type="text" id="id" name="id">
-                                                                <p style="cursor: pointer;"
-                                                                    onclick="approveVendor({{ $ven }})"
-                                                                    class="badge badge-warning">Pending</p>
-
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            @if ($ven->multi_vendor == 0)
-                                                                <p class="badge badge-warning">Single</p>
-                                                            @else
-                                                                <p class="badge badge-success">Group</p>
-                                                            @endif
-                                                        </td>
-                                                        <td style="display: inline-flex;">
-                                                            <p onclick="editVendorReq({{ $ven }})"
-                                                                style="margin-right: 5px;cursor: pointer;"
-                                                                class="btn btn-primary">
-                                                                <i class="fa fa-edit"></i>
-                                                            </p>
-                                                            <form action="{{ route('req.vendor.delete', $ven->slug) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                <button class="btn btn-danger" type="submit">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
                                                 @endif
-                                            @endforeach
-                                        </tbody>
-                                        {{-- <tfoot>
-                                            <tr>
-                                                <th rowspan="1" colspan="1">Category Name</th>
-                                                <th rowspan="1" colspan="1">SubCategory</th>
-                                                <th rowspan="1" colspan="1">Sub SubCategory</th>
-                                                <th rowspan="1" colspan="1">Status</th>
-                                                <th rowspan="1" colspan="1">Action</th>
-                                            </tr>
-                                        </tfoot> --}}
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing
-                                        1 to 10 of 57 entries</div>
-                                </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                        <ul class="pagination">
-                                            <li class="paginate_button page-item previous disabled" id="example1_previous">
-                                                <a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"
-                                                    class="page-link">Previous</a></li>
-                                            <li class="paginate_button page-item active"><a href="#"
-                                                    aria-controls="example1" data-dt-idx="1" tabindex="0"
-                                                    class="page-link">1</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                                            <li class="paginate_button page-item next" id="example1_next"><a href="#"
-                                                    aria-controls="example1" data-dt-idx="7" tabindex="0"
-                                                    class="page-link">Next</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                            </td>
+                                            <td>
+                                                @if ($ven->multi_vendor == 0)
+                                                    <p class="badge badge-warning">Single</p>
+                                                @else
+                                                    <p class="badge badge-success">Group</p>
+                                                @endif
+                                            </td>
+                                            <td style="display: inline-flex;">
+                                                <p onclick="editVendorReq({{ $ven }})"
+                                                    style="margin-right: 5px;cursor: pointer;"
+                                                    class="btn btn-primary">
+                                                    <i class="fa fa-edit"></i>
+                                                </p>
+                                                <form action="{{ route('req.vendor.delete', $ven->slug) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button class="btn btn-danger" type="submit">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -259,144 +263,67 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="dataTables_length" id="example1_length"><label>Show <select
-                                                name="example1_length" aria-controls="example1"
-                                                class="custom-select custom-select-sm form-control form-control-sm">
-                                                <option value="10">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select> entries</label></div>
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <div id="example1_filter" class="dataTables_filter"><label>Search:<input type="search"
-                                                class="form-control form-control-sm" placeholder=""
-                                                aria-controls="example1"></label></div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid"
-                                        aria-describedby="example1_info">
-                                        <thead>
-                                            <tr role="row">
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Vendor Name
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Logo
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Status
-                                                </th>
-                                                <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="Rendering engine: activate to sort column descending"
-                                                    style="width: 166px;">
-                                                    Vendor Type
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1" aria-label="CSS grade: activate to sort column ascending"
-                                                    style="width: 99px;">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr role="row">
+                                    <th>
+                                        Vendor Name
+                                    </th>
+                                    <th>
+                                        Logo
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Vendor Type
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                            @foreach ($vendors as $ven)
+                                @foreach ($vendors as $ven)
 
-                                                @if ($ven->status == 1)
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1">{{ $ven->brand_name }}</td>
-                                                        <td class="sorting_1">
-                                                            <img style="height: 50px;width: 120px;"
-                                                                src="{{ asset('/images/' . $ven->logo) }}" />
+                                    @if ($ven->status == 1)
+                                        <input type="hidden" id="id" value="{{$ven->user_id}}">
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">{{ $ven->brand_name }}</td>
+                                            <td class="sorting_1">
+                                                <img style="height: 50px;width: 120px;"
+                                                    src="{{ asset('/images/' . $ven->logo) }}" />
 
-                                                        </td>
-                                                        <td>
-                                                            <p style="cursor: pointer;" onclick="disableVendor({{ $ven }})"
-                                                                class="badge badge-success">Approved</p>
+                                            </td>
+                                            <td>
+                                                <p style="cursor: pointer;" onclick="disableVendor({{ $ven }})"
+                                                    class="badge badge-success">Approved</p>
 
-                                                        </td>
-                                                        <td>
-                                                            @if ($ven->multi_vendor == 0)
-                                                                <p class="badge badge-warning">Single</p>
-                                                            @else
-                                                                <p class="badge badge-success">Group</p>
-                                                            @endif
-                                                        </td>
-                                                        <td style="display: inline-flex;">
-                                                            <button type="button" onclick="editVendorReq({{$ven}})" style="margin-right: 5px;" class="btn btn-primary">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <form action="#" method="POST">
-                                                                @csrf
-                                                                <button disabled class="btn btn-danger">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
+                                            </td>
+                                            <td>
+                                                @if ($ven->multi_vendor == 0)
+                                                    <p class="badge badge-warning">Single</p>
+                                                @else
+                                                    <p class="badge badge-success">Group</p>
                                                 @endif
-                                            @endforeach
-                                        </tbody>
-                                        {{-- <tfoot>
-                                            <tr>
-                                                <th rowspan="1" colspan="1">Category Name</th>
-                                                <th rowspan="1" colspan="1">SubCategory</th>
-                                                <th rowspan="1" colspan="1">Sub SubCategory</th>
-                                                <th rowspan="1" colspan="1">Status</th>
-                                                <th rowspan="1" colspan="1">Action</th>
-                                            </tr>
-                                        </tfoot> --}}
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing
-                                        1 to 10 of 57 entries</div>
-                                </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                        <ul class="pagination">
-                                            <li class="paginate_button page-item previous disabled" id="example1_previous">
-                                                <a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0"
-                                                    class="page-link">Previous</a></li>
-                                            <li class="paginate_button page-item active"><a href="#"
-                                                    aria-controls="example1" data-dt-idx="1" tabindex="0"
-                                                    class="page-link">1</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1"
-                                                    data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                                            <li class="paginate_button page-item next" id="example1_next"><a href="#"
-                                                    aria-controls="example1" data-dt-idx="7" tabindex="0"
-                                                    class="page-link">Next</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                            </td>
+                                            <td style="display: inline-flex;">
+                                                <button onclick="editVendorReq({{$ven}})" style="margin-right: 5px;" class="btn btn-primary">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <form action="#" method="POST">
+                                                    @csrf
+                                                    <button disabled class="btn btn-danger">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -404,11 +331,24 @@
 
 @section('js')
     <script>
-        $(function() {
-            $('#example1').DataTable({
+         $(function() {
+            $("#example1").DataTable();
+            $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
-                "searching": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+            });
+        });
+
+        $(function() {
+            $("#example3").DataTable();
+            $('#example4').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -417,6 +357,58 @@
 
     </script>
     <script>
+        window.onload =(function(){
+            var auth = {{auth()->user()->id}};
+                console.log($("#id").val());
+        })
+
+
+        function createVendor(){
+            document.getElementById("addProductForm").style.display = "block";
+            document.getElementById("vendorlogoInfo").style.display = "none";
+        }
+        function formClose(){
+            document.getElementById("addProductForm").style.display = "none";
+            document.getElementById("vendorlogoInfo").style.display = "block";
+        }
+
+        $(document).ready(function(){
+
+            $('#upload_form').on('submit', function(event){
+                event.preventDefault();
+                $.ajax({
+                    url:"{{ route('vendor.add') }}",
+                    method:"POST",
+                    data:new FormData(this),
+                    dataType:'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success:function(response)
+                    {
+                        window.location.reload();
+                    }
+                })
+            });
+
+        });
+
+        function vendorLogoUrl(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#create-vendor-logo').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+        $("#vendor_logo").change(function(){
+            vendorLogoUrl(this);
+        });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -434,8 +426,8 @@
         });
 
         function editVendorReq(ven) {
-            $('#brand_name').val(ven.brand_name);
-            $('#status').val(ven.multi_vendor);
+            $('#br_name').val(ven.brand_name);
+            $('#multi_vendor').val(ven.multi_vendor);
             $('#slug').val(ven.slug);
             document.getElementById("vendor-logo-img").src = "{{ asset('/images/') }}/" + ven.logo;
         }
