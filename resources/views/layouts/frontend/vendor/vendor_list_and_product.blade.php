@@ -5,7 +5,15 @@
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
-            <h1 class="page-title">Vendor<span>Shop</span></h1>
+            @php
+                $name = '';
+            @endphp
+             @foreach ($products as $product)
+            @php
+                $name = $product->get_vendor->brand_name;
+            @endphp
+        @endforeach
+        <h1 class="page-title">{{$name}}<span>Shop</span></h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -13,7 +21,6 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Vendor</li>
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -92,8 +99,9 @@
                                     @foreach ($product->get_vendor_product_avatar as $avtr)
                                     <figure class="product-media">
                                         <span class="product-label label-new">New</span>
-                                        <a href="{{route('product.quick',$avtr->slug)}}">
-                                            <img src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
+                                        <a href="{{route('product.quick',$product->slug)}}">
+                                            <img style="width: 203px !important;
+                                            height: 203px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
                                                 class="product-image">
                                         </a>
 
@@ -119,37 +127,13 @@
                                                 </a></h3><!-- End .product-title -->
                                         <div class="product-price">
                                             {{$product->sale_price}}
-                                        </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container -->
-                                        @foreach ($product->get_vendor_product_avatar as $avtr)
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active">
-                                                    <img src="{{ asset('/images/' . $avtr->back) }}"
-                                                        alt="product desc">
-                                                </a>
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->left) }}"
-                                                        alt="product desc">
-                                                </a>
-
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->right) }}"
-                                                        alt="product desc">
-                                                </a>
-                                            </div><!-- End .product-nav -->
-                                        @endforeach   
+                                        </div>  
                                     </div><!-- End .product-body -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                                </div>
+                            </div>
                             @endforeach
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
+                        </div>
+                    </div>
 
 
                     <nav aria-label="Page navigation">

@@ -44,12 +44,12 @@ class SingleVendorController extends Controller
 
             $image = $request->file('logo');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $img = Image::make($request->file('logo'))->fit(105,24);
+            $img = Image::make($request->file('logo'));            
             $upload_path = public_path()."/images/";
 
             $image1 = $request->file('banar');
             $new_name1 = rand() . '.' . $image1->getClientOriginalExtension();
-            $img1 = Image::make($request->file('banar'))->fit(1920,170);
+            $img1 = Image::make($request->file('banar'));
             $upload_path1 = public_path()."/images/";
 
             $data = SingleVendor::create([
@@ -75,7 +75,7 @@ class SingleVendorController extends Controller
 
             $image1 = $request->file('banar');
             $new_name1 = rand() . '.' . $image1->getClientOriginalExtension();
-            $img1 = Image::make($request->file('banar'))->fit(1920,170);
+            $img1 = Image::make($request->file('banar'));
             $upload_path1 = public_path()."/images/";
 
             $data = SingleVendor::create([

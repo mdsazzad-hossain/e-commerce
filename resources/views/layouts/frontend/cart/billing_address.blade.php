@@ -114,6 +114,7 @@
                                         <small class="text-muted">{{$crt->get_vendor_product->color}}/{{$crt->get_vendor_product->size}}</small>
                                     </div>
                                     <div>
+                                       
                                         <h6 class="my-0">= {{$crt->total}} TK</h6>
                                         @if ($crt->get_vendor_product->shipp_des == NULL)
                                             <small class="text-muted">Ship.Co.= 0.00 TK</small> 

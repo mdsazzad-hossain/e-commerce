@@ -88,11 +88,11 @@
                                             <div class="select-custom">
                                                 <select name="size" id="size" class="form-control">
                                                     <option value="{{ $product->size }}" selected="selected" hidden>{{ $product->size }}</option>
-                                                    <option value="s">s</option>
-                                                    <option value="m">m</option>
-                                                    <option value="l">x</option>
-                                                    <option value="l">xl</option>
-                                                    <option value="l">xxl</option>
+                                                    @foreach ($products as $pro)
+                                                    @if ($pro->get_brand->id == $product->brand_id)
+                                                    <option value="{{$pro->size}}">{{$pro->size}}</option>
+                                                    @endif
+                                                    @endforeach
                                                 </select>
                                             </div><!-- End .select-custom -->
                                         </div><!-- End .details-filter-row -->
@@ -105,22 +105,21 @@
                                                         max="10" step="1" data-decimals="0" required=""
                                                         style="display: none;">
                                                     
-                                                </div><!-- End .product-details-quantity -->
-
-                                                <button onclick="addToCart({{$product}})"
-                                                    class="btn-product btn-cart"><span>add to cart</span></button>
-                                            </div><!-- End .details-action-col -->
-
+                                                </div>
+                                            </div>
                                             <div class="details-action-wrapper">
-                                                <button class="btn-product btn-wishlist"
-                                                    onclick="addWishList({{$product}})" title="
-                                                    Wishlist"><span>Add to Wishlist</span></button>
-                                            </div><!-- End .details-action-wrapper -->
-                                        </div><!-- End .product-details-action -->
-                                    </div><!-- End .product-details -->
-                                </div><!-- End .col-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .product-details-top -->
+                                                <button class="btn-product btn-wishlist" onclick="addWishList({{ $product }})" title="Wishlist">
+                                                    <span>Add to Wishlist</span>
+                                                </button>
+                                                <button onclick="addToCart({{ $product }})"
+                                                    class="btn-product btn-cart"><span>add to cart</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         
 
@@ -180,17 +179,13 @@
                                                 </a>
 
                                                 <div class="product-action-vertical">
-                                                    <a href="#"
+                                                    <button onclick="addToCart({{$product}})"
                                                         class="btn-product-icon btn-wishlist btn-expandable"><span>add to
-                                                            wishlist</span></a>
-                                                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
-                                                        title="Quick view"><span>Quick view</span></a>
-                                                    <a href="#" class="btn-product-icon btn-compare"
-                                                        title="Compare"><span>Compare</span></a>
+                                                            wishlist</span></button>
                                                 </div><!-- End .product-action-vertical -->
 
                                                 <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                    <button onclick="addToCart({{$product}})" class="btn-product btn-cart"><span>add to cart</span></button>
                                                 </div><!-- End .product-action -->
                                             </figure><!-- End .product-media -->
                                             @endforeach

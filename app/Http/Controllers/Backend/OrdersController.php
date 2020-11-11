@@ -108,9 +108,22 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function delivery(Request $request)
     {
-        //
+        if ($request->tran_id != null) {
+            Orders::where('transaction_id',$request->tran_id)->update([
+                'delivery_status'=>'delivered'
+            ]);
+        }else{
+            OrderDetails::where('id',$request->id)->update([
+                'status'=>1
+            ]);
+        }
+        toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return response()->json([
+            'msg'=>'success'
+        ]);
     }
 
     /**

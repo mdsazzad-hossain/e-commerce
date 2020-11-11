@@ -35,8 +35,7 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
 
     Route::post('product-shipp-update', 'HomeController@updateProductShipp')->name('product.shipp.des');
-    //product delivery
-    Route::post('product-delivered', 'HomeController@delivery')->name('product.delivery');
+    
 
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');
@@ -157,6 +156,9 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('product-sales-history', 'ProductController@sales_history')->name('sales.history');
         Route::get('product-sales-refund', 'ProductController@sales_refund')->name('sales.refund');
 
+        //product delivery
+        Route::post('product-delivered', 'OrdersController@delivery')->name('product.delivery');
+        
         //sales vendor
         Route::get('vendor-sales-history', 'VendorProductController@sales_history')->name('vendor.sales.history');
         Route::get('vendor-sales-refund', 'VendorProductController@sales_refund')->name('vendor.sales.refund');

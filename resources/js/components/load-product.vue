@@ -42,14 +42,14 @@
               <h3 class="product-title">
                 <a href="product.html">{{ item.product_name }}</a>
               </h3>
-              <!-- End .product-title -->
-              <div class="product-price">{{ item.sale_price }}</div>
-              <!-- End .product-price -->
+              <div class="product-price">
+                  <span class="new-price">{{item.sale_price}} TK</span>
+                  <span class="old-price"><del>{{item.promo_price}} TK</del></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- End .row -->
     </div>
     <div class="text-center">
       <a @click.prevent="load()" href="#" class="btn btn-outline-primary-2">

@@ -21,7 +21,7 @@
                             margin-bottom: 0px;">Pending Orders
                                 <span style="float: left;
                             margin-left: 15px;" class="badge badge-warning">
-                                    
+                                   
                                     @if ($count)
                                         {{ $count }}
                                     @else
@@ -120,24 +120,24 @@
                                 $total = 0;
                                 @endphp
                                 @foreach ($sales as $sale)
-                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'pending' && $sale->status == 0)
+                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'pending')
 
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">
-                                                <span><strong>{{ $sale->get_product->product_name }}</strong></span><br>
-                                                <small>C : {{ $sale->get_product->color }}</small><br>
-                                                <small>S : {{ $sale->get_product->size }}</small>
+                                                <span><strong>{{ $sale->get_vendor_product->product_name }}</strong></span><br>
+                                                <small>C : {{ $sale->get_vendor_product->color }}</small><br>
+                                                <small>S : {{ $sale->get_vendor_product->size }}</small>
                                             </td>
-                                            <td class="sorting_1">{{ $sale->get_product->pur_price }} TK</td>
-                                            <td class="sorting_1">{{ $sale->get_product->sale_price }} TK</td>
-                                            <td class="sorting_1">{{ $sale->get_product->discount }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->pur_price }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->sale_price }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->discount }} TK</td>
                                             <td class="sorting_1">
                                                 <span><strong>{{ $sale->total }} TK</strong></span><br>
                                                 <small>Qty : {{ $sale->qty }} / Sh.C
                                                     {{ $sale->shipp_charge }}</small>
                                             </td>
                                             @php
-                                            $total = $sale->qty*$sale->get_product->pur_price;
+                                            $total = $sale->qty*$sale->get_vendor_product->pur_price;
                                             $profit = $sale->total-$total;
                                             $profit += $sale->shipp_charge;
                                             @endphp
@@ -151,7 +151,7 @@
                                             <td class="sorting_1">
                                                 @if ($sale->get_orders->delivery_status == 'pending')
                                                     <p style="cursor: pointer;"
-                                                        onclick="delivery({{ $sale->id }})"
+                                                        onclick="delivery({{ $sale->get_orders->id }})"
                                                         class="badge badge-warning">Pending</p>
                                                 @else
                                                     <p class="badge badge-success">Delivered</p>
@@ -254,28 +254,28 @@
                                 $total = 0;
                                 @endphp
                                 @foreach ($sales as $sale)
-                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'delivered' || $sale->status == 1)
+                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'delivered')
                                         <tr role="row" class="class="sorting_1"">
                                             <td class="sorting_1">
-                                                <span><strong>{{ $sale->get_product->product_name }}</strong></span><br>
-                                                <small>C : {{ $sale->get_product->color }}</small><br>
-                                                <small>S : {{ $sale->get_product->size }}</small>
+                                                <span><strong>{{ $sale->get_vendor_product->product_name }}</strong></span><br>
+                                                <small>C : {{ $sale->get_vendor_product->color }}</small><br>
+                                                <small>S : {{ $sale->get_vendor_product->size }}</small>
                                             </td>
-                                            <td class="sorting_1">{{ $sale->get_product->pur_price }} TK</td>
-                                            <td class="sorting_1">{{ $sale->get_product->sale_price }} TK</td>
-                                            <td class="sorting_1">{{ $sale->get_product->discount }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->pur_price }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->sale_price }} TK</td>
+                                            <td class="sorting_1">{{ $sale->get_vendor_product->discount }} TK</td>
                                             <td class="sorting_1">
                                                 <span><strong id="sales_total">{{ $sale->total }}</strong> TK</span><br>
                                                 <small>Qty : {{ $sale->qty }} / Sh.C {{ $sale->shipp_charge }}</small>
                                             </td>
                                             @php
-                                            $total = $sale->qty*$sale->get_product->pur_price;
+                                            $total = $sale->qty*$sale->get_vendor_product->pur_price;
                                             $profit = $sale->total-$total;
                                             $profit += $sale->shipp_charge;
                                             @endphp
                                             <td id="profit" class="sorting_1">{{ $profit }} TK</td>
                                             <td class="sorting_1">
-                                                <p onclick="getAddress({{ $sale->get_orders }})" style="cursor: pointer;"
+                                                <p onclick="getAddress({{ $sale->id }})" style="cursor: pointer;"
                                                     data-toggle="modal" data-target="#exampleModalCenter1"
                                                     class="badge badge-warning">Address</p>
                                             </td>
@@ -356,7 +356,7 @@
                     </div>
                     <div class="modal-footer">
                         <button onclick="delivery()" class="btn btn-secondary">Delivery</button>
-                        <form action="{{route('order.invoice',)}}" method="POST">
+                        <form action="{{route('order.invoice')}}" method="POST">
                             @csrf
                             <input type="hidden" id="tran_id" name="tran_id" value="">
                             <button type="submit" class="btn btn-primary">Invoice</button>
@@ -442,7 +442,7 @@
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
-                        "tran_id":  $("#tran_id").val()
+                        "id":  $("#tran_id").val()
                     },
                     success: function(response) {
                         window.location.reload();

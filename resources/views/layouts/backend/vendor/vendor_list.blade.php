@@ -288,7 +288,7 @@
                                 @foreach ($vendors as $ven)
 
                                     @if ($ven->status == 1)
-                                        <input type="hidden" id="id" value="{{$ven->user_id}}">
+                                        <input type="hidden" id="getId" value="{{$ven->user_id}}">
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">{{ $ven->brand_name }}</td>
                                             <td class="sorting_1">

@@ -5,7 +5,15 @@
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
-            <h1 class="page-title">Vendor<span>Shop</span></h1>
+            @php
+                $name = '';
+            @endphp
+            @foreach ($products as $pro)
+            @php
+                $name = $pro->get_single_vendor->brand_name;
+            @endphp
+        @endforeach
+        <h1 class="page-title">{{$name}}<span>Shop</span></h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -13,7 +21,6 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Vendor</li>
             </ol>
         </div><!-- End .container -->
     </nav><!-- End .breadcrumb-nav -->
@@ -21,68 +28,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9">
-                    <div class="toolbox">
-                        <div class="toolbox-left">
-                            <div class="toolbox-info">
-                                Showing <span>9 of 56</span> Products
-                            </div><!-- End .toolbox-info -->
-                        </div><!-- End .toolbox-left -->
-                        <div class="toolbox-right">
-                            <div class="toolbox-sort">
-                                <label for="sortby">Sort by:</label>
-                                <div class="select-custom">
-                                    <select name="sortby" id="sortby" class="form-control">
-                                        <option value="popularity" selected="selected">Most Popular</option>
-                                        <option value="rating">Most Rated</option>
-                                        <option value="date">Date</option>
-                                    </select>
-                                </div>
-                            </div><!-- End .toolbox-sort -->
-                            <div class="toolbox-layout">
-                                <a href="category-list.html" class="btn-layout">
-                                    <svg width="16" height="10">
-                                        <rect x="0" y="0" width="4" height="4"></rect>
-                                        <rect x="6" y="0" width="10" height="4"></rect>
-                                        <rect x="0" y="6" width="4" height="4"></rect>
-                                        <rect x="6" y="6" width="10" height="4"></rect>
-                                    </svg>
-                                </a>
-
-                                <a href="category-2cols.html" class="btn-layout">
-                                    <svg width="10" height="10">
-                                        <rect x="0" y="0" width="4" height="4"></rect>
-                                        <rect x="6" y="0" width="4" height="4"></rect>
-                                        <rect x="0" y="6" width="4" height="4"></rect>
-                                        <rect x="6" y="6" width="4" height="4"></rect>
-                                    </svg>
-                                </a>
-
-                                <a href="category.html" class="btn-layout">
-                                    <svg width="16" height="10">
-                                        <rect x="0" y="0" width="4" height="4"></rect>
-                                        <rect x="6" y="0" width="4" height="4"></rect>
-                                        <rect x="12" y="0" width="4" height="4"></rect>
-                                        <rect x="0" y="6" width="4" height="4"></rect>
-                                        <rect x="6" y="6" width="4" height="4"></rect>
-                                        <rect x="12" y="6" width="4" height="4"></rect>
-                                    </svg>
-                                </a>
-
-                                <a href="category-4cols.html" class="btn-layout active">
-                                    <svg width="22" height="10">
-                                        <rect x="0" y="0" width="4" height="4"></rect>
-                                        <rect x="6" y="0" width="4" height="4"></rect>
-                                        <rect x="12" y="0" width="4" height="4"></rect>
-                                        <rect x="18" y="0" width="4" height="4"></rect>
-                                        <rect x="0" y="6" width="4" height="4"></rect>
-                                        <rect x="6" y="6" width="4" height="4"></rect>
-                                        <rect x="12" y="6" width="4" height="4"></rect>
-                                        <rect x="18" y="6" width="4" height="4"></rect>
-                                    </svg>
-                                </a>
-                            </div><!-- End .toolbox-layout -->
-                        </div><!-- End .toolbox-right -->
-                    </div><!-- End .toolbox -->
                     <div class="products mb-3">
                         <div class="row justify-content-center">
                             @foreach ($products as $pro)
@@ -118,37 +63,13 @@
                                                 </a></h3><!-- End .product-title -->
                                         <div class="product-price">
                                             {{$pro->sale_price}}
-                                        </div><!-- End .product-price -->
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div>
-                                                <!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container -->  
-                                        @foreach ($pro->get_vendor_product_avatar as $avtr)
-                                            <div class="product-nav product-nav-thumbs">
-                                                <a href="#" class="active">
-                                                    <img src="{{ asset('/images/' . $avtr->back) }}"
-                                                        alt="product desc">
-                                                </a>
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->left) }}"
-                                                        alt="product desc">
-                                                </a>
-
-                                                <a href="#">
-                                                    <img src="{{ asset('/images/' . $avtr->right) }}"
-                                                        alt="product desc">
-                                                </a>
-                                            </div><!-- End .product-nav -->
-                                        @endforeach
-                                    </div><!-- End .product-body -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @endforeach
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
+                        </div>
+                    </div>
 
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">

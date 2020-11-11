@@ -310,7 +310,7 @@
                                         <!-- End .product-title -->
                                         <div class="product-price">
                                             <span class="new-price">{{$product->sale_price}}TK</span>
-                                            <span class="old-price">Was {{$product->promo_price}}</span>
+                                            <span class="old-price"><del>{{$product->promo_price}}</del></span>
                                         </div>
                                         <!-- End .product-price -->
                                         <div class="ratings-container">
@@ -517,17 +517,15 @@
                                             </a>
 
                                             <div class="product-action-vertical">
-                                                <a href="#"
+                                                <button onclick="addWishList({{$product}})"
                                                     class="btn-product-icon btn-wishlist btn-expandable"><span>add to
-                                                        wishlist</span></a>
-                                                <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
-                                                    title="Quick view"><span>Quick view</span></a>
+                                                        wishlist</span></button>
                                             </div>
                                             <!-- End .product-action-vertical -->
 
                                             <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add
-                                                        to cart</span></a>
+                                                <button onclick="addToCart({{$product}})" class="btn-product btn-cart" title="Add to cart"><span>add
+                                                        to cart</span></button>
                                             </div>
                                             <!-- End .product-action -->
                                         </figure>
@@ -540,7 +538,8 @@
                                                     href="product.html">{{$product->product_name}}TK</a></h3>
                                             <!-- End .product-title -->
                                             <div class="product-price">
-                                                {{$product->sale_price}}TK
+                                                <span class="new-price">{{$product->sale_price}} TK</span>
+                                                <span class="old-price"><del>{{$product->promo_price}} TK</del></span>
                                             </div>
                                         </div>
                                         <!-- End .product-body -->
@@ -709,8 +708,10 @@
                                                     href="product.html">{{$product->product_name}}TK</a></h3>
                                             <!-- End .product-title -->
                                             <div class="product-price">
-                                                {{$product->sale_price}}TK
+                                                <span class="new-price">{{$product->sale_price}} TK</span>
+                                                <span class="old-price"><del>{{$product->promo_price}} TK</del></span>
                                             </div>
+                                            
                                         </div>
                                         <!-- End .product-body -->
                                     </div>
@@ -815,9 +816,9 @@
                                         <!-- End .product-cat -->
                                         <h3 class="product-title"><a href="product.html">{{$product->product_name}}</a>
                                         </h3>
-                                        <!-- End .product-title -->
                                         <div class="product-price">
-                                            {{$product->sale_price}}TK
+                                            <span class="new-price">{{$product->sale_price}} TK</span>
+                                            <span class="old-price"><del>{{$product->promo_price}} TK</del></span>
                                         </div>
                                     </div>
                                     <!-- End .product-body -->

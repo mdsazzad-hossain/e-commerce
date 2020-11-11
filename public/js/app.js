@@ -20744,7 +20744,13 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "product-price" }, [
-                        _vm._v(_vm._s(item.sale_price))
+                        _c("span", { staticClass: "new-price" }, [
+                          _vm._v(_vm._s(item.sale_price) + " TK")
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "old-price" }, [
+                          _c("del", [_vm._v(_vm._s(item.promo_price) + " TK")])
+                        ])
                       ])
                     ])
                   ],

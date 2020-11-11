@@ -230,8 +230,12 @@
             $("#showCategory").show();
         }
         function calculate(crt,val){
-
-            total = val*crt.get_product.sale_price;
+            if (crt.get_product) {
+                total = val*crt.get_product.sale_price;
+            }else{
+                total = val*crt.get_vendor_product.sale_price;
+            }
+            
 
             $.ajax({
                 url: "{{ route('cart.update') }}",

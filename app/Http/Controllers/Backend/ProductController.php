@@ -52,8 +52,8 @@ class ProductController extends Controller
     {
         $data = auth()->user();
 
-        $sales = OrderDetails::latest()->with('get_orders','get_product','get_vendor_product')->get();
-        $count = Orders::where('delivery_status','pending')->count();
+        $sales = OrderDetails::whereNotNull('product_id')->with('get_orders','get_product')->get();
+        $count = OrderDetails::whereNotNull('product_id')->where('status','=',0)->distinct('order_id')->count();
         $count_refund = Orders::where('delivery_status','refund')->count();
         return view('layouts.backend.sales.sales_history',[
             'data'=>$data,

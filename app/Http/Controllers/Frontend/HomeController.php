@@ -170,8 +170,8 @@ class HomeController extends Controller
             'vendor_id'=>$vendor->id,
         ])->get();
         $products = VendorProduct::with('get_vendor')->where([
-            'vendor_id'=>null,
-            'single_vendor_id'=> $vendor->id
+            'vendor_id'=>$vendor->id,
+            'single_vendor_id'=> null
         ])->get();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         if ($vendor->multi_vendor == 0) {
@@ -209,7 +209,7 @@ class HomeController extends Controller
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         $product = VendorProduct::where('slug',$slug)->with('get_vendor_product_avatar')->first();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
-        $products = VendorProduct::all();
+        $products = VendorProduct::with('get_vendor_product_avatar')->get();
         return view('layouts.frontend.vendor.product_quick_view',[
             'categories'=>$categories,
             'ads'=>$ads,
@@ -284,9 +284,18 @@ class HomeController extends Controller
     {
         $carts = Cart::where('user_id',auth()->user()->id?? '')->get();
         foreach ($carts as $key => $cart) {
-            $data = Product::where('id',$cart->product_id)->update([
-                'shipp_des'=>$request->val
-            ]);
+            if ($cart->product_id) {
+                $data = Product::where('id',$cart->product_id)->update([
+                    'shipp_des'=>$request->val
+                ]);
+            }
+            if ($cart->vendor_product_id) {
+                $data = VendorProduct::where('id',$cart->vendor_product_id)->update([
+                    'shipp_des'=>$request->val
+                ]);
+            }
+
+            
         }
 
         return response()->json([
@@ -300,17 +309,7 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delivery(Request $request)
-    {
-        Orders::where('id',$request->id)->update([
-            'delivery_status'=>'delivered'
-        ]);
-        toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-
-        return response()->json([
-            'msg'=>'success'
-        ]);
-    }
+    
 
     public function refund(Request $request)
     {

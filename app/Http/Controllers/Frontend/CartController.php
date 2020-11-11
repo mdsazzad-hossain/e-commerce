@@ -196,45 +196,53 @@ class CartController extends Controller
             ]);
         }else{
             $cart = Cart::where('id',$request->id)->first();
-            $product = Product::where('id',$cart->product_id)->first();
-            $ven_product = VendorProduct::where('id',$cart->vendor_product_id)->first();
-            
-            if ($request->qty <= $product->qty ? $product->qty : 0) {
-                Cart::where('id',$request->id)->update([
-                    'qty'=>$request->qty,
-                    'total'=>$request->total
-                ]);
-                $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
-                if ($request->qty == 4 || $request->qty == 5 || $request->qty == 6) {
-                    Alert::warning('warning','If your cart product quantity up to 3 as a same product.You have to pay two times delivery charge.');
-                }elseif($request->qty >7 || $request->qty == 8 || $request->qty == 9){
-                    Alert::warning('warning','If your cart product quantity up to 6 as a same product.You have to pay three times delivery charge.');
-                }elseif($request->qty == 10){
-                    Alert::warning('warning','If your cart product quantity up to 9 as a same product.You have to pay four times delivery charge.');
+            if ($cart->product_id != null) {
+                $product = Product::where('id',$cart->product_id)->first();
+                if ($request->qty <= $product->qty ? $product->qty : 0) {
+                    Cart::where('id',$request->id)->update([
+                        'qty'=>$request->qty,
+                        'total'=>$request->total
+                    ]);
+                    
+                    $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
+                    if ($request->qty == 4 || $request->qty == 5 || $request->qty == 6) {
+                        Alert::warning('warning','If your cart product quantity up to 3 as a same product.You have to pay two times delivery charge.');
+                    }elseif($request->qty >7 || $request->qty == 8 || $request->qty == 9){
+                        Alert::warning('warning','If your cart product quantity up to 6 as a same product.You have to pay three times delivery charge.');
+                    }elseif($request->qty == 10){
+                        Alert::warning('warning','If your cart product quantity up to 9 as a same product.You have to pay four times delivery charge.');
+                    }
+                    return response()->json([
+                        'cart'=>$cart
+                    ]);
+                }else{
+                    Alert::warning('warning','Stock Out');
+    
                 }
-                return response()->json([
-                    'cart'=>$cart
-                ]);
-            }else if($request->qty <= $ven_product ? $ven_product->qty : 0 ){
-                Cart::where('id',$request->id)->update([
-                    'qty'=>$request->qty,
-                    'total'=>$request->total
-                ]);
-                $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
-                if ($request->qty == 4 || $request->qty == 5 || $request->qty == 6) {
-                    Alert::warning('warning','If your cart product quantity up to 3 as a same product.You have to pay two times delivery charge.');
-                }elseif($request->qty >7 || $request->qty == 8 || $request->qty == 9){
-                    Alert::warning('warning','If your cart product quantity up to 6 as a same product.You have to pay three times delivery charge.');
-                }elseif($request->qty == 10){
-                    Alert::warning('warning','If your cart product quantity up to 9 as a same product.You have to pay four times delivery charge.');
-                }
-                return response()->json([
-                    'cart'=>$cart
-                ]);
             }else{
-                Alert::warning('warning','Stock Out');
-
+                $ven_product = VendorProduct::where('id',$cart->vendor_product_id)->first();
+                if($request->qty <= $ven_product ? $ven_product->qty : 0 ){
+                    Cart::where('id',$request->id)->update([
+                        'qty'=>$request->qty,
+                        'total'=>$request->total
+                    ]);
+                    $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
+                    if ($request->qty == 4 || $request->qty == 5 || $request->qty == 6) {
+                        Alert::warning('warning','If your cart product quantity up to 3 as a same product.You have to pay two times delivery charge.');
+                    }elseif($request->qty >7 || $request->qty == 8 || $request->qty == 9){
+                        Alert::warning('warning','If your cart product quantity up to 6 as a same product.You have to pay three times delivery charge.');
+                    }elseif($request->qty == 10){
+                        Alert::warning('warning','If your cart product quantity up to 9 as a same product.You have to pay four times delivery charge.');
+                    }
+                    return response()->json([
+                        'cart'=>$cart
+                    ]);
+                }else{
+                    Alert::warning('warning','Stock Out');
+    
+                }
             }
+            
         }
 
 

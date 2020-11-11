@@ -9,8 +9,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VendorProduct;
 use App\Models\Vendor;
+use App\Models\OrderDetails;
+use App\Models\Orders;
 use App\Models\SingleVendor;
 use Image;
+use Illuminate\Support\Facades\Validator;
 
 class VendorProductController extends Controller
 {
@@ -32,7 +35,17 @@ class VendorProductController extends Controller
      */
     public function sales_history()
     {
-        //
+        $data = auth()->user();
+
+        $sales = OrderDetails::whereNotNull('vendor_product_id')->with('get_orders','get_vendor_product')->get();
+        $count = OrderDetails::whereNotNull('vendor_product_id')->distinct('order_id')->count();
+        $count_refund = Orders::where('delivery_status','refund')->count();
+        return view('layouts.backend.vendor.sales.sales-history',[
+            'data'=>$data,
+            'sales'=>$sales,
+            'count'=>$count,
+            'count_refund'=>$count_refund
+        ]);
     }
 
     public function sales_refund()
@@ -72,7 +85,7 @@ class VendorProductController extends Controller
                 'single_vendor_id'=>$request->single_vendor_id,
                 'vendor_id'=>$request->vendor_id,
                 'product_name'=>$request->product_name,
-                'slug'=> $request->product_name,
+                'slug'=> str_replace("‐"," ",$request->product_name),
                 'product_code'=>$request->product_code,
                 'color'=>$request->color,
                 'size'=>$request->size,
@@ -127,7 +140,7 @@ class VendorProductController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        $data = Product::where('product_name',$slug)->first();
+        $data = VendorProduct::where('product_name',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
         $cal1 = $request->admin_percent*$request->sale_price;
@@ -137,7 +150,7 @@ class VendorProductController extends Controller
                 'single_vendor_id'=>$request->single_vendor_id,
                 'vendor_id'=>$request->vendor_id,
                 'product_name'=>$request->product_name,
-                'slug'=> $request->product_name,
+                'slug'=>Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
                 'color'=>$request->color,
                 'size'=>$request->size,
@@ -146,7 +159,6 @@ class VendorProductController extends Controller
                 'sale_price'=>$request->sale_price,
                 'discount'=>$price,
                 'promo_price'=>$request->promo_price,
-                'size_show'=>$request->size_show,
                 'description'=>$request->description,
                 'indoor_charge'=>$request->indoor_charge,
                 'outdoor_charge'=>$request->outdoor_charge,
@@ -166,7 +178,6 @@ class VendorProductController extends Controller
                 'sale_price'=>$request->sale_price,
                 'promo_price'=>$request->promo_price,
                 'admin_percent'=>$price1,
-                'size_show'=>$request->size_show,
                 'description'=>$request->description,
                 'indoor_charge'=>$request->indoor_charge,
                 'outdoor_charge'=>$request->outdoor_charge,
@@ -187,7 +198,6 @@ class VendorProductController extends Controller
                 'discount'=>$price,
                 'promo_price'=>$request->promo_price,
                 'admin_percent'=>$price1,
-                'size_show'=>$request->size_show,
                 'description'=>$request->description,
                 'indoor_charge'=>$request->indoor_charge,
                 'outdoor_charge'=>$request->outdoor_charge,

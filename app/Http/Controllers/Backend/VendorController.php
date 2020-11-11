@@ -22,7 +22,7 @@ class VendorController extends Controller
     {
         $data = auth()->user();
         $vendors = Vendor::all();
-        $single_ven = SingleVendor::all();
+        $single_ven = Vendor::where('multi_vendor','=',1)->with('get_single_vendor_')->first();
         $vendor_products = VendorProduct::all();
         return view('layouts.backend.vendor.vendor_product_list',[
             'data'=>$data,

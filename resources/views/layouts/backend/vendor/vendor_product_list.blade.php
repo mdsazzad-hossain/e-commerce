@@ -18,7 +18,7 @@
                     </button>
                     <p style="margin-left: 5px;
                     font-weight: 700;
-                    margin-bottom: 0px;">Add Vendor Logo
+                    margin-bottom: 0px;">Create Vendor
                         <span style="float: left;
                         margin-left: 15px;" class="badge badge-warning">0/0</span>
                     </p>
@@ -164,7 +164,7 @@
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
                         >Select Vendor</label
                         >
-                        <select class="form-control" name="vendor_id" id="vendor_id">
+                        <select class="form-control" onclick="get_vendor_id()" name="vendor_id" id="ven_id">
                             <option value="" selected="selected" hidden>select</option>
                             @foreach ($vendors as $ven)
                             @if($ven->status == 1)
@@ -173,6 +173,7 @@
                             </option>
                             @endif
                             @endforeach
+                            <input type="hidden" id="allVendor" name="vendors" value="{{$vendors}}">
                         </select>
                     </div>
                     <div class="form-group col-6">
@@ -181,7 +182,7 @@
                         >
                         <select class="form-control" name="single_vendor_id" id="single_vendor_id">
                             <option value="" selected="selected" hidden>select</option>
-                            @foreach ($single_ven as $item)
+                            @foreach ($single_ven->get_single_vendor_ as $item)
                             <option value="{{ $item->id }}">
                                 {{ $item->brand_name }}
                             </option>
@@ -227,16 +228,15 @@
                         </div>
                         <div class="form-group col-3">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
-                            >Select Product Size</label
+                            >Product Size</label
                             >
-                            <select class="form-control" name="size" id="size">
-                                <option value="xs" selected="selected">xs</option>
-                                <option value="x" selected="selected">x</option>
-                                <option value="xm" selected="selected">xm</option>
-                                <option value="m" selected="selected">m</option>
-                                <option value="xl" selected="selected">xl</option>
-                                <option value="xll" selected="selected">xll</option>
-                            </select>
+                            <input
+                                id="size"
+                                name="size"
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter product size"
+                            />
                         </div>
                     </div>
                     <div class="row col-12">
@@ -601,6 +601,22 @@
     @section('js')
 
       <script>
+          function get_vendor_id(){
+            data = $("#allVendor").val();
+            data1 = JSON.parse(data);
+            data1.forEach(element => {
+                if (element.multi_vendor == 0) {
+                    val = $("#ven_id").val();
+                    if(val == element.id){
+                        // $("#single_vendor_id").val(element.brand_name);
+                        $("#single_vendor_id").attr('disabled',true);
+                    }
+                }
+               
+            });
+            // $("#banar").attr('disabled',false);
+          }
+
             function getVendorId(){
                 dt = $("#vendor_id").val()
                 if(dt != ''){

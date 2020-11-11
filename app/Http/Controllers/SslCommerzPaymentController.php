@@ -99,12 +99,14 @@ class SslCommerzPaymentController extends Controller
                 $orderData = DB::table('orders')->where('transaction_id', $post_data['tran_id'])->first();
 
                     $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
-
+                    
                     foreach ($carts as $key => $value) {
                         $product = Product::where('id',$value->product_id)->first();
-                         if ($product->shipp_des == 'indoor') {
+                        $ven_product = VendorProduct::where('id',$value->vendor_product_id)->first();
+                        
+                         if ($product != null && $product->shipp_des == 'indoor') {
                              if ($value->qty<=3) {
-                                $shipp_cost = $product->indoor_charge;
+                                $shipp_cost = $product ? $product->indoor_charge : 0;
                              }elseif($value->qty>3 && $value->qty<=6){
                                 $shipp_cost =2*$product->indoor_charge;
                              }elseif($value->qty>6 && $value->qty<=9){
@@ -112,9 +114,9 @@ class SslCommerzPaymentController extends Controller
                              }elseif($value->qty>9 && $value->qty<= 10){
                                 $shipp_cost =4*$product->indoor_charge;
                              }
-                         }elseif($product->shipp_des == 'outdoor'){
+                         }elseif($product != null && $product->shipp_des == 'outdoor'){
                             if ($value->qty<=3) {
-                                $shipp_cost = $product->outdoor_charge;
+                                $shipp_cost = $product ? $product->outdoor_charge : 0;
                              }elseif($value->qty>3 && $value->qty<=6){
                                 $shipp_cost =2*$product->outdoor_charge;
                              }elseif($value->qty>6 && $value->qty<=9){
@@ -122,7 +124,29 @@ class SslCommerzPaymentController extends Controller
                              }elseif($value->qty>9 && $value->qty<= 10){
                                 $shipp_cost =4*$product->outdoor_charge;
                              }
-                         };
+                         }
+                         
+                         if ($ven_product !=null && $ven_product->shipp_des == 'indoor') {
+                            if ($value->qty<=3) {
+                               $shipp_cost = $ven_product->indoor_charge;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$ven_product->indoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$ven_product->indoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$ven_product->indoor_charge;
+                            }
+                        }elseif($ven_product !=null && $ven_product->shipp_des == 'outdoor'){
+                           if ($value->qty<=3) {
+                               $shipp_cost = $ven_product ? $ven_product->outdoor_charge : 0;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$ven_product->outdoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$ven_product->outdoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$ven_product->outdoor_charge;
+                            }
+                        }
 
                         if($value->vendor_product_id == null && $value->product_id != null){
 
