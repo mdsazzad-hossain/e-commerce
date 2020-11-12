@@ -120,7 +120,7 @@
                                 $total = 0;
                                 @endphp
                                 @foreach ($sales as $sale)
-                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'pending')
+                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'pending' && $sale->status == 0)
 
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">
@@ -151,7 +151,7 @@
                                             <td class="sorting_1">
                                                 @if ($sale->get_orders->delivery_status == 'pending')
                                                     <p style="cursor: pointer;"
-                                                        onclick="delivery({{ $sale->get_orders->id }})"
+                                                        onclick="delivery({{ $sale->id }})"
                                                         class="badge badge-warning">Pending</p>
                                                 @else
                                                     <p class="badge badge-success">Delivered</p>
@@ -254,7 +254,8 @@
                                 $total = 0;
                                 @endphp
                                 @foreach ($sales as $sale)
-                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'delivered')
+                                    @if ($sale->order_id == $sale->get_orders->id && $sale->get_orders->delivery_status == 'delivered' || $sale->status == 1)
+                                        
                                         <tr role="row" class="class="sorting_1"">
                                             <td class="sorting_1">
                                                 <span><strong>{{ $sale->get_vendor_product->product_name }}</strong></span><br>
@@ -275,13 +276,24 @@
                                             @endphp
                                             <td id="profit" class="sorting_1">{{ $profit }} TK</td>
                                             <td class="sorting_1">
-                                                <p onclick="getAddress({{ $sale->id }})" style="cursor: pointer;"
+                                                <p onclick="getAddress({{ $sale->get_orders }})" style="cursor: pointer;"
                                                     data-toggle="modal" data-target="#exampleModalCenter1"
                                                     class="badge badge-warning">Address</p>
                                             </td>
                                             <td class="sorting_1">
-                                                <p class="badge badge-success">Delivered</p>
+                                                @if ($sale->status == 1)
+                                                    <p style="margin: 0px;" class="badge badge-info">Ready To Delivered</p>
+                                                @else
+                                                    <p style="margin: 0px;" class="badge badge-success">Delivered</p>
 
+                                                @endif
+                                                @if ($sale->order_id == $order_status->order_id)
+                                                    @if ($order_status->status == 0)
+                                                        <p style="margin: 0px;" style="margin: 0px;" class="badge badge-danger">Admin Processing</p>
+                                                    @else
+                                                        <p style="margin: 0px;" style="margin: 0px;" class="badge badge-info">Admin Ready</p>
+                                                    @endif
+                                                @endif
                                             </td>
                                             <td class="sorting_1" style="display: inline-flex;">
                                                 <a href="#" style="margin-right: 5px;" class="btn btn-primary">
@@ -425,6 +437,7 @@
 
         function delivery(id) {
             if (id != undefined) {
+                $("#tran_id").val('');
                 $.ajax({
                     url: "{{ route('product.delivery') }}",
                     type: "POST",
@@ -442,7 +455,7 @@
                     type: "POST",
                     data: {
                         "_token": "{{ csrf_token() }}",
-                        "id":  $("#tran_id").val()
+                        "tran_id":  $("#tran_id").val()
                     },
                     success: function(response) {
                         window.location.reload();

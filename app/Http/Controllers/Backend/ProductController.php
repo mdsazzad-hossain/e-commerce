@@ -48,49 +48,33 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sales_history()
-    {
-        $data = auth()->user();
-
-        $sales = OrderDetails::whereNotNull('product_id')->with('get_orders','get_product')->get();
-        $count = OrderDetails::whereNotNull('product_id')->where('status','=',0)->distinct('order_id')->count();
-        $count_refund = Orders::where('delivery_status','refund')->count();
-        return view('layouts.backend.sales.sales_history',[
-            'data'=>$data,
-            'sales'=>$sales,
-            'count'=>$count,
-            'count_refund'=>$count_refund
-        ]);
-    }
+    
     public function table_search(Request $request)
     {
         if ($request->search == 'daily') {
-            $sales = OrderDetails::latest()->where('created_at','>=',Carbon::tomorrow())->get();
+            $sales = OrderDetails::latest()->where('created_at','>=',Carbon::today())->whereNotNull('product_id')->with('get_orders','get_product')->get();
         }elseif($request->search == 'weekly'){
-            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()])->with('get_orders','get_product','get_vendor_product')->get();
+            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subWeek()->format("Y-m-d H:i:s"), Carbon::now()])->whereNotNull('product_id')->with('get_orders','get_product')->get();
 
         }elseif($request->search == 'monthly'){
-            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subMonth()->format("Y-m-d H:i:s"), Carbon::now()])->with('get_orders','get_product','get_vendor_product')->get();
+            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subMonth()->format("Y-m-d H:i:s"), Carbon::now()])->whereNotNull('product_id')->with('get_orders','get_product')->get();
             
         }elseif($request->search == 'yearly'){
-            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subYear()->format("Y-m-d H:i:s"), Carbon::now()])->get();
+            $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subYear()->format("Y-m-d H:i:s"), Carbon::now()])->whereNotNull('product_id')->with('get_orders','get_product')->get();
             
         }
 
         $data = auth()->user();
+        $order_status = OrderDetails::whereNull('product_id')->distinct('order_id')->first();
         $count = Orders::where('delivery_status','pending')->count();
         $count_refund = Orders::where('delivery_status','refund')->count();
         return view('layouts.backend.sales.sales_history',[
             'data'=>$data,
             'sales'=>$sales,
             'count'=>$count,
-            'count_refund'=>$count_refund
+            'count_refund'=>$count_refund,
+            'order_status'=>$order_status
         ]);
-    }
-
-    public function sales_refund()
-    {
-        //
     }
 
     /**

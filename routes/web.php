@@ -153,15 +153,14 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('vendor-product-avatar/delete/{slug}', 'VendorProductAvatarController@destroy')->name('vendor.product.avatar.delete');
 
         //sales owner
-        Route::get('product-sales-history', 'ProductController@sales_history')->name('sales.history');
-        Route::get('product-sales-refund', 'ProductController@sales_refund')->name('sales.refund');
+        Route::get('product-sales-history', 'OrdersController@sales_history')->name('sales.history');
 
         //product delivery
         Route::post('product-delivered', 'OrdersController@delivery')->name('product.delivery');
         
         //sales vendor
-        Route::get('vendor-sales-history', 'VendorProductController@sales_history')->name('vendor.sales.history');
-        Route::get('vendor-sales-refund', 'VendorProductController@sales_refund')->name('vendor.sales.refund');
+        Route::get('vendor-sales-history', 'OrdersController@vendor_sales_history')->name('vendor.sales.history');
+        Route::get('vendor-sales-refund', 'VendorProductController@vendor_sales_refund')->name('vendor.sales.refund');
 
         //orders
         //sales vendor
@@ -173,7 +172,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('order-invoice', 'OrdersController@invoice')->name('order.invoice');
 
         //table data search daily,weekly,monthly,yearly
-        Route::post('table-data-search', 'ProductController@table_search')->name('table-search');
+        Route::post('product-sales-history', 'ProductController@table_search')->name('table-search');
 
     });
 

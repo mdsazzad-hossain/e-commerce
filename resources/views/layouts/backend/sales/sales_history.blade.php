@@ -280,7 +280,20 @@
                                                     class="badge badge-warning">Address</p>
                                             </td>
                                             <td class="sorting_1">
-                                                <p class="badge badge-success">Delivered</p>
+                                                @if ($sale->status == 1)
+                                                    <p style="margin: 0px;" class="badge badge-info">Ready To Delivered</p>
+                                                    
+                                                @else
+                                                    <p style="margin: 0px;" class="badge badge-success">Delivered</p>
+
+                                                @endif
+                                                @if ($sale->order_id == $order_status->order_id)
+                                                    @if ($order_status->status == 0)
+                                                        <p style="margin: 0px;" class="badge badge-danger">Vendor Processing</p>
+                                                    @else
+                                                        <p style="margin: 0px;" class="badge badge-info">Vendor Ready</p>
+                                                    @endif
+                                                @endif
 
                                             </td>
                                             <td class="sorting_1" style="display: inline-flex;">
@@ -425,6 +438,7 @@
 
         function delivery(id) {
             if (id != undefined) {
+                $("#tran_id").val('');
                 $.ajax({
                     url: "{{ route('product.delivery') }}",
                     type: "POST",

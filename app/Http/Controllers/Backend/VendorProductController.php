@@ -33,20 +33,7 @@ class VendorProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sales_history()
-    {
-        $data = auth()->user();
-
-        $sales = OrderDetails::whereNotNull('vendor_product_id')->with('get_orders','get_vendor_product')->get();
-        $count = OrderDetails::whereNotNull('vendor_product_id')->distinct('order_id')->count();
-        $count_refund = Orders::where('delivery_status','refund')->count();
-        return view('layouts.backend.vendor.sales.sales-history',[
-            'data'=>$data,
-            'sales'=>$sales,
-            'count'=>$count,
-            'count_refund'=>$count_refund
-        ]);
-    }
+    
 
     public function sales_refund()
     {

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\VendorProduct;
 use App\Models\OrderDetails;
 use PDF;
+use Alert;
 class OrdersController extends Controller
 {
     /**
@@ -100,26 +101,107 @@ class OrdersController extends Controller
         // $pdf = PDF::loadView('layouts.backend.invoice.order_invoice',['datas'=>$datas]);
         // return $pdf->stream('invoice.pdf');
     }
+    public function sales_history()
+    {
+        $data = auth()->user();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $sales = OrderDetails::whereNotNull('product_id')->with('get_orders','get_product')->get();
+        $order_status = OrderDetails::whereNull('product_id')->distinct('order_id')->first();
+        $count = OrderDetails::whereNotNull('product_id')->where('status','=',0)->distinct('order_id')->count();
+        $count_refund = Orders::where('delivery_status','refund')->count();
+        return view('layouts.backend.sales.sales_history',[
+            'data'=>$data,
+            'sales'=>$sales,
+            'count'=>$count,
+            'count_refund'=>$count_refund,
+            'order_status'=>$order_status
+            
+        ]);
+    }
+
+    public function vendor_sales_history()
+    {
+        $data = auth()->user();
+        $order_status = OrderDetails::whereNull('vendor_product_id')->distinct('order_id')->first();
+        $sales = OrderDetails::whereNotNull('vendor_product_id')->with('get_orders','get_vendor_product')->get();
+        $count = OrderDetails::whereNotNull('vendor_product_id')->where('status','=',0)->distinct('order_id')->count();
+        $count_refund = Orders::where('delivery_status','refund')->count();
+        return view('layouts.backend.vendor.sales.sales-history',[
+            'data'=>$data,
+            'sales'=>$sales,
+            'count'=>$count,
+            'count_refund'=>$count_refund,
+            'order_status'=>$order_status
+        ]);
+    }
+
+
     public function delivery(Request $request)
     {
         if ($request->tran_id != null) {
-            Orders::where('transaction_id',$request->tran_id)->update([
-                'delivery_status'=>'delivered'
-            ]);
+            $order = Orders::where('transaction_id',$request->tran_id)->with('get_order_details')->first();
+            $collection = $order->get_order_details->contains('vendor_product_id', '');
+            $collection1 = $order->get_order_details->contains('product_id', '');
+            $collection2 = $order->get_order_details->contains('status', '1');
+            
+            if (auth()->user()->role == 'super_admin' || auth()->user()->role == 'admin') {
+                if($collection1 == false){
+                    $order->update([
+                        'delivery_status'=>'delivered'
+                    ]);
+                }elseif($collection1 == true){
+                    $this->adminDelivery($request,$order);
+                   
+                }
+            }elseif(auth()->user()->role == 'vendor'){
+                if($collection == false){
+                    $order->update([
+                        'delivery_status'=>'delivered'
+                    ]);
+                    
+                }elseif($collection == true){
+                    $this->vendorDelivery($request,$order);
+                }
+                
+            }elseif($collection2 == true){
+                $order->update([
+                    'delivery_status'=>'delivered'
+                ]);
+            }
         }else{
             OrderDetails::where('id',$request->id)->update([
                 'status'=>1
             ]);
+            toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+            return response()->json([
+                'msg'=>'success'
+            ]);
         }
-        toast('Product delivered successfull.','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        
+        
+    }
+
+    public function adminDelivery($request,$order)
+    {
+        
+        $order_details = OrderDetails::whereNotNull('product_id')->where('order_id',$order->id)->update([
+            'status'=>1
+        ]);
+        Alert::warning('Warning!','This order has vendor product.Order not delivered now.');
+
+        return response()->json([
+            'msg'=>'success'
+        ]);
+    }
+
+    public function vendorDelivery($request,$order)
+    {
+        $order_details = OrderDetails::whereNotNull('vendor_product_id')->where('order_id',$order->id)->update([
+            'status'=>1
+        ]);
+        Alert::warning('Warning!','This order has admin product.Order not delivered now.');
 
         return response()->json([
             'msg'=>'success'
