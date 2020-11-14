@@ -38,6 +38,7 @@
 <script src="{{ asset('backend/dist/js/dropzone.js')}}"></script>
 <script src="{{ asset('backend/plugins/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{ asset('backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script src="{{ asset('backend/plugins/select2/js/select2.full.min.js')}}"></script>
 
 
 @yield('js')

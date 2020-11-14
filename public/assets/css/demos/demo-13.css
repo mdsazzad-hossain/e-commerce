@@ -103,7 +103,7 @@
 
 .header.header-10.header-intro-clearance .cart-dropdown {
     font-size: 3.2rem;
-    padding-left: 2.4rem;
+    padding-left: 1.4rem;
     align-items: flex-end
 }
 
@@ -150,7 +150,7 @@
 }
 
 .header.header-10.header-intro-clearance .header-bottom .header-right i {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin-right: 2rem;
     color: black;
 }
@@ -647,6 +647,11 @@
 .icon-box-side {
     font-size: 1.5rem;
     margin: auto;
+    transition: 0.3s;
+}
+
+.icon-box-side:hover{
+    background: #ddd;
 }
 
 .icon-box-side .icon-box-icon {

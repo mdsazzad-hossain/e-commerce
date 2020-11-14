@@ -30,18 +30,20 @@
                 <div class="owl-stage"
                     style="transform: translate3d(-2698px, 0px, 0px); transition: all 0s ease 0s; width: 10792px;">
 
+                    @foreach ($banars as $banar)
                     <div class="owl-item cloned" style="width: 1349px;">
                         <div class="intro-slide"
-                            style="background-image: url({{ $banars ? asset('/images/' . $banars->image) : '' }})">
+
+                            style="background-image: url({{ $banar ? asset('/images/' . $banar->image) : '' }})">
                             <div class="container intro-content">
                                 <div class="row">
                                     <div class="col-auto offset-lg-3 intro-col">
-                                        <h3 class="intro-subtitle">Fashion Promotions</h3>
+                                        <h3 class="intro-subtitle">{{ $banar->category_name }}</h3>
                                         <!-- End .h3 intro-subtitle -->
-                                        <h1 class="intro-title">Tan Suede <br>Biker Jacket
+                                        <h1 class="intro-title">{{ $banar->product_name }}
                                             <span>
-                                                <sup class="font-weight-light line-through">$240,00</sup>
-                                                <span class="text-primary">$180<sup>,99</sup></span>
+                                                <sup class="font-weight-light line-through">${{ $banar->promo_price }}</sup>
+                                                <span class="text-primary">${{ $banar->price }}<sup>,99</sup></span>
                                             </span>
                                         </h1>
                                         <!-- End .intro-title -->
@@ -59,90 +61,7 @@
                         </div>
                     </div>
 
-                    <div class="owl-item cloned" style="width: 1349px;">
-                        <div class="intro-slide"
-                            style="background-image: url({{$banars ?  asset('/images/' . $banars->image1) :'' }})">
-                            <div class="container intro-content">
-                                <div class="row">
-                                    <div class="col-auto offset-lg-3 intro-col">
-                                        <h3 class="intro-subtitle">Fashion Promotions</h3>
-                                        <!-- End .h3 intro-subtitle -->
-                                        <h1 class="intro-title">Tan Suede <br>Biker Jacket
-                                            <span>
-                                                <sup class="font-weight-light line-through">$240,00</sup>
-                                                <span class="text-primary">$180<sup>,99</sup></span>
-                                            </span>
-                                        </h1>
-                                        <!-- End .intro-title -->
-
-                                        <a href="category.html" class="btn btn-outline-primary-2">
-                                            <span>Shop Now</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                    <!-- End .col-auto offset-lg-3 -->
-                                </div>
-                                <!-- End .row -->
-                            </div>
-                            <!-- End .container intro-content -->
-                        </div>
-                    </div>
-                    <div class="owl-item active" style="width: 1349px;">
-                        <div class="intro-slide"
-                            style="background-image: url({{$banars ?  asset('/images/' . $banars->image2) :'' }})">
-                            <div class="container intro-content">
-                                <div class="row">
-                                    <div class="col-auto offset-lg-3 intro-col">
-                                        <h3 class="intro-subtitle">Trade-In Offer</h3>
-                                        <!-- End .h3 intro-subtitle -->
-                                        <h1 class="intro-title">MacBook Air <br>Latest Model
-                                            <span>
-                                                <sup class="font-weight-light">from</sup>
-                                                <span class="text-primary">$999<sup>,99</sup></span>
-                                            </span>
-                                        </h1>
-                                        <!-- End .intro-title -->
-
-                                        <a href="category.html" class="btn btn-outline-primary-2">
-                                            <span>Shop Now</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                    <!-- End .col-auto offset-lg-3 -->
-                                </div>
-                                <!-- End .row -->
-                            </div>
-                            <!-- End .container intro-content -->
-                        </div>
-                    </div>
-                    <div class="owl-item" style="width: 1349px;">
-                        <div class="intro-slide"
-                            style="background-image: url({{$banars ?  asset('/images/' . $banars->image3) :'' }});">
-                            <div class="container intro-content">
-                                <div class="row">
-                                    <div class="col-auto offset-lg-3 intro-col">
-                                        <h3 class="intro-subtitle">Trevel &amp; Outdoor</h3>
-                                        <!-- End .h3 intro-subtitle -->
-                                        <h1 class="intro-title">Original Outdoor <br>Beanbag
-                                            <span>
-                                                <sup class="font-weight-light line-through">$89,99</sup>
-                                                <span class="text-primary">$29<sup>,99</sup></span>
-                                            </span>
-                                        </h1>
-                                        <!-- End .intro-title -->
-
-                                        <a href="category.html" class="btn btn-outline-primary-2">
-                                            <span>Shop Now</span>
-                                            <i class="icon-long-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                    <!-- End .col-auto offset-lg-3 -->
-                                </div>
-                                <!-- End .row -->
-                            </div>
-                            <!-- End .container intro-content -->
-                        </div>
-                    </div>
+                    @endforeach
 
                 </div>
             </div>
@@ -439,22 +358,8 @@
                 @endforeach
 
             </div>
-            <!-- End .row -->
-
-
-
-
-
         </div>
-        <!-- End .cat-blocks-container -->
     </div>
-    <!-- End .container -->
-
-
-    <!-- <div class="mb-4"></div> -->
-
-
-
     <div class="mb-2"></div>
     <div class="bg-light">
         <div class="container electronics">
@@ -506,7 +411,7 @@
                                 @if ($product->position == 'own mall')
                                 <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
-                                    <div class="product">
+                                    <div class="product prod_hover">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
@@ -672,7 +577,7 @@
                                 @if ($product->position == 'upcoming product')
                                 <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
-                                    <div class="product">
+                                    <div class="product prod_hover">
                                         @foreach ($product->get_product_avatars as $pro_avatar)
                                         <figure class="product-media">
                                             <span class="product-label label-new">New</span>
@@ -784,7 +689,7 @@
                             @if ($product->position == 'global product')
                             <div class="owl-item active" style="width: 190.5px; margin-right: 5px;">
 
-                                <div class="product">
+                                <div class="product prod_hover">
                                     @foreach ($product->get_product_avatars as $pro_avatar)
                                     <figure class="product-media">
                                         <span class="product-label label-new">New</span>
@@ -856,38 +761,28 @@
 
     <div class="mb-3"></div>
     <!-- End .mb-3 -->
-    <div class="cta cta-horizontal cta-horizontal-box bg-primary">
+    <div class="cta bg-image bg-dark pt-4 pb-5 mb-0" style="background-image: url(assets/images/demos/demo-4/bg-5.jpg);">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-2xl-5col">
-                    <h3 class="cta-title text-white">Join Our Newsletter</h3>
-                    <!-- End .cta-title -->
-                    <p class="cta-desc text-white">Subcribe to get information about products and coupons</p>
-                    <!-- End .cta-desc -->
-                </div>
-                <!-- End .col-lg-5 -->
-
-                <div class="col-3xl-5col">
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <div class="cta-heading text-center">
+                        <h3 class="cta-title text-white">Get The Latest Deals</h3><!-- End .cta-title -->
+                        <p class="cta-desc text-white">and receive <span class="font-weight-normal">$20 coupon</span> for first shopping</p><!-- End .cta-desc -->
+                    </div><!-- End .text-center -->
+                
                     <form action="#">
-                        <div class="input-group">
-                            <input type="email" class="form-control form-control-white"
-                                placeholder="Enter your Email Address" aria-label="Email Adress" required="">
+                        <div class="input-group input-group-round">
+                            <input type="email" class="form-control form-control-white" placeholder="Enter your Email Address" aria-label="Email Adress" required>
                             <div class="input-group-append">
-                                <button class="btn btn-outline-white-2" type="submit"><span>Subscribe</span><i
-                                        class="icon-long-arrow-right"></i></button>
-                            </div>
-                            <!-- .End .input-group-append -->
-                        </div>
-                        <!-- .End .input-group -->
+                                <button class="btn btn-primary" type="submit"><span>Subscribe</span><i class="icon-long-arrow-right"></i></button>
+                            </div><!-- .End .input-group-append -->
+                        </div><!-- .End .input-group -->
                     </form>
-                </div>
-                <!-- End .col-lg-7 -->
-            </div>
-            <!-- End .row -->
-        </div>
-        <!-- End .container -->
-    </div>
-    <!-- End .cta -->
+                </div><!-- End .col-sm-10 col-md-8 col-lg-6 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .cta -->
+
 
 
 </main>

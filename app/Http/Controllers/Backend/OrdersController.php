@@ -91,7 +91,9 @@ class OrdersController extends Controller
      */
     public function invoice(Request $request)
     {
-        $datas = Orders::where('transaction_id',$request->tran_id)->with('get_order_details')->first();
+        $datas = Orders::where('transaction_id',$request->tran_id)->with(
+            'get_order_details'
+        )->first();
 
         return view('layouts.backend.invoice.order_invoice',[
             

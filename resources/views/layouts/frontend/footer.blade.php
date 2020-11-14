@@ -1,4 +1,4 @@
-<footer class="footer footer-2">
+<footer class="footer footer-3">
 
     <div class="footer-middle border-0">
         <div class="container">
@@ -97,7 +97,7 @@
     </div>
     <!-- End .footer-middle -->
 
-    <div class="footer-bottom">
+    <div class="footer-bottom footer-dark">
         <div class="container">
             <p class="footer-copyright">Copyright © 2020 Idea Tech Solution. All Rights Reserved.</p>
             <!-- End .footer-copyright -->

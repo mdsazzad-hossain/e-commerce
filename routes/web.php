@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/category/{slug}', 'HomeController@category')->name('category');
+    Route::post('category/load-category', 'HomeController@load_category');
     Route::get('/{user}/wishlist', 'WishListController@index')->name('wishlist');
     Route::post('/wishlist/store', 'WishListController@store')->name('wishlist.store');
     Route::post('/wishlist/delete/{id}', 'WishListController@destroy')->name('wishlist.delete');

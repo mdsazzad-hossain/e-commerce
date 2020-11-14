@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banar;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Orders;
 use App\Models\OrderDetails;
@@ -30,7 +31,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-            $banars = Banar::select('id','image','image1','image2','image3')->first();
+            $banars = Banar::all();
             $categories = Category::with('get_child_category')->get();
             $products = Product::where('status','=',1)->with('get_brand','get_product_avatars')->get();
             $ads = AdManager::all();
@@ -70,7 +71,7 @@ class HomeController extends Controller
     {
         
         $search = Product::where('product_name',$search)->with('get_brand.get_sub_child_category','get_brand.get_child_category.get_sub_child_category','get_brand.get_sub_child_category.get_brand','get_brand.get_sub_child_category.get_brand.get_product','get_brand.get_sub_child_category.get_brand.get_product.get_product_avatars','get_product_avatars')->get();
-
+        
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
@@ -142,7 +143,7 @@ class HomeController extends Controller
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $categories = Category::with('get_child_category')->get();
-        $all_cat = Category::where('cat_name',$slug)->with('get_brand')->first();
+        $all_cat = Category::where('cat_name',$slug)->first();
         $ads = AdManager::all();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
 
@@ -155,6 +156,68 @@ class HomeController extends Controller
             'cart'=>$cart,
             'orders'=>$orders
         ]);
+    }
+
+    public function load_category(Request $request)
+    {
+        if ($request->col_name === "child_name") {
+            $categories = $this->byCategory($request);
+           
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }elseif($request->col_name === "slug"){
+            $categories = $this->byBrand($request);
+           
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }elseif($request->col_name === "size"){
+            $categories = $this->bySize($request);
+           
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }elseif($request->col_name === "cat_name"){
+            $categories = Category::where($request->col_name,$request->name)->with(
+                'get_child_category',
+                'get_brand',
+                'get_brand.get_product',
+                'get_brand.get_product.get_product_avatars'
+            )->first();
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }
+        
+        
+
+
+    }
+
+    public function byCategory($request)
+    {
+        $categories = ChildCategory::where($request->col_name,$request->name)->with(
+            'get_brand',
+            'get_brand.get_product',
+            'get_brand.get_product.get_product_avatars'
+        )->first();
+        return $categories;
+    }
+
+    public function byBrand($request)
+    {
+        $categories = Brand::where($request->col_name,$request->name)->with(
+            'get_product',
+            'get_product.get_product_avatars'
+        )->first();
+        return $categories;
+    }
+
+    public function bySize($request)
+    {
+        $categories = Product::where($request->col_name,$request->name)->with('get_product_avatars')->get();
+        return $categories;
     }
 
     public function show_vendor($brand)

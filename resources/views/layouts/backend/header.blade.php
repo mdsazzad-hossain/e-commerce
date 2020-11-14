@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{asset('backend/plugins/summernote/summernote-bs4.css')}}">
     {{-- <link rel="stylesheet" href="{{asset('backend/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}"> --}}
     <link rel="stylesheet" href="{{asset('backend/plugins/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/plugins/select2/css/select2.min.css')}}">
 
     @yield('css')
 </head>

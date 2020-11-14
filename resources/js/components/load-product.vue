@@ -4,7 +4,7 @@
     <div class="products mb-2" id="loadData" style="display:none;">
       <div class="row justify-content-center">
         <div v-for="item in getItem" :key="item.id" class="col-6 col-md-4 col-lg-4 col-xl-2">
-          <div class="product product-7 text-center">
+          <div class="product prod_hover product-7 text-center">
             <figure v-for="avtr in item.get_product_avatars" :key="avtr.id" class="product-media">
               <span class="product-label label-new">New</span>
               <a href="#" @click.prevent="quickView(item.product_name)">

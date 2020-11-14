@@ -205,11 +205,11 @@
                                         {{-- <span class="cart-txt">Cart</span> --}}
                                     </a>
 
-                                    <div class="dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-menu dropdown-menu-right" style="margin-top: 20px;">
                                         <div class="dropdown-cart-products">
                                             @foreach ($cart as $crt)
                                             @if ($crt->get_product)
-                                            <div class="product">
+                                            <div class="product" style="padding-top: 3px; ">
                                                 <div class="product-cart-details">
                                                     <h4 class="product-title">
                                                         <a id="pro_name" href="product.html">{{$crt->get_product ? $crt->get_product->product_name  : ''}}</a>
@@ -232,7 +232,7 @@
                                                 @endforeach
                                                 @endif
                                                 <button onclick="itemDelete({{$crt->id}})" class="btn-remove" title="Remove Product">
-                                                    <i style="margin-left: 12px;" class="icon-close"></i>
+                                                    <i style="margin-left: 12px; font-size: 1.5rem !important;" class="icon-close"></i>
                                                 </button>
                                             </div>
                                             <!-- End .product -->
@@ -308,11 +308,7 @@
                                         margin-right: 26px;"></span>
                                     </a>
 
-                                    <div class="dropdown-menu dropdown-menu-right" style="width: 150px !important;padding:1.2rem 1rem 2.5rem !important;height: 112px;
-                                        !important: ;
-                                        border: 1px solid #ddd;
-                                        margin-top: 19px;
-                                        margin-right: -87px;">
+                                    <div class="dropdown-menu dropdown-menu-right e-money" style="margin-right: -80px; margin-top: 19px; padding-top:6px; ">
 
                                         <ul>
                                             <li>

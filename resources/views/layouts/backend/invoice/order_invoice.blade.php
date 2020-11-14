@@ -60,7 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($datas->get_order_details as $pro)
+                        {{-- @foreach ($datas->get_order_details as $pro)
                         <tr>
                             <td class="no">01</td>
                             <td class="text-left">{{ $pro->get_product->product_name }}</td>
@@ -69,7 +69,7 @@
                             <td class="total">{{ $pro->get_product->sale_price }}</td>
                             <td class="total">{{ $pro->total }}</td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                      
                     <tfoot>

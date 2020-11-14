@@ -14,6 +14,7 @@
         <div class="page-content">
             <div class="container">
                 <div class="row">
+
                     <div class="col-lg-9">
                         <div class="product-details-top">
                             <div class="row">
@@ -121,11 +122,83 @@
                             </div>
                         </div>
 
-                        
+                    
 
+                    </div><!-- End .col-lg-9 -->
+
+
+
+
+                    <aside class="col-lg-3">
+                        <div class="sidebar sidebar-product" style="height: 59rem; overflow-y: scroll;">
+                            <div class="widget widget-products">
+                                <h4 class="widget-title">Related Product</h4><!-- End .widget-title -->
+
+                                <div class="products">
+                                    @foreach ($products as $pro)
+                                    @if ($pro->get_brand->id == $product->brand_id)
+
+
+
+                                    <div class="product product-sm">
+
+                                        @foreach ($pro->get_product_avatars as $avtr)
+                                        
+                                        <figure class="product-media">
+                                            <a href="{{route('quick',$pro->slug)}}">
+                                                <img style="width: 121px !important;
+                                                height: 80px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
+                                                    class="product-image">
+                                            </a>
+                                        </figure>
+                                        @endforeach
+                                        <div class="product-body">
+                                            <h5 class="product-title"><a href="product.html">{{$pro->product_name}}</a></h5><!-- End .product-title -->
+                                            <div class="product-price">
+                                                <span class="new-price">{{$pro->price}}</span>
+                                                <span class="old-price">{{$pro->promo_price}}</span>
+                                            </div><!-- End .product-price -->
+                                        </div><!-- End .product-body -->
+
+                                    </div><!-- End .product product-sm -->
+
+                                    <div class="product product-sm">
+
+                                        @foreach ($pro->get_product_avatars as $avtr)
+                                        
+                                        <figure class="product-media">
+                                            <a href="{{route('quick',$pro->slug)}}">
+                                                <img style="width: 121px !important;
+                                                height: 80px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
+                                                    class="product-image">
+                                            </a>
+                                        </figure>
+                                        @endforeach
+                                        <div class="product-body">
+                                            <h5 class="product-title"><a href="product.html">{{$pro->product_name}}</a></h5><!-- End .product-title -->
+                                            <div class="product-price">
+                                                <span class="new-price">{{$pro->price}}</span>
+                                                <span class="old-price">{{$pro->promo_price}}</span>
+                                            </div><!-- End .product-price -->
+                                        </div><!-- End .product-body -->
+
+                                    </div><!-- End .product product-sm -->
+
+
+
+                                    @endif
+                                    @endforeach
+                                </div><!-- End .products -->
+                            </div><!-- End .widget widget-products -->
+                        </div><!-- End .sidebar sidebar-product -->
+                    </aside><!-- End .col-lg-3 -->
+
+
+
+
+
+                    <div class="col-lg-12">
                         <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
-
-
 
                         <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
                             data-toggle="owl" data-owl-options="{
@@ -147,18 +220,12 @@
                                         &quot;items&quot;:4
                                     },
                                     &quot;1200&quot;: {
-                                        &quot;items&quot;:4,
+                                        &quot;items&quot;:6,
                                         &quot;nav&quot;: true,
                                         &quot;dots&quot;: false
                                     }
                                 }
                             }">
-                            <!-- End .product -->
-
-                            <!-- End .product -->
-
-                            <!-- End .product -->
-
                             <!-- End .product -->
                             <div class="owl-stage-outer">
                                 <div class="owl-stage"
@@ -211,47 +278,12 @@
                             </div>
                             <div class="owl-dots disabled"></div>
                         </div><!-- End .owl-carousel -->
+                        
+                    </div>
 
 
 
 
-                    </div><!-- End .col-lg-9 -->
-
-                    <aside class="col-lg-3">
-                        <div class="sidebar sidebar-product">
-                            <div class="widget widget-products">
-                                <h4 class="widget-title">Related Product</h4><!-- End .widget-title -->
-
-                                <div class="products">
-                                    @foreach ($products as $pro)
-                                    @if ($pro->get_brand->id == $product->brand_id)
-                                    <div class="product product-sm">
-                                        
-                                        @foreach ($pro->get_product_avatars as $avtr)
-                                        
-                                        <figure class="product-media">
-                                            <a href="{{route('quick',$pro->slug)}}">
-                                                <img style="width: 121px !important;
-                                                height: 80px !important;" src="{{ asset('/images/' . $avtr->front) }}" alt="Product image"
-                                                    class="product-image">
-                                            </a>
-                                        </figure>
-                                        @endforeach
-                                        <div class="product-body">
-                                            <h5 class="product-title"><a href="product.html">{{$pro->product_name}}</a></h5><!-- End .product-title -->
-                                            <div class="product-price">
-                                                <span class="new-price">{{$pro->price}}</span>
-                                                <span class="old-price">{{$pro->promo_price}}</span>
-                                            </div><!-- End .product-price -->
-                                        </div><!-- End .product-body -->
-                                        
-                                    </div><!-- End .product product-sm -->
-                                    @endif
-                                    @endforeach
-                                </div><!-- End .products -->
-                            </div><!-- End .widget widget-products -->
-                        </div><!-- End .sidebar sidebar-product -->
-                    </aside><!-- End .col-lg-3 -->
                 </div><!-- End .row -->
 
             </div><!-- End .container -->
