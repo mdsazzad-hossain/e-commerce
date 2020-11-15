@@ -178,13 +178,29 @@ class HomeController extends Controller
             return response()->json([
                 'catagories'=>$categories
             ],200);
-        }elseif($request->col_name === "cat_name"){
-            $categories = Category::where($request->col_name,$request->name)->with(
-                'get_child_category',
-                'get_brand',
-                'get_brand.get_product',
-                'get_brand.get_product.get_product_avatars'
-            )->first();
+        }elseif($request->col_name === "color"){
+            $categories = $this->byColor($request);
+           
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }elseif($request->col_name === "sale_price"){
+            $categories = $this->byPrice($request);
+           
+            return response()->json([
+                'catagories'=>$categories
+            ],200);
+        }
+        elseif($request->col_name === "cat_name"){
+            $categories = Category::where($request->col_name,$request->name)
+            ->with(['get_child_category',
+                'get_brand'=>function($br){
+                return $br->with(['get_product'=>function($pro){
+                        
+                      return $pro->with('get_product_avatars');
+                    }]);
+                }
+            ])->first();
             return response()->json([
                 'catagories'=>$categories
             ],200);
@@ -197,11 +213,14 @@ class HomeController extends Controller
 
     public function byCategory($request)
     {
-        $categories = ChildCategory::where($request->col_name,$request->name)->with(
-            'get_brand',
-            'get_brand.get_product',
-            'get_brand.get_product.get_product_avatars'
-        )->first();
+        $categories = ChildCategory::where($request->col_name,$request->name)
+            ->with(['get_brand'=>function($br){
+                return $br->with(['get_product'=>function($pro){
+                    
+                    return $pro->with('get_product_avatars');
+                }]);
+            }
+        ])->first();
         return $categories;
     }
 
@@ -216,7 +235,51 @@ class HomeController extends Controller
 
     public function bySize($request)
     {
-        $categories = Product::where($request->col_name,$request->name)->with('get_product_avatars')->get();
+        $data = $request->name;
+        $product = Product::where($request->col_name,$request->name)->with('get_brand.get_category')->first();
+        $cat = Category::where('id',$product->get_brand->get_category->id)->with('get_brand')->first();
+        $categories = $cat->with([
+            'get_brand'=>function($br) use($data){
+            return $br->with(['get_product'=>function($pro) use($data){
+                    
+                  return $pro->where('size',$data)->with('get_product_avatars');
+                }]);
+            }
+        ])->first();
+        return $categories;
+    }
+
+    public function byColor($request)
+    {
+        $data = $request->name;
+        $product = Product::where($request->col_name,$request->name)->with('get_brand.get_category')->first();
+        $cat = Category::where('id',$product->get_brand->get_category->id)->with('get_brand')->first();
+        $categories = $cat->with([
+            'get_brand'=>function($br) use($data){
+            return $br->with(['get_product'=>function($pro) use($data){
+                    
+                  return $pro->where('color',$data)->distinct()->with('get_product_avatars');
+                }]);
+            }
+        ])->first();
+        return $categories;
+    }
+
+    public function byPrice($request)
+    {
+        $min_range = $request->min_range;
+        $max_range = $request->max_range;
+        $data = $request->col_name;
+        $product = Product::whereBetween($data,[$min_range,$max_range])->with('get_brand.get_category')->first();
+        $cat = Category::where('id',$product->get_brand->get_category->id)->with('get_brand')->first();
+        $categories = $cat->with([
+            'get_brand'=>function($br) use($min_range,$max_range){
+            return $br->with(['get_product'=>function($pro) use($min_range,$max_range){
+                    
+                  return $pro->whereBetween('sale_price',[$min_range,$max_range])->with('get_product_avatars');
+                }]);
+            }
+        ])->first();
         return $categories;
     }
 

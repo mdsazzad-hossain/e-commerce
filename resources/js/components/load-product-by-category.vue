@@ -124,45 +124,6 @@
                         
                     </div>
                 </div>
-                <div v-show="bySize" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product3 in productBySize" :key="product3.id"> 
-                        <div v-for="avtr3 in product3.get_product_avatars" :key="avtr3.id" class="product product-7 text-center">
-
-                        <figure class="product-media">
-                            <a href="#">
-                            <img
-                                style="height: 203px !important"
-                                :src="ourImage(avtr3.front)"
-                                class="product-image"
-                            />
-                            </a>
-
-                            <div class="product-action-vertical">
-                            <a
-                                href="#"
-                                class="btn-product-icon btn-wishlist btn-expandable"
-                                ><span>add to wishlist</span></a
-                            >
-                            </div>
-
-                            <div class="product-action">
-                            <a href="#" class="btn-product btn-cart"
-                                ><span>add to cart</span></a
-                            >
-                            </div>
-                        </figure>
-
-                        <div class="product-body">
-                            <h3 class="product-title">
-                            <a href="#">{{product3.product_name}}</a>
-                            </h3>
-                            <div class="product-price">
-                            {{product3.sale_price}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
             <!-- End .row -->
           </div>
           <!-- End .products -->
@@ -302,7 +263,7 @@
               </div>
             </div>
 
-            <!-- <div class="widget widget-collapsible">
+            <div class="widget widget-collapsible">
               <h3 class="widget-title">
                 <a
                   data-toggle="collapse"
@@ -317,36 +278,16 @@
 
               <div class="collapse show" id="widget-3">
                 <div class="widget-body">
-                  <div class="filter-colors">
-                    <a href="#" style="background: #b87145"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #f0c04a"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #333333"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" class="selected" style="background: #cc3333"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #3399cc"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #669933"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #f2719c"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    <a href="#" style="background: #ebebeb"
+                  <div class="filter-colors" v-for="brand2 in categories.get_brand" :key="brand2.id">
+                      <a @click="productFilter(pro1.color,'color')" v-for="pro1 in brand2.get_product" :key="pro1.id" href="#" :style="{background: pro1.color}"
                       ><span class="sr-only">Color Name</span></a
                     >
                   </div>
                 </div>
               </div>
-            </div> -->
-            <!-- <div class="widget widget-collapsible">
+            </div>
+            
+            <div class="widget widget-collapsible">
               <h3 class="widget-title">
                 <a
                   data-toggle="collapse"
@@ -364,14 +305,16 @@
                   <div class="filter-price">
                     <div class="filter-price-text">
                       Price Range:
-                      <span id="filter-price-range"></span>
                     </div>
 
-                    <div id="price-slider"></div>
+                    <div>
+                      <input @click="productFilter('','sale_price')" style="width: 100%;" type="range" min="50" max="100000" value="50" id="myRange">
+                      <p>Value: <span id="demo"></span></p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
           </div>
         </aside>
       </div>
@@ -395,19 +338,30 @@ export default {
             productByBrand:"",
             productBySize:"",
             form:{
-                id:"",
+                max_range:"",
+                min_range:"",
                 name:"",
                 col_name:""
             }
         }
     },
     mounted(){
+        this.form.min_range =  document.getElementById("myRange").value;
         this.form.name = this.cat_name;
         this.form.col_name = 'cat_name';
         axios.post('load-category',this.form)
         .then((response)=>{
             this.categories = response.data.catagories;
         })
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+        
+        document.getElementById("myRange").oninput = function() {
+          output.innerHTML = this.value;
+          
+        }
     },
     computed: {
         // filterd() {
@@ -422,6 +376,7 @@ export default {
             this.form.col_name='';
             this.form.name=data;
             this.form.col_name=col_name;
+            this.form.max_range = document.getElementById("myRange").value;
             axios.post('load-category',this.form)
             .then((response)=>{
                 if (this.form.col_name == "child_name") {
@@ -437,17 +392,18 @@ export default {
                     
                 }else if(this.form.col_name == "size") {
                     this.normalMode = false;
-                    this.byCat = false;
+                    this.byCat = true;
                     this.byBr = false;
-                    this.bySize = true;
-                    this.productBySize = response.data.catagories;
+                    this.productByCat = response.data.catagories;
+                    
+                }else if(this.form.col_name == "color" || this.form.col_name == "sale_price") {
+                    this.normalMode = false;
+                    this.byCat = true;
+                    this.byBr = false;
+                    this.productByCat = response.data.catagories;
                     
                 }
             })
-        },
-
-        test(size){
-            this.form.name = size;
         },
         
         ourImage(img) {
@@ -457,5 +413,39 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
 </style>
