@@ -8,6 +8,8 @@ use App\User;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\SubChildCategory;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductAvatar;
@@ -31,6 +33,7 @@ class ProductController extends Controller
         $categories = Category::latest()->get();
         $childs = ChildCategory::latest()->get();
         $sub_childs = SubChildCategory::latest()->get();
+        $attributes = Attribute::latest()->with('get_attribute_value')->get();
         $brands = Brand::latest()->get();
         $products = Product::latest()->with('get_product_avatars')->get();
         return view('layouts.backend.product.product_list',[
@@ -39,7 +42,8 @@ class ProductController extends Controller
             'childs'=>$childs,
             'sub_childs'=>$sub_childs,
             'brands'=>$brands,
-            'products'=>$products
+            'products'=>$products,
+            'attributes'=>$attributes
         ]);
     }
 
@@ -87,10 +91,13 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'brand_id' => 'required',
-            'product_name' => 'required|unique:"products"',
-            'product_code' => 'required',
+            'category_id' => 'required',
+            'child_category_id' => 'required',
+            'sub_child_category_id' => 'required',
             'color' => 'required',
             'size' => 'required',
+            'product_name' => 'required|unique:"products"',
+            'product_code' => 'required',
             'qty' => 'required',
             'pur_price' => 'required',
             'sale_price' => 'required'
@@ -107,11 +114,14 @@ class ProductController extends Controller
         }else{
             Product::create([
                 'brand_id'=>$request->brand_id,
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_category_id'=>$request->sub_child_category_id,
                 'product_name'=>$request->product_name,
-                'slug'=> $request->product_name,
+                'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
-                'color'=>$request->color,
-                'size'=>$request->size,
+                'color'=>$request->attribute_value_color_id,
+                'size'=>$request->attribute_value_size_id,
                 'qty'=>$request->qty,
                 'pur_price'=>$request->pur_price,
                 'sale_price'=>$request->sale_price,
@@ -162,12 +172,22 @@ class ProductController extends Controller
     public function edit($slug)
     {
         $data = auth()->user();
-        $product = Product::where('product_name',$slug)->with('get_brand')->first();
-        $brands = Brand::all();
+        $product = Product::where('slug',$slug)->with([
+            'get_brand',
+            'get_category',
+            'get_child_category',
+            'get_child_child_category',
+            'get_attribute_value'
+        ])->first();
+        $brands = Brand::select('id','brand_name')->get();
+        $sub_child_categories = SubChildCategory::select('id','sub_child_name')->get();
+        $attribute_values = AttributeValue::select('id','attribute_id','value')->with('get_attribute')->get();
         return view('layouts.backend.product.product_edit',[
             'data'=>$data,
             'product'=>$product,
-            'brands'=>$brands
+            'brands'=>$brands,
+            'sub_child_categories'=>$sub_child_categories,
+            'attribute_values'=>$attribute_values
         ]);
     }
 
@@ -180,7 +200,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        $data = Product::where('product_name',$slug)->first();
+        $data = Product::where('slug',$slug)->first();
         $cal = $request->discount*$request->sale_price;
         $price = $request->sale_price-($cal/100);
         $cal1 = $request->e_money*$request->sale_price;
@@ -189,6 +209,9 @@ class ProductController extends Controller
         if ($request->discount != $data->discount && $request->e_money == $data->e_money){
             $data->update([
                 'brand_id'=>$request->brand_id,
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_category_id'=>$request->sub_child_category_id,
                 'product_name'=>$request->product_name,
                 'slug'=> $request->product_name,
                 'product_code'=>$request->product_code,
@@ -212,6 +235,9 @@ class ProductController extends Controller
         }elseif($request->discount == $data->discount && $request->e_money != $data->e_money){
             $data->update([
                 'brand_id'=>$request->brand_id,
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_category_id'=>$request->sub_child_category_id,
                 'product_name'=>$request->product_name,
                 'slug'=> $request->product_name,
                 'product_code'=>$request->product_code,
@@ -236,6 +262,9 @@ class ProductController extends Controller
         else{
             $data->update([
                 'brand_id'=>$request->brand_id,
+                'category_id'=>$request->category_id,
+                'child_category_id'=>$request->child_category_id,
+                'sub_child_category_id'=>$request->sub_child_category_id,
                 'product_name'=>$request->product_name,
                 'slug'=> $request->product_name,
                 'product_code'=>$request->product_code,

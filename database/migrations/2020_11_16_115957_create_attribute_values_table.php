@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBrandsTable extends Migration
+class CreateAttributeValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,18 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('attribute_values', function (Blueprint $table) {
             $table->id();
-            $table->string('brand_name',100);
+            $table->foreignId('attribute_id')->nullable()->constrained('attributes');
+            $table->string('value',100);
             $table->string('slug',100);
-            $table->text('br_description',)->nullable();
-            $table->boolean('status')->default(1);
             $table->timestamps();
-            
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('attribute_values');
     }
 }

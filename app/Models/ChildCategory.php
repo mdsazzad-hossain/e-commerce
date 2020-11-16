@@ -20,8 +20,8 @@ class ChildCategory extends Model
         return $this->hasMany(SubChildCategory::class,'child_category_id');
     }
 
-    public function get_brand()
+    public function get_product()
     {
-        return $this->hasMany(Brand::class,'child_category_id');
+        return $this->hasMany(Product::class,'child_category_id');
     }
 }

@@ -83,32 +83,9 @@
                         style="display: none;">
                         @csrf
                         <div class="card-body row col-12">
-                            <div class="row col-12">
-                                <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
-                                    <input id="cat" type="text" class="form-control"
-                                    placeholder="Enter category name" readonly required/>
-                                    <input type="hidden" id="get_category_id" name="category_id" value="">
-                                </div>
-                                <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">ChildCategory</label>
-                                    <input id="child" type="text" class="form-control"
-                                    placeholder="Enter child name" readonly required/>
-                                    <input type="hidden" id="get_child_category_id" name="child_category_id" value="">
-
-                                </div>
-                                <div class="form-group col-3">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Select Child ChildCategory</label>
-                                    <select onchange="subChildId()" class="form-control" name="sub_child_category_id" id="sub_child_category_id">
-                                        <option value="" hidden selected="selected">select</option>
-                                        @foreach ($sub_childs as $sub_child)
-                                            <option value="{{ $sub_child->id }}">
-                                                {{ $sub_child->sub_child_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-3">
+                            <div class="row col-6 offset-3">
+                                
+                                <div class="form-group col-12">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Name</label>
                                     <input id="brand_name" name="brand_name" type="text" class="form-control"
                                         placeholder="Enter brand name" />
@@ -127,7 +104,32 @@
                     <form id="productInfo" action="{{ route('product.add') }}" method="POST" style="display: none;">
                         @csrf
                         <div class="card-body row col-12">
-                            <div class="form-group col-12">
+                            <div class="row col-12">
+                            <div class="form-group col-3">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
+                                <input id="cat" type="text" class="form-control"
+                                placeholder="Enter category name" readonly required/>
+                                <input type="hidden" id="get_category_id" name="category_id" value="">
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">ChildCategory</label>
+                                <input id="child" type="text" class="form-control"
+                                placeholder="Enter child name" readonly required/>
+                                <input type="hidden" id="get_child_category_id" name="child_category_id" value="">
+
+                            </div>
+                            <div class="form-group col-3">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Select Child ChildCategory</label>
+                                <select onchange="subChildId()" class="form-control" name="sub_child_category_id" id="sub_child_category_id">
+                                    <option value="" hidden selected="selected">select</option>
+                                    @foreach ($sub_childs as $sub_child)
+                                        <option value="{{ $sub_child->id }}">
+                                            {{ $sub_child->sub_child_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-3">
                                 <label class="mr-sm-2" for="inlineFormCustomSelect">Select Brand</label>
                                 <select class="form-control" onclick="getId()" name="brand_id" id="brand_id">
                                     <option value="" selected="selected" hidden>select brand name</option>
@@ -138,6 +140,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
                             <div class="row col-12">
                                 <div class="form-group col-3">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Product Name</label>
@@ -151,18 +154,30 @@
                                 </div>
                                 <div class="form-group col-3">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Product Color</label>
-                                    <input id="color" name="color" type="text" class="form-control"
-                                        placeholder="Enter product color" />
+                                    <select class="form-control" name="color" id="color">
+                                        <option value="" selected="selected" hidden>select</option>
+                                        @foreach ($attributes as $attr)
+                                        @if ($attr->name == 'color')
+                                            @foreach ($attr->get_attribute_value as $color)
+                                            <option value="{{$color->id}}">{{$color->value}}</option>
+                                                
+                                            @endforeach
+                                        @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group col-3">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Select Product Size</label>
                                     <select class="form-control" name="size" id="size">
-                                        <option value="xs" selected="selected">xs</option>
-                                        <option value="x" selected="selected">x</option>
-                                        <option value="xm" selected="selected">xm</option>
-                                        <option value="m" selected="selected">m</option>
-                                        <option value="xl" selected="selected">xl</option>
-                                        <option value="xll" selected="selected">xll</option>
+                                        <option value="" selected="selected" hidden>select</option>
+                                        @foreach ($attributes as $attr)
+                                        @if ($attr->name == 'size')
+                                            @foreach ($attr->get_attribute_value as $size)
+                                            <option value="{{$size->id}}">{{$size->value}}</option>
+                                                
+                                            @endforeach
+                                        @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

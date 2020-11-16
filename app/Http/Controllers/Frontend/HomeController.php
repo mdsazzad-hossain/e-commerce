@@ -195,12 +195,11 @@ class HomeController extends Controller
             $categories = Category::where($request->col_name,$request->name)
             ->with(['get_child_category',
                 'get_brand'=>function($br){
-                return $br->with(['get_product'=>function($pro){
-                        
+                return $br->with(['get_product'=>function($pro){                        
                       return $pro->with('get_product_avatars');
                     }]);
                 }
-            ])->first();
+            ])->distinct()->first();
             return response()->json([
                 'catagories'=>$categories
             ],200);

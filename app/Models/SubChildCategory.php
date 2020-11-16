@@ -14,8 +14,8 @@ class SubChildCategory extends Model
         return $this->belongsTo(ChildCategory::class,'child_category_id');
     }
 
-    public function get_brand()
+    public function get_product()
     {
-        return $this->hasMany(Brand::class,'sub_child_category_id');
+        return $this->hasMany(Product::class,'sub_child_category_id');
     }
 }

@@ -39,17 +39,42 @@
                
                 <div class="card-body row col-12">
                     <div class="form-group col-12">
-                        <label class="mr-sm-2" for="inlineFormCustomSelect"
-                        >Select Brand</label
-                        >
-                        <select class="form-control" name="brand_id" id="brand_id" required>
-                        <option value="{{$product->get_brand->id}}" selected="selected" hidden>{{$product->get_brand->brand_name}}</option>
-                            @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">
-                                    {{ $brand->brand_name }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="row col-12">
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
+                            <input id="cat" type="text" value="{{$product->get_category->cat_name}}" class="form-control"
+                            placeholder="Enter category name" readonly required/>
+                            <input type="hidden" id="get_category_id" name="category_id" value="{{$product->get_category->id}}">
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">ChildCategory</label>
+                            <input value="{{$product->get_child_category->child_name}}" id="child" type="text" class="form-control"
+                            placeholder="Enter child name" readonly required/>
+                            <input type="hidden" id="get_child_category_id" name="child_category_id" value="{{$product->get_child_category->id}}">
+
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Child ChildCategory</label>
+                            <select onchange="subChildId()" class="form-control" name="sub_child_category_id" id="sub_child_category_id">
+                                <option value="{{$product->get_child_child_category->id}}" hidden selected="selected">{{$product->get_child_child_category->sub_child_name}}</option>
+                                @foreach ($sub_child_categories as $sub_child)
+                                    <option value="{{ $sub_child->id }}">
+                                        {{ $sub_child->sub_child_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Select Brand</label>
+                            <select class="form-control" name="brand_id" id="brand_id">
+                                <option value="{{$product->get_brand->id}}" selected="selected" hidden>{{$product->get_brand->brand_name}}</option>
+                                @foreach ($brands as $brand)
+                                    <option value="{{ $brand->id }}">
+                                        {{ $brand->brand_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row col-12">
                         <div class="form-group col-3">
@@ -82,22 +107,36 @@
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                                 >Product Color</label
                                 >
-                            <input
-                                value="{{$product->color}}"
-                                id="color"
-                                name="color"
-                                type="text"
-                                class="form-control"
-                                placeholder="Enter product color"
-                            />
+                            <select class="form-control" name="color" id="color">
+                                @if ($product->color == $product->get_attribute_value->id)
+                                <option value="{{$product->get_attribute_value->id}}" selected="selected" hidden>{{$product->get_attribute_value->value}}</option>
+                                    
+                                @endif
+                                @foreach ($attribute_values as $attr)
+                                @if ($attr->get_attribute->name == 'color')
+                                <option value="{{ $attr->id }}">
+                                    {{ $attr->value }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group col-3">
                             <label class="mr-sm-2" for="inlineFormCustomSelect"
                             >Select Product Size</label
                             >
                             <select class="form-control" name="size" id="size">
-                                <option value="{{$product->size}}" selected="selected">{{$product->size}}</option>
-                                
+                                @if ($product->size == $product->get_attribute_value->id)
+                                <option value="{{$product->get_attribute_value->id}}" selected="selected" hidden>{{$product->get_attribute_value->value}}</option>
+                                    
+                                @endif
+                                @foreach ($attribute_values as $attr)
+                                @if ($attr->get_attribute->name == 'size')
+                                <option value="{{ $attr->id }}">
+                                    {{ $attr->value }}
+                                </option>
+                                @endif
+                                @endforeach
                             </select>
                         </div>
                     </div>

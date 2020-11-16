@@ -44,7 +44,6 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'sub_child_category_id' => 'required',
             'brand_name' => 'required|unique:"brands"'
 
         ]);
@@ -59,12 +58,9 @@ class BrandController extends Controller
             }
         }else{
             Brand::create([
-                'category_id'=>$request->category_id,
-                'child_category_id'=>$request->child_category_id,
-                'sub_child_category_id'=>$request->sub_child_category_id,
+                
                 'brand_name'=>$request->brand_name,
-                'slug'=> $request->brand_name,
-                'slug'=>$request->brand_name,
+                'slug'=> Str::slug($request->brand_name),
                 'br_description'=>$request->br_description
             ]);
         }

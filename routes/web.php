@@ -104,6 +104,15 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('sub-sub-category-update', 'SubChildCategoryController@update')->name('update.sub.child');
         Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
 
+        //product attribute route
+        Route::get('product-attributes', 'AttributeController@index')->name('attributes');
+        Route::post('product-attribute-update', 'AttributeController@update')->name('update.attribute');
+        Route::post('product-attribute-create', 'AttributeController@store')->name('store.attribute');
+        
+        //attr value route
+        Route::post('product-attribute-value-create', 'AttributeValueController@store')->name('store.attribute.value');
+
+
          //Brand
         //  Route::get('products', 'ProductController@index')->name('products');
          Route::post('brand-create', 'BrandController@store')->name('brand.add');

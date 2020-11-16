@@ -104,7 +104,23 @@
                 </li>
             </ul>
           </li>
-
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-sitemap text-info"></i>
+              <p>
+                Manage Attribute
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{route('attributes')}}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Product Attribute</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fab fa-product-hunt text-green"></i>
