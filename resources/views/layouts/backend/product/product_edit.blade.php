@@ -36,7 +36,6 @@
             <div class="card-body">
             <form action="{{route('product.update',$product->slug)}}" method="POST">
                 @csrf
-               
                 <div class="card-body row col-12">
                     <div class="form-group col-12">
                     <div class="row col-12">
@@ -108,8 +107,8 @@
                                 >Product Color</label
                                 >
                             <select class="form-control" name="color" id="color">
-                                @if ($product->color == $product->get_attribute_value->id)
-                                <option value="{{$product->get_attribute_value->id}}" selected="selected" hidden>{{$product->get_attribute_value->value}}</option>
+                                @if ($product->color == $product->get_attribute_value_id_by_color->id)
+                                <option value="{{$product->get_attribute_value_id_by_color->id}}" selected="selected" hidden>{{$product->get_attribute_value_id_by_color->value}}</option>
                                     
                                 @endif
                                 @foreach ($attribute_values as $attr)
@@ -126,8 +125,8 @@
                             >Select Product Size</label
                             >
                             <select class="form-control" name="size" id="size">
-                                @if ($product->size == $product->get_attribute_value->id)
-                                <option value="{{$product->get_attribute_value->id}}" selected="selected" hidden>{{$product->get_attribute_value->value}}</option>
+                                @if ($product->size == $product->get_attribute_value_id_by_size->id)
+                                <option value="{{$product->get_attribute_value_id_by_size->id}}" selected="selected" hidden>{{$product->get_attribute_value_id_by_size->value}}</option>
                                     
                                 @endif
                                 @foreach ($attribute_values as $attr)

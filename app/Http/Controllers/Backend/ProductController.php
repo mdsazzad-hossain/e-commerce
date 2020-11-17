@@ -177,7 +177,8 @@ class ProductController extends Controller
             'get_category',
             'get_child_category',
             'get_child_child_category',
-            'get_attribute_value'
+            'get_attribute_value_id_by_color',
+            'get_attribute_value_id_by_size'
         ])->first();
         $brands = Brand::select('id','brand_name')->get();
         $sub_child_categories = SubChildCategory::select('id','sub_child_name')->get();

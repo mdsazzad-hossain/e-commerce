@@ -33,8 +33,13 @@ class Product extends Model
         return $this->hasMany(ProductAvatar::class,'product_id');
     }
 
-    public function get_attribute_value()
+    public function get_attribute_value_id_by_color()
     {
-        return $this->belongsTo(AttributeValue::class,'attribute_value_id');
+        return $this->belongsTo(AttributeValue::class,'color');
+    }
+
+    public function get_attribute_value_id_by_size()
+    {
+        return $this->belongsTo(AttributeValue::class,'size');
     }
 }
