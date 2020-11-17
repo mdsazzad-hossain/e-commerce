@@ -14,13 +14,13 @@ class AttributeValue extends Model
         return $this->belongsTo(Attribute::class,'attribute_id');
     }
 
-    public function get_product()
+    public function get_product_by_color()
     {
-        return $this->hasMany(Product::class,'attribute_value_id');
+        return $this->hasMany(Product::class,'color');
     }
 
-    public function get_product_attribute_value()
+    public function get_product_by_size()
     {
-        return $this->hasMany(ProductAttributeValue::class,'attribute_value_id');
+        return $this->hasMany(Product::class,'size');
     }
 }

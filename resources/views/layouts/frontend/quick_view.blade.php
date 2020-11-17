@@ -78,9 +78,11 @@
                                             <label>Color: </label>
 
                                             <div class="product-nav product-nav-dots">
-                                                <a href="#" class="active" style="background: {{ $product->color }};"><span
-                                                class="sr-only">Color name</span></a>
-                                                
+                                                @if ($product->color == $product->get_attribute_value_id_by_color->id)
+                                                    <a href="#" class="active" style="background: {{ $product->get_attribute_value_id_by_color->value }}"><span
+                                                        class="sr-only">Color name</span>
+                                                    </a>
+                                                @endif
                                             </div><!-- End .product-nav -->
                                         </div><!-- End .details-filter-row -->
 
@@ -88,10 +90,13 @@
                                             <label for="size">Size:</label>
                                             <div class="select-custom">
                                                 <select name="size" id="size" class="form-control">
-                                                    <option value="{{ $product->size }}" selected="selected" hidden>{{ $product->size }}</option>
+                                                    @if ($product->get_attribute_value_id_by_size->id == $product->size)
+                                                    <option value="{{ $product->get_attribute_value_id_by_size->value }}" selected="selected" hidden>{{ $product->get_attribute_value_id_by_size->value }}</option>
+                                                        
+                                                    @endif
                                                     @foreach ($products as $pro)
-                                                    @if ($pro->get_brand->id == $product->brand_id)
-                                                    <option value="{{$pro->size}}">{{$pro->size}}</option>
+                                                    @if ($pro->brand_id == $product->brand_id && $pro->sub_child_id == $product->sub_child_id)                                                    
+                                                        <option value="{{ $pro->get_attribute_value_id_by_size->value }}">{{ $pro->get_attribute_value_id_by_size->value }}</option>                                                                          
                                                     @endif
                                                     @endforeach
                                                 </select>

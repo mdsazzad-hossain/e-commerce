@@ -5,8 +5,8 @@
         <div class="col-lg-9">
           <div class="products mb-3">
             <div class="row justify-content-center">
-                <div v-show="normalMode" class="row col-md-12" v-for="br in categories.get_brand" :key="br.id">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in br.get_product" :key="product.id"> 
+                <div v-show="normalMode" class="row col-md-12">
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in categories.categories.get_product" :key="product.id"> 
                         <div v-for="avtr in product.get_product_avatars" :key="avtr.id" class="product product-7 text-center">
 
                         <figure class="product-media">
@@ -44,8 +44,8 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="byCat" class="row col-md-12" v-for="br1 in productByCat.get_brand" :key="br1.id">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product1 in br1.get_product" :key="product1.id"> 
+                <div v-show="byCat" class="row col-md-12">
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product1 in productByCat.get_product" :key="product1.id"> 
                         <div v-for="avtr1 in product1.get_product_avatars" :key="avtr1.id" class="product product-7 text-center">
 
                         <figure class="product-media">
@@ -83,16 +83,15 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="byBr" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product2 in productByBrand.get_product" :key="product2.id"> 
-                       
-                        <div v-for="avtr2 in product2.get_product_avatars" :key="avtr2.id" class="product product-7 text-center">
+                <div v-show="bySize" class="row col-md-12">
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product2 in productBySize" :key="product2.id"> 
+                        <div v-for="avtr1 in product2.get_product_avatars" :key="avtr1.id" class="product product-7 text-center">
 
                         <figure class="product-media">
                             <a href="#">
                             <img
                                 style="height: 203px !important"
-                                :src="ourImage(avtr2.front)"
+                                :src="ourImage(avtr1.front)"
                                 class="product-image"
                             />
                             </a>
@@ -121,7 +120,6 @@
                             </div>
                         </div>
                         </div>
-                        
                     </div>
                 </div>
             <!-- End .row -->
@@ -187,7 +185,7 @@
               <div class="collapse show" id="widget-1" style="">
                 <div class="widget-body">
                   <div class="filter-items filter-items-count">
-                    <div v-for="child in categories.get_child_category" :key="child.id" class="filter-item">
+                    <div v-for="child in categories.categories.get_child_category" :key="child.id" class="filter-item">
                       <div class="custom-control custom-checkbox">
                         <input type="hidden" v-model="form.name">
                         <input type="hidden" v-model="form.col_name">
@@ -222,20 +220,21 @@
               <div class="collapse show" id="widget-4">
                 <div class="widget-body">
                   <div class="filter-items">
-                    <div v-for="brand in categories.get_brand" :key="brand.id" class="filter-item">
+                    <div v-for="pro in categories.products" :key="pro.id" class="filter-item">
                       <div class="custom-control custom-checkbox">
                         <input
                           type="checkbox"
                           class="custom-control-input"
-                          id="brand-1"
+                          id="pro-1"
                         />
-                        <li style="cursor:pointer;" @click="productFilter(brand.slug,'slug')">{{brand.brand_name}}</li>
+                        <li style="cursor:pointer;" @click="productFilter(pro.get_brand.slug,'slug')">{{pro.get_brand.brand_name}}</li>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <div class="widget widget-collapsible">
               <h3 class="widget-title">
                 <a
@@ -253,9 +252,9 @@
               <div class="collapse show" id="widget-2">
                 <div class="widget-body">
                   <div class="filter-items">
-                    <div class="filter-item" v-for="brand1 in categories.get_brand" :key="brand1.id" >
-                      <div class="custom-control custom-checkbox" v-for="size in brand1.get_product" :key="size.id">
-                       <li style="cursor:pointer;" @click="productFilter(size.size,'size')">{{size.size}}</li>
+                    <div class="filter-item" v-for="pro1 in categories.products1" :key="pro1.id">
+                      <div class="custom-control custom-checkbox">
+                       <li style="cursor:pointer;" @click="productFilter(pro1.get_attribute_value_id_by_size.id,'size')">{{pro1.get_attribute_value_id_by_size.value}}</li>
                       </div>
                     </div>
                   </div>
@@ -277,9 +276,9 @@
               </h3>
 
               <div class="collapse show" id="widget-3">
-                <div class="widget-body">
-                  <div class="filter-colors" v-for="brand2 in categories.get_brand" :key="brand2.id">
-                      <a @click="productFilter(pro1.color,'color')" v-for="pro1 in brand2.get_product" :key="pro1.id" href="#" :style="{background: pro1.color}"
+                <div class="widget-body" style="display: inline-flex;">
+                  <div class="filter-colors" v-for="pro2 in categories.products2" :key="pro2.id">
+                      <a @click="productFilter(pro2.get_attribute_value_id_by_color.id,'color')" href="#" :style="{background: pro2.get_attribute_value_id_by_color.value}"
                       ><span class="sr-only">Color Name</span></a
                     >
                   </div>
@@ -308,13 +307,14 @@
                     </div>
 
                     <div>
-                      <input @click="productFilter('','sale_price')" style="width: 100%;" type="range" min="50" max="100000" value="50" id="myRange">
+                      <input @click="productFilter('','sale_price')" style="width: 100%;" v-model="form.max_range" type="range" :min="50" :max="100000" id="myRange">
                       <p>Value: <span id="demo"></span></p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
           </div>
         </aside>
       </div>
@@ -339,29 +339,28 @@ export default {
             productBySize:"",
             form:{
                 max_range:"",
-                min_range:"",
+                min_range:"50",
                 name:"",
                 col_name:""
             }
         }
     },
     mounted(){
-        this.form.min_range =  document.getElementById("myRange").value;
         this.form.name = this.cat_name;
         this.form.col_name = 'cat_name';
         axios.post('load-category',this.form)
         .then((response)=>{
-            this.categories = response.data.catagories;
+            this.categories = response.data;
         })
 
-        var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value;
+        // var slider = document.getElementById("myRange");
+        // var output = document.getElementById("demo");
+        // output.innerHTML = slider.value;
         
-        document.getElementById("myRange").oninput = function() {
-          output.innerHTML = this.value;
+        // document.getElementById("myRange").oninput = function() {
+        //   output.innerHTML = this.value;
           
-        }
+        // }
     },
     computed: {
         // filterd() {
@@ -376,25 +375,25 @@ export default {
             this.form.col_name='';
             this.form.name=data;
             this.form.col_name=col_name;
-            this.form.max_range = document.getElementById("myRange").value;
+            // this.form.max_range = document.getElementById("myRange").value;
             axios.post('load-category',this.form)
             .then((response)=>{
                 if (this.form.col_name == "child_name") {
                     this.normalMode = false;
                     this.byCat = true;
-                    this.productByCat = response.data.catagories;
+                    this.productByCat = response.data.categories;
                     
                 }else if(this.form.col_name == "slug") {
                     this.normalMode = false;
-                    this.byCat = false;
-                    this.byBr = true;
-                    this.productByBrand = response.data.catagories;
+                    this.byCat = true;
+                    this.productByCat = response.data.categories;
                     
                 }else if(this.form.col_name == "size") {
                     this.normalMode = false;
-                    this.byCat = true;
+                    this.byCat = false;
                     this.byBr = false;
-                    this.productByCat = response.data.catagories;
+                    this.bySize = true;
+                    this.productBySize = response.data.categories;
                     
                 }else if(this.form.col_name == "color" || this.form.col_name == "sale_price") {
                     this.normalMode = false;

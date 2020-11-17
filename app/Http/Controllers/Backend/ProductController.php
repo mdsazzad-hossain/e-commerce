@@ -120,8 +120,8 @@ class ProductController extends Controller
                 'product_name'=>$request->product_name,
                 'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
-                'color'=>$request->attribute_value_color_id,
-                'size'=>$request->attribute_value_size_id,
+                'color'=>$request->color,
+                'size'=>$request->size,
                 'qty'=>$request->qty,
                 'pur_price'=>$request->pur_price,
                 'sale_price'=>$request->sale_price,
@@ -177,7 +177,8 @@ class ProductController extends Controller
             'get_category',
             'get_child_category',
             'get_child_child_category',
-            'get_attribute_value'
+            'get_attribute_value_id_by_color',
+            'get_attribute_value_id_by_size'
         ])->first();
         $brands = Brand::select('id','brand_name')->get();
         $sub_child_categories = SubChildCategory::select('id','sub_child_name')->get();
