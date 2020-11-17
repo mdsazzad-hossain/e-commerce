@@ -36,7 +36,7 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
 
     Route::post('product-shipp-update', 'HomeController@updateProductShipp')->name('product.shipp.des');
-    
+
 
     Route::get('/user/logout', 'UserController@logout')->name('user.logout');
     Route::get('/{user}/profile', 'UserController@index')->name('user');
@@ -51,8 +51,8 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::get('search', 'HomeController@search');
     Route::get('{optional?}/search', 'HomeController@search');
     Route::get('search-result/{search}', 'HomeController@search_result')->name("search");
-    Route::get('search-result/search-data/{name}', 'HomeController@get_result');
-    Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
+    Route::post('{params?}/search-data', 'HomeController@get_result');
+    // Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
     Route::post('load/{item}', 'HomeController@load')->name('load');
 
 
@@ -108,7 +108,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('product-attributes', 'AttributeController@index')->name('attributes');
         Route::post('product-attribute-update', 'AttributeController@update')->name('update.attribute');
         Route::post('product-attribute-create', 'AttributeController@store')->name('store.attribute');
-        
+
         //attr value route
         Route::post('product-attribute-value-create', 'AttributeValueController@store')->name('store.attribute.value');
 
@@ -167,7 +167,7 @@ Route::group(["namespace"=>"Backend"],function() {
 
         //product delivery
         Route::post('product-delivered', 'OrdersController@delivery')->name('product.delivery');
-        
+
         //sales vendor
         Route::get('vendor-sales-history', 'OrdersController@vendor_sales_history')->name('vendor.sales.history');
         Route::get('vendor-sales-refund', 'VendorProductController@vendor_sales_refund')->name('vendor.sales.refund');

@@ -6,7 +6,7 @@
           <div class="products mb-3">
             <div class="row justify-content-center">
                 <div v-show="normalMode" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in categories.categories.get_product" :key="product.id"> 
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in categories.categories.get_product" :key="product.id">
                         <div v-for="avtr in product.get_product_avatars" :key="avtr.id" class="product product-7 text-center">
 
                         <figure class="product-media">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div v-show="byCat" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product1 in productByCat.get_product" :key="product1.id"> 
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product1 in productByCat.get_product" :key="product1.id">
                         <div v-for="avtr1 in product1.get_product_avatars" :key="avtr1.id" class="product product-7 text-center">
 
                         <figure class="product-media">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div v-show="bySize" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product2 in productBySize" :key="product2.id"> 
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product2 in productBySize" :key="product2.id">
                         <div v-for="avtr1 in product2.get_product_avatars" :key="avtr1.id" class="product product-7 text-center">
 
                         <figure class="product-media">
@@ -285,7 +285,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="widget widget-collapsible">
               <h3 class="widget-title">
                 <a
@@ -308,13 +308,13 @@
 
                     <div>
                       <input @click="productFilter('','sale_price')" style="width: 100%;" v-model="form.max_range" type="range" :min="50" :max="100000" id="myRange">
-                      <p>Value: <span id="demo"></span></p>
+                      <p>Value: <span id="demo">{{form.min_range}} - {{form.max_range}}</span></p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
           </div>
         </aside>
       </div>
@@ -338,7 +338,9 @@ export default {
             productByBrand:"",
             productBySize:"",
             form:{
-                max_range:"",
+                ex_col_name:"cat_name",
+                ex_name:this.cat_name,
+                max_range:"0",
                 min_range:"50",
                 name:"",
                 col_name:""
@@ -352,15 +354,6 @@ export default {
         .then((response)=>{
             this.categories = response.data;
         })
-
-        // var slider = document.getElementById("myRange");
-        // var output = document.getElementById("demo");
-        // output.innerHTML = slider.value;
-        
-        // document.getElementById("myRange").oninput = function() {
-        //   output.innerHTML = this.value;
-          
-        // }
     },
     computed: {
         // filterd() {
@@ -375,36 +368,27 @@ export default {
             this.form.col_name='';
             this.form.name=data;
             this.form.col_name=col_name;
-            // this.form.max_range = document.getElementById("myRange").value;
             axios.post('load-category',this.form)
             .then((response)=>{
-                if (this.form.col_name == "child_name") {
+                if (this.form.col_name == "child_name" || this.form.col_name == "slug") {
                     this.normalMode = false;
                     this.byCat = true;
+                    this.byBr = false;
+                    this.bySize = false;
                     this.productByCat = response.data.categories;
-                    
-                }else if(this.form.col_name == "slug") {
-                    this.normalMode = false;
-                    this.byCat = true;
-                    this.productByCat = response.data.categories;
-                    
-                }else if(this.form.col_name == "size") {
+
+                }else if(this.form.col_name == "size"
+                || this.form.col_name == "color" || this.form.col_name == "sale_price"
+                ) {
                     this.normalMode = false;
                     this.byCat = false;
                     this.byBr = false;
                     this.bySize = true;
                     this.productBySize = response.data.categories;
-                    
-                }else if(this.form.col_name == "color" || this.form.col_name == "sale_price") {
-                    this.normalMode = false;
-                    this.byCat = true;
-                    this.byBr = false;
-                    this.productByCat = response.data.catagories;
-                    
                 }
             })
         },
-        
+
         ourImage(img) {
             return "/images/" + img;
         },

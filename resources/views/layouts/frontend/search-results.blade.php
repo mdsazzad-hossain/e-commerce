@@ -2,7 +2,7 @@
 
 @section('content')
 <main class="main">
-    <search-result :search="{{$search}}"></search-result>
+    <search-result search="{{$search->product_name}}"></search-result>
 </main>
 @section('js')
     <script>
@@ -12,7 +12,7 @@
 
         function showDropdown(){
             $("#showCategory").show();
-        }  
+        }
     </script>
 @endsection
 @endsection
