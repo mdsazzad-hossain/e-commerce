@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('product_name',150);
             $table->string('slug',150);
             $table->string('product_code',50)->nullable();
+            $table->unsignedBigInteger('color')->comment('attribute value id by color');
+            $table->unsignedBigInteger('size')->comment('attribute value id by size');
             $table->string('qty');
             $table->decimal('pur_price',15,2);
             $table->decimal('sale_price',15,2);
@@ -41,7 +43,7 @@ class CreateProductsTable extends Migration
         });
     }
 
-            
+
 
     /**
      * Reverse the migrations.

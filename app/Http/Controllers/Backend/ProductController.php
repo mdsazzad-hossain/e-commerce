@@ -52,7 +52,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function table_search(Request $request)
     {
         if ($request->search == 'daily') {
@@ -62,10 +62,10 @@ class ProductController extends Controller
 
         }elseif($request->search == 'monthly'){
             $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subMonth()->format("Y-m-d H:i:s"), Carbon::now()])->whereNotNull('product_id')->with('get_orders','get_product')->get();
-            
+
         }elseif($request->search == 'yearly'){
             $sales = OrderDetails::latest()->whereBetween('created_at', [Carbon::now()->subYear()->format("Y-m-d H:i:s"), Carbon::now()])->whereNotNull('product_id')->with('get_orders','get_product')->get();
-            
+
         }
 
         $data = auth()->user();
@@ -120,8 +120,8 @@ class ProductController extends Controller
                 'product_name'=>$request->product_name,
                 'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
-                'color'=>$request->attribute_value_color_id,
-                'size'=>$request->attribute_value_size_id,
+                'color'=>$request->color,
+                'size'=>$request->size,
                 'qty'=>$request->qty,
                 'pur_price'=>$request->pur_price,
                 'sale_price'=>$request->sale_price,
@@ -129,9 +129,9 @@ class ProductController extends Controller
                 'description'=>$request->description,
                 'total_price'=>$request->qty*$request->sale_price
             ]);
-    
+
             toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-    
+
             return redirect()->back();
         }
     }
@@ -150,17 +150,17 @@ class ProductController extends Controller
                'status'=>1
            ]);
             toast('Product active successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-    
+
             return redirect()->back();
         }elseif($data->status == 1){
             $data->update([
                 'status'=>0
             ]);
             toast('Product deactive successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-    
+
             return redirect()->back();
         }
-        
+
     }
 
     /**
@@ -330,12 +330,12 @@ class ProductController extends Controller
             ])->update([
                 'flash_status'=>1
             ]);
-            
+
             return response()->json([
                 'msg'=>'success'
             ]);
         }
-        
+
     }
 
     public function destroy($id)
