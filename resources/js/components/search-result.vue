@@ -20,29 +20,27 @@
 
                         <div class="products mb-3">
                             <div class="row justify-content-center">
-                                <div class="col-6 col-md-4 col-lg-3" v-for="product in searchData.sub_child.get_product" :key="product.id">
+                                <div v-show="normalMode" class="col-6 col-md-4 col-lg-3" v-for="prod in products.get_product" :key="prod.id">
                                     <div class="product product-7 text-center">
-                                        <figure v-for="avtr in product.get_product_avatars" :key="avtr.id" class="product-media">
+                                        <figure v-for="avatar in prod.get_product_avatars" :key="avatar.id" class="product-media">
                                             <span class="product-label label-new">New</span>
-                                            <a href="product.html">
-                                                <img style="width:203px !important;height:203px !important;" :src="ourImage(avtr.front)" alt="Product image" class="product-image">
+                                            <a href="#" @click.prevent="quickView(prod.slug)">
+                                                <img style="width:203px !important;height:203px !important;" :src="ourImage(avatar.front)" alt="Product image" class="product-image">
                                             </a>
 
                                             <div class="product-action-vertical">
-                                                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                                <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                                                <a href="#" @click.prevent="addWishList(prod.slug)" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                             </div><!-- End .product-action-vertical -->
 
                                             <div class="product-action">
-                                                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                <a @click="addToCart(prod)" href="#" class="btn-product btn-cart"><span>add to cart</span></a>
                                             </div><!-- End .product-action -->
                                         </figure><!-- End .product-media -->
 
                                         <div class="product-body">
-                                            <h3 class="product-title"><a href="product.html">{{ product.product_name }}</a></h3><!-- End .product-title -->
+                                            <h3 class="product-title"><a href="product.html">{{ prod.product_name }}</a></h3><!-- End .product-title -->
                                             <div class="product-price">
-                                                {{ product.sale_price }}
+                                                {{ prod.sale_price }}
                                             </div><!-- End .product-price -->
                                             <div class="ratings-container">
                                                 <div class="ratings">
@@ -53,6 +51,46 @@
                                         </div><!-- End .product-body -->
                                     </div><!-- End .product -->
                                 </div>
+                                <div v-show="byCat" class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="prod1 in productByCat" :key="prod1.id">
+                                    <div v-for="avatar1 in prod1.get_product_avatars" :key="avatar1.id" class="product product-7 text-center">
+
+                                        <figure class="product-media">
+                                            <a href="#">
+                                            <img
+                                                style="height: 203px !important"
+                                                :src="ourImage(avatar1.front)"
+                                                class="product-image"
+                                            />
+                                            </a>
+
+                                            <div class="product-action-vertical">
+                                            <a
+                                                href="#"
+                                                class="btn-product-icon btn-wishlist btn-expandable"
+                                                ><span>add to wishlist</span></a
+                                            >
+                                            </div>
+
+                                            <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart"
+                                                ><span>add to cart</span></a
+                                            >
+                                            </div>
+                                        </figure>
+
+                                        <div class="product-body">
+                                            <h3 class="product-title">
+                                            <a href="#">{{prod1.product_name}}</a>
+                                            </h3>
+                                            <div class="product-price">
+                                                {{prod1.sale_price}}
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                </div>
+
+                                
                             </div><!-- End .row -->
                         </div><!-- End .products -->
 
@@ -93,11 +131,11 @@
                                     <div class="widget-body">
                                         <div class="filter-items filter-items-count">
                                             <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">{{ searchData.sub_child.sub_child_name }}</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">3</span>
+                                                <div class="custom-control">
+                                                    <input type="hidden" v-model="form.name">
+                                                    <input type="hidden" v-model="form.col_name">
+                                                    <li style="cursor:pointer;" @click="productFilter(products.sub_child_name,'sub_child_name')" class="custom-control-label" for="cat-1">{{ products.sub_child_name }}</li>
+                                                </div>
                                             </div>
                                         </div><!-- End .filter-items -->
                                     </div><!-- End .widget-body -->
@@ -115,9 +153,8 @@
                                     <div class="widget-body">
                                         <div class="filter-items">
                                             <div class="filter-item">
-                                                <div class="custom-control custom-checkbox" v-for="pro in searchData.product" :key="pro.id">
-                                                    <input type="checkbox" class="custom-control-input" id="brand-1">
-                                                    <label class="custom-control-label" for="brand-1">{{ pro.get_brand.brand_name }}</label>
+                                                <div class="custom-control" v-for="prod2 in searchData.product" :key="prod2.id">
+                                                    <li style="cursor:pointer;" @click="productFilter(prod2.get_brand.slug,'slug')" class="custom-control-label" :for="prod2.get_brand.id">{{ prod2.get_brand.brand_name }}</li>
                                                 </div><!-- End .custom-checkbox -->
                                             </div>
 
@@ -137,9 +174,8 @@
                                     <div class="widget-body">
                                         <div class="filter-items">
                                             <div class="filter-item">
-                                                <div v-for="pro1 in searchData.product1" :key="pro1.id" class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="size-1">
-                                                    <label class="custom-control-label" for="size-1">{{ pro1.get_attribute_value_id_by_size.value }}</label>
+                                                <div v-for="prod3 in searchData.product1" :key="prod3.id" class="custom-control">
+                                                    <li style="cursor:pointer;" class="custom-control-label" @click="productFilter(prod3.get_attribute_value_id_by_size.id,'size')" for="size-1">{{ prod3.get_attribute_value_id_by_size.value }}</li>
                                                 </div><!-- End .custom-checkbox -->
                                             </div>
                                         </div><!-- End .filter-items -->
@@ -156,8 +192,8 @@
 
                                 <div class="collapse show" id="widget-3">
                                     <div class="widget-body" style="display:inline-flex;">
-                                        <div class="filter-colors" v-for="pro2 in searchData.product2" :key="pro2.id">
-                                            <a href="#" :style="{background: pro2.get_attribute_value_id_by_color.value}"><span class="sr-only">Color Name</span></a>
+                                        <div class="filter-colors" v-for="prod4 in searchData.product2" :key="prod4.id">
+                                            <a @click="productFilter(prod4.get_attribute_value_id_by_color.id,'color')" href="#" :style="{background: prod4.get_attribute_value_id_by_color.value}"><span class="sr-only">Color Name</span></a>
                                         </div><!-- End .filter-colors -->
                                     </div><!-- End .widget-body -->
                                 </div><!-- End .collapse -->
@@ -165,7 +201,7 @@
 
                             <div class="widget widget-collapsible">
                                 <h3 class="widget-title">
-                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+                                    <a data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="widget-5">
                                         Price
                                     </a>
                                 </h3><!-- End .widget-title -->
@@ -179,7 +215,7 @@
                                             </div>
 
                                             <div>
-                                                <input style="width: 100%;" v-model="form.max_range" type="range" :min="50" :max="100000" id="myRange">
+                                                <input @click="productFilter('','sale_price')" style="width: 100%;" v-model="form.max_range" type="range" :min="50" :max="100000" id="myRange">
                                                 <p>Value: <span id="demo">{{form.min_range}} - {{form.max_range}}</span></p>
                                             </div>
                                         </div><!-- End .filter-price -->
@@ -187,7 +223,7 @@
                                 </div><!-- End .collapse -->
                             </div><!-- End .widget -->
                         </div><!-- End .sidebar sidebar-shop -->
-                    </aside><!-- End .col-lg-3 -->
+                    </aside>
                 </div><!-- End .row -->
             </div><!-- End .container -->
         </div><!-- End .page-content -->
@@ -200,46 +236,122 @@ export default {
   props: ["search"],
   data() {
     return {
-      cat_search_product: false,
-      brandSearchData:false,
-      showByName:true,
-      searchData:"",
-      cat_search_data: "",
-      show_by_brand:"",
-      form:{
-          min_range:"50",
-          max_range:"0",
-          slug:this.search,
-          col_name:""
-      }
+        byCat:false,
+        byBr:false,
+        bySize:false,
+        normalMode:true,
+        productByCat:"",
+        productByBrand:"",
+        productBySize:"",
+        searchData:"",
+        products:"",
+        form:{
+            ex_col_name:"product_name",
+            ex_name:this.search,
+            min_range:"50",
+            max_range:"0",
+            name:this.search,
+            col_name:"",
+            slug:"",
+            id:"",
+            sale_price:""
+        }
+
     };
   },
 
   mounted() {
-        this.form.col_name = 'slug';
+        this.form.col_name = 'product_name';
         axios.post('search-data',this.form)
         .then((response)=>{
             this.searchData = response.data;
+            this.products = response.data.sub_child;
         })
   },
   methods: {
-    // searchData(name) {
-    //   axios.get("search-data/" + name).then((response) => {
-    //     this.cat_search_product = true;
-    //     this.showByName = false;
-    //     this.cat_search_data = response.data.datas;
-    //     this.brandSearchData = true;
-    //   });
-    // },
-    // searchProductByBrand(id){
-    //    axios.get("search-product-by-brand/" + id)
-    //    .then((response) => {
-    //     this.cat_search_product = true;
-    //     this.showByName = false;
-    //     this.cat_search_data = response.data.data;
-    //     this.brandSearchData = true;
-    //   });
-    // },
+      productFilter(data,col_name){
+            this.form.name='';
+            this.form.col_name='';
+            this.form.name=data;
+            this.form.col_name=col_name;
+            axios.post('search-data',this.form)
+            .then((response)=>{
+                this.normalMode = false;
+                this.byCat = true;
+                this.productByCat = response.data.products;
+            })
+        },
+        quickView(item){
+            axios.get('/quick/view/')
+            .then((response)=>{
+                window.location.href = '/quick/view/'+item
+
+            })
+        },
+        addWishList(slug){
+          this.form.slug = slug;
+            axios.post("wishlist/store",this.form)
+            .then((response)=>{
+                this.wishResult(response.data)
+            })
+        },
+        wishResult(data)
+        {
+            if(data.guest == 'guest'){
+                $("#error").text('Opps!plese login first.');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                    $("#error").text();
+                },3000);
+            }else if(data.errors == 'match'){
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+
+                },3000);
+            }else{
+                $("#count").text(data.count);
+            }
+            
+        }, 
+        addToCart(product){
+          this.form.slug = product.slug;
+          this.form.id = product.id;
+          this.form.sale_price = product.sale_price;
+          axios.post("cart/store",this.form)
+          .then((response)=>{
+            this.cartResult(response.data)
+          })
+        },
+        cartResult(data){
+          if(data.guest == 'guest'){
+                $("#error").text('Opps!plese login first.');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                    $("#error").text();
+                },3000);
+            }else if(data.stockOut == 'stock out'){
+                $("#error").text('Stock Out');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                },3000);
+            }else{
+                if(data.errors == 'error'){
+                    $("#cartError").show();
+                    setTimeout(() => {
+                        $("#cartError").hide();
+
+                    },2000);
+                }else{
+                    $("#count").text(data.count);
+                    $("#count1").text(data.count1);
+
+                }
+            }
+        },     
     ourImage(img) {
       return "/images/" + img;
     },

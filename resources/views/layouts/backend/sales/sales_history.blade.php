@@ -287,7 +287,7 @@
                                                     <p style="margin: 0px;" class="badge badge-success">Delivered</p>
 
                                                 @endif
-                                                @if ($sale->order_id == $order_status->order_id)
+                                                @if ($sale->order_id == $order_status ? $order_status->order_id : null)
                                                     @if ($order_status->status == 0)
                                                         <p style="margin: 0px;" class="badge badge-danger">Vendor Processing</p>
                                                     @else

@@ -106,6 +106,23 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
+              <i class="nav-icon fab fa-bimobject text-blue"></i>
+              <p>
+                Manage Brand
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+              <li class="nav-item" style="font-size: 15px;">
+                <a href="{{ route('brand.brand_list') }}" class="nav-link">
+                  <i class="fas fa-check-circle nav-icon"></i>
+                  <p>Brand List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-sitemap text-info"></i>
               <p>
                 Manage Attribute
@@ -217,6 +234,33 @@
               </a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-at text-green"></i>
+            <p>
+              Subscription
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" style="display: none; margin-left:20px;">
+            <li class="nav-item" style="font-size: 15px;">
+              <a href="{{route('subscribers')}}" class="nav-link">
+                <i class="fas fa-check-circle nav-icon"></i>
+                <p>Subscriber List</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item has-treeview">
+          <a href="{{ route('setup-settings') }}" class="nav-link">
+            <i class="nav-icon fas fa-cogs text-info"></i>
+            <p>
+              Settings
+            </p>
+          </a>
         </li>
         @endif
         </ul>

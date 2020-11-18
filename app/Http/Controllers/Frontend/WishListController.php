@@ -12,6 +12,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Settings;
 
 class WishListController extends Controller
 {
@@ -30,13 +31,16 @@ class WishListController extends Controller
         $wish_lists = WishList::latest()->where('user_id',auth()->user()->id ?? '')->get();
         $cart = Cart::latest()->where('user_id',auth()->user()->id ?? '')->get();
 
+        $setting = Settings::first();
+
         return view('layouts.frontend.wishlist.wish_list',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'count1'=>$count1,
             'wish_lists'=>$wish_lists,
-            'cart'=>$cart
+            'cart'=>$cart,
+            'setting'=>$setting
         ]);
     }
 
@@ -58,6 +62,7 @@ class WishListController extends Controller
      */
     public function store(Request $request)
     {
+        
         if(Auth::check()){
             $product = Product::where('slug',$request->slug)->with('get_product_avatars')->first();
             $wish = WishList::where('product_id',$product->id)->first();

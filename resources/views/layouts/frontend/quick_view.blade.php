@@ -135,7 +135,7 @@
 
 
                     <aside class="col-lg-3">
-                        <div class="sidebar sidebar-product" style="height: 59rem; overflow-y: scroll;">
+                        <div class="sidebar sidebar-product" style="max-height: 59rem; min-height:10rem; overflow-y: scroll;">
                             <div class="widget widget-products">
                                 <h4 class="widget-title">Related Product</h4><!-- End .widget-title -->
 

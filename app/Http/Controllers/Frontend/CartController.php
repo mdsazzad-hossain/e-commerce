@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Settings;
+
 class CartController extends Controller
 {
     /**
@@ -30,13 +32,16 @@ class CartController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+
+        $setting = Settings::first();
         return view('layouts.frontend.cart.cart_list',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'cart'=>$cart,
             'count1'=>$count1,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting,
         ]);
     }
 
@@ -48,13 +53,15 @@ class CartController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        $setting = Settings::first();
         return view('layouts.frontend.cart.billing_address',[
             'ads'=>$ads,
             'categories'=>$categories,
             'count'=>$count,
             'cart'=>$cart,
             'count1'=>$count1,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting
         ]);
     }
 

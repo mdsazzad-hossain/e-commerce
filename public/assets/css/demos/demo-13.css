@@ -103,7 +103,6 @@
 
 .header.header-10.header-intro-clearance .cart-dropdown {
     font-size: 3.2rem;
-    padding-left: 1.4rem;
     align-items: flex-end
 }
 
@@ -280,7 +279,6 @@
     transition: color .35s ease
 }
 
-
 .cat-block {
     width: 100%;
     display: flex;
@@ -312,8 +310,7 @@
 .cat-block img {
     margin-left: auto;
     margin-right: auto;
-    transition: transform 0.35s ease
-    width: 165px;
+    transition: transform 0.35s ease width: 165px;
     height: 120px;
 }
 
@@ -650,7 +647,7 @@
     transition: 0.3s;
 }
 
-.icon-box-side:hover{
+.icon-box-side:hover {
     background: #ddd;
 }
 

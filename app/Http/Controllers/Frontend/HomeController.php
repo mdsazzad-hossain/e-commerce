@@ -21,6 +21,7 @@ use App\Models\VendorProductAvatar;
 use App\Models\ProductAvatar;
 use App\Models\WishList;
 use App\Models\Cart;
+use App\Models\Settings;
 
 class HomeController extends Controller
 {
@@ -33,6 +34,7 @@ class HomeController extends Controller
     {
 
             $banars = Banar::all();
+            $setting = Settings::first();
             $categories = Category::with('get_child_category')->get();
             $products = Product::where('status','=',1)->with('get_brand','get_product_avatars')->get();
             $ads = AdManager::all();
@@ -50,7 +52,8 @@ class HomeController extends Controller
                 'count'=>$count,
                 'count1'=>$count1,
                 'cart'=>$cart,
-                'orders'=>$orders
+                'orders'=>$orders,
+                'setting'=>$setting
             ]);
 
 
@@ -70,11 +73,12 @@ class HomeController extends Controller
 
     public function search_result($search)
     {
-
+        
         $search = Product::select('product_name')->where('slug',$search)->first();
 
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
+        $setting = Settings::first();
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
@@ -86,14 +90,43 @@ class HomeController extends Controller
             'cart'=>$cart,
             'orders'=>$orders,
             'ads'=>$ads,
-            'search'=>$search
+            'search'=>$search,
+            'setting'=>$setting
         ]);
     }
 
     public function get_result(Request $request)
     {
-        if($request->col_name === "slug"){
-            $product = Product::select('sub_child_category_id')->where($request->col_name,$request->slug)->first();
+        if ($request->col_name === "sub_child_name") {
+            $products = $this->bySubChild($request);
+
+            return response()->json([
+                'products'=>$products
+            ],200);
+        }elseif ($request->col_name === "slug") {
+            $products = $this->byBrand1($request);
+
+            return response()->json([
+                'products'=>$products
+            ],200);
+        }elseif ($request->col_name === "size") {
+            $products = $this->bySize1($request);
+
+            return response()->json([
+                'products'=>$products
+            ],200);
+        }elseif ($request->col_name === "color") {
+            $products = $this->byColor1($request);
+            return response()->json([
+                'products'=>$products
+            ],200);
+        }elseif ($request->col_name === "sale_price") {
+            $products = $this->byPrice1($request);
+            return response()->json([
+                'products'=>$products
+            ],200);
+        }elseif($request->col_name === "product_name"){
+            $product = Product::select('sub_child_category_id')->where($request->col_name,$request->name)->first();
             $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)
             ->with('get_product','get_product.get_product_avatars')
             ->first();
@@ -120,23 +153,59 @@ class HomeController extends Controller
 
     }
 
-    public function search_product_by_brand($id)
+    public function bySubChild($request)
     {
-        // $data = Product::where('brand_id',$id)->with('get_product_avatars')->get();
-        // return response()->json([
-        //     'data'=>$data
-        // ],200);
+        $sub_child = SubChildCategory::where($request->col_name,$request->name)->first();
+        $products = Product::where('sub_child_category_id',$sub_child->id)
+        ->with('get_product_avatars')->get();
+        return $products;
     }
 
-    // public function search_product_by_size($size)
-    // {
-    //     $data = Product::where('brand_id',$id)->with(
-    //         'get_product_avatars'
-    //     )->get();
-    //     return response()->json([
-    //         'data'=>$data
-    //     ],200);
-    // }
+    public function byBrand1($request)
+    {
+        $product = Product::select('brand_id','sub_child_category_id')->where($request->ex_col_name,$request->ex_name)->first();
+        $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)->first();
+        $brand = Brand::where($request->col_name,$request->name)->first();
+        $products = Product::where('sub_child_category_id',$sub_child->id)
+        ->where('brand_id',$brand->id)
+        ->with('get_product_avatars')->get();
+
+        return $products;
+    }
+
+    public function bySize1($request)
+    {
+        $product = Product::select('sub_child_category_id')->where($request->ex_col_name,$request->ex_name)->first();
+        $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)->first();
+        $products = Product::where('sub_child_category_id',$sub_child->id)
+        ->where($request->col_name,$request->name)->with('get_product_avatars')->get();
+
+        return $products;
+    }
+
+    public function byColor1($request)
+    {
+        $product = Product::select('sub_child_category_id')->where($request->ex_col_name,$request->ex_name)->first();
+        $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)->first();
+        $products = Product::where('sub_child_category_id',$sub_child->id)
+        ->where($request->col_name,$request->name)->with('get_product_avatars')->get();
+        
+        return $products;
+    }
+
+    public function byPrice1($request)
+    {
+        $min_range = $request->min_range;
+        $max_range = $request->max_range;
+        $data = $request->col_name;
+
+        $product = Product::select('sub_child_category_id')->where($request->ex_col_name,$request->ex_name)->first();
+        $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)->first();
+        $products = Product::where('sub_child_category_id',$sub_child->id)
+        ->whereBetween($data,[$min_range,$max_range])->with('get_product_avatars')->get();
+        
+        return $products;
+    }
 
     public function load(Request $request,$item)
     {
@@ -161,6 +230,7 @@ class HomeController extends Controller
         $all_cat = Category::where('cat_name',$slug)->first();
         $ads = AdManager::all();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        $setting = Settings::first();
 
         return view('layouts.frontend.category_list',[
             'ads'=>$ads,
@@ -169,7 +239,8 @@ class HomeController extends Controller
             'count'=>$count,
             'count1'=>$count1,
             'cart'=>$cart,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting
         ]);
     }
 
@@ -287,6 +358,7 @@ class HomeController extends Controller
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $vendor = Vendor::where('brand_name',$brand ?? '')->first();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        $setting = Settings::first();
 
         $single_vendor = SingleVendor::with('get_vendor')->where([
             'vendor_id'=>$vendor->id,
@@ -305,7 +377,8 @@ class HomeController extends Controller
                 'cart'=>$cart,
                 'products'=>$products,
                 'single_vendor'=>$single_vendor,
-                'orders'=>$orders
+                'orders'=>$orders,
+                'setting'=>$setting
             ]);
         }else{
             return view('layouts.frontend.vendor.multi_vendor_list',[
@@ -316,7 +389,8 @@ class HomeController extends Controller
                 'cart'=>$cart,
                 'products'=>$products,
                 'single_vendor'=>$single_vendor,
-                'orders'=>$orders
+                'orders'=>$orders,
+                'setting'=>$setting
             ]);
         }
 
@@ -332,6 +406,8 @@ class HomeController extends Controller
         $product = VendorProduct::where('slug',$slug)->with('get_vendor_product_avatar')->first();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $products = VendorProduct::with('get_vendor_product_avatar')->get();
+
+        $setting = Settings::first();
         return view('layouts.frontend.vendor.product_quick_view',[
             'categories'=>$categories,
             'ads'=>$ads,
@@ -340,7 +416,8 @@ class HomeController extends Controller
             'cart'=>$cart,
             'product'=>$product,
             'products'=>$products,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting,
         ]);
 
     }
@@ -355,6 +432,8 @@ class HomeController extends Controller
         $product = Product::where('slug',$slug)->with('get_product_avatars','get_brand')->first();
         $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
         $products = Product::with('get_brand','get_product_avatars')->get();
+
+        $setting = Settings::first();
         return view('layouts.frontend.quick_view',[
             'categories'=>$categories,
             'ads'=>$ads,
@@ -363,7 +442,8 @@ class HomeController extends Controller
             'cart'=>$cart,
             'product'=>$product,
             'products'=>$products,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting
         ]);
 
     }
@@ -376,6 +456,8 @@ class HomeController extends Controller
         $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+
+        $setting = Settings::first();
 
         $single_vendor = SingleVendor::where('brand_name',$name ?? '')->first();
         $products = VendorProduct::where([
@@ -391,7 +473,8 @@ class HomeController extends Controller
             'count1'=>$count1,
             'cart'=>$cart,
             'products'=>$products,
-            'orders'=>$orders
+            'orders'=>$orders,
+            'setting'=>$setting
         ]);
 
     }

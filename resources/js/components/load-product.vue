@@ -7,7 +7,7 @@
           <div class="product prod_hover product-7 text-center">
             <figure v-for="avtr in item.get_product_avatars" :key="avtr.id" class="product-media">
               <span class="product-label label-new">New</span>
-              <a href="#" @click.prevent="quickView(item.product_name)">
+              <a href="#" @click.prevent="quickView(item.slug)">
                 <img
                   style="height: 203px !important"
                   :src="viewImage(avtr.front)"
@@ -17,7 +17,7 @@
               </a>
 
               <div class="product-action-vertical">
-                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"
+                <a @click.prevent="addWishList(item.slug)" href="#" class="btn-product-icon btn-wishlist btn-expandable"
                   ><span>add to wishlist</span></a
                 >
                 <a
@@ -29,7 +29,7 @@
               </div>
 
               <div class="product-action">
-                <a href="#" class="btn-product btn-cart"
+                <a @click.prevent="addToCart(item)" href="#" class="btn-product btn-cart"
                   ><span>add to cart</span></a
                 >
               </div>
@@ -65,8 +65,12 @@ export default {
     data(){
         return{
             item:"0",
-            getItem:""
-
+            getItem:"",
+          form:{
+            slug:"",
+            id:"",
+            sale_price:""
+          }
         }
     },
     mounted(){
@@ -105,6 +109,71 @@ export default {
         viewImage(img) {
             return "/images/" + img;
         },
+
+      addWishList(slug){
+          this.form.slug = slug;
+            axios.post("wishlist/store",this.form)
+            .then((response)=>{
+                this.wishResult(response.data)
+            })
+        },
+        wishResult(data)
+        {
+            if(data.guest == 'guest'){
+                $("#error").text('Opps!plese login first.');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                    $("#error").text();
+                },3000);
+            }else if(data.errors == 'match'){
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+
+                },3000);
+            }else{
+                $("#count").text(data.count);
+            }
+            
+        }, 
+        addToCart(item){
+          this.form.slug = item.slug;
+          this.form.id = item.id;
+          this.form.sale_price = item.sale_price;
+          axios.post("cart/store",this.form)
+          .then((response)=>{
+            this.cartResult(response.data)
+          })
+        },
+        cartResult(data){
+          if(data.guest == 'guest'){
+                $("#error").text('Opps!plese login first.');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                    $("#error").text();
+                },3000);
+            }else if(data.stockOut == 'stock out'){
+                $("#error").text('Stock Out');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                },3000);
+            }else{
+                if(data.errors == 'error'){
+                    $("#cartError").show();
+                    setTimeout(() => {
+                        $("#cartError").hide();
+
+                    },2000);
+                }else{
+                    $("#count").text(data.count);
+                    $("#count1").text(data.count1);
+
+                }
+            }
+        }, 
     }
 };
 </script>

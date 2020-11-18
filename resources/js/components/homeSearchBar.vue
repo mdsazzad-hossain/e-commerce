@@ -11,12 +11,15 @@
           <!-- End .select-custom -->
           <label for="q" class="sr-only">Search</label>
           <input
-            type="search"
             @keyup="searchData()"
             class="form-control"
             v-model="search"
             placeholder="Search product ..."
           />
+          <span v-show="clearShow" @click="searchClear()" style="padding:12px 5px 0 0; display:none;">
+          <i style="font-size:1.5rem;" class="icon-close"></i>
+
+          </span>
           <button class="btn btn-primary" type="submit">
             <i class="icon-search"></i>
           </button>
@@ -25,22 +28,24 @@
         <!-- End .header-search-wrapper -->
       </form>
     </div>
-    <div
-       v-show="showItems"
-      style="
-        display: none;
+
+
+    <div v-show="showItems"
+    style="display: none;
         position: absolute;
-        background-color: #ddd;
+        background: #fff;
         z-index: 9999;
         width: 100%;
         padding: 5px;
         overflow-y: scroll;
         height: 375px;
-        color: #000;
-      "
-    >
+        color: #3399FF;">
+
         <ul v-for="item in allItem" :key="item.id">
-            <li id="item" @click="selectItem(item.product_name)" style="cursor:pointer;">
+            <li id="item" @click="selectItem(item.product_name)"
+            style="cursor:pointer; padding-left:10px;"
+            onMouseOver="this.style.background='#ddd'"
+            onMouseOut="this.style.background='#fff'">
                 {{item.product_name}}
             </li>
         </ul>
@@ -57,18 +62,21 @@ export default {
         return{
             showItems:false,
             allItem:"",
-            search:""
+            search:"",
+            clearShow:false,
         }
     },
     methods:{
         searchData(){
             if(this.search == ''){
               this.showItems = false;
+              this.clearShow = false;
             }else{
               axios.get("search?q="+this.search)
               .then((response)=>{
                   this.allItem = response.data.search;
                   this.showItems = true;
+                  this.clearShow = true;
               })
             }
         },
@@ -76,10 +84,19 @@ export default {
             this.search=search;
             this.showItems = false;
             window.location.href="search-result/"+this.search;
+        },
+
+        searchClear(){
+            this.search = '';
+            this.showItems = false;
+            this.clearShow = false;
+
         }
     }
 };
 </script>
 
-<style>
+
+<style scoped>
+
 </style>

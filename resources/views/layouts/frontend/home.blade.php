@@ -769,14 +769,17 @@
                         <h3 class="cta-title text-white">Get The Latest Deals</h3><!-- End .cta-title -->
                         <p class="cta-desc text-white">and receive <span class="font-weight-normal">$20 coupon</span> for first shopping</p><!-- End .cta-desc -->
                     </div><!-- End .text-center -->
-                
-                    <form action="#">
-                        <div class="input-group input-group-round">
-                            <input type="email" class="form-control form-control-white" placeholder="Enter your Email Address" aria-label="Email Adress" required>
+
+                    <form action="javascript:void(0)" type="post">
+                        {{ csrf_field() }}
+                        <div class="input-group input-group-round" style="margin-bottom:5px;">
+                            <input onfocus="enableSubscriber()" onfocusout="checkSubscriber()" type="email" name="subscriber_email" id="subscriber_email" class="form-control form-control-white" placeholder="Enter your Email Address" aria-label="Email Adress" required>
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit"><span>Subscribe</span><i class="icon-long-arrow-right"></i></button>
+                                <button id="btnSubmit" onclick="addSubscriber();" class="btn btn-primary" type="submit"><span>Subscribe</span><i class="icon-long-arrow-right"></i></button>
                             </div><!-- .End .input-group-append -->
+
                         </div><!-- .End .input-group -->
+                        <span id="statusSubscribe" style="display: none;"></span>
                     </form>
                 </div><!-- End .col-sm-10 col-md-8 col-lg-6 -->
             </div><!-- End .row -->
@@ -789,6 +792,56 @@
 @section('js')
 
 <script>
+    //     function addSubscriber(){
+    //     var subscriber_email = $("#subscriber_email").val();
+    //     $.ajax({
+    //         type:'post',
+    //         url:'/add-subscriber',
+    //         data:{subscriber_email:subscriber_email},
+    //         success:function(resp){
+    //             if(resp == "exists"){
+    //                 $("#statusSubscribe").show();
+    //                 $("#btnSubmit").hide();
+    //                 $("#statusSubscribe").html("Error: Subscriber Email Already Exists.");
+    //                 $("#statusSubscribe").css({ 'background':'red', 'color':'#fff', 'border-radius':'12px', 'padding':'5px' });
+    //             }else if(resp == "saved"){
+    //                 $("#statusSubscribe").show();
+    //                 $("#statusSubscribe").html("Success: Thanks for Subscribing!");
+    //                 $("#statusSubscribe").css({ 'background':'green', 'color':'#fff', 'border-radius':'12px', 'padding':'5px' });
+    //             }
+    //         },
+    //         error:function(){
+    //             alert("Error");
+    //         }
+    //     });
+    // }
+
+    // function checkSubscriber(){
+    //     var subscriber_email = $("#subscriber_email").val();
+    //     $.ajax({
+    //         type:'post',
+    //         url:'/check-subscriber-email',
+    //         data:{subscriber_email:subscriber_email},
+    //         success:function(resp){
+    //             if(resp == "exists"){
+    //                 $("#statusSubscribe").show();
+    //                 $("#btnSubmit").hide();
+    //                 $("#statusSubscribe").html("Error: Subscriber Email Already Exists.");
+    //                 $("#statusSubscribe").css({ 'background':'red', 'color':'#fff', 'border-radius':'12px', 'padding':'5px' });
+    //             }
+    //         },
+    //         error:function(){
+    //             alert("Error");
+    //         }
+    //     });
+    // }
+
+    // function enableSubscriber(){
+    //     $("#btnSubmit").show();
+    //     $("#statusSubscribe").hide();
+    // }
+
+
     window.onload = displayClock();
     function displayClock(){
         var countDownDate = document.getElementById("time").value;
@@ -901,11 +954,6 @@
 
                         },2000);
                     }else{
-                        // $("#pro_name").text(response.cart.get_product.product_name);
-                        // $("#pro_sale").text(response.cart.get_product.sale_price);
-                        // response.cart.get_product.get_product_avatars.forEach(element => {
-                        //     $("cartAvtr").attr('src', "{{ asset('/images/') }}/" + element.front)
-                        // });
                         $("#count").text(response.count);
                         $("#count1").text(response.count1);
 

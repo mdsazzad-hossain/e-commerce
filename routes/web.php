@@ -27,10 +27,12 @@ Route::group(["namespace"=>"Frontend"],function() {
     Route::get('/category/{slug}', 'HomeController@category')->name('category');
     Route::post('category/load-category', 'HomeController@load_category');
     Route::get('/{user}/wishlist', 'WishListController@index')->name('wishlist');
-    Route::post('/wishlist/store', 'WishListController@store')->name('wishlist.store');
+    Route::post('wishlist/store', 'WishListController@store')->name('wishlist.store');
+    Route::post('{params?}/wishlist/store', 'WishListController@store');
     Route::post('/wishlist/delete/{id}', 'WishListController@destroy')->name('wishlist.delete');
     Route::get('/{name}/cart', 'CartController@index')->name('cart');
     Route::post('/cart/store', 'CartController@store')->name('cart.store');
+    Route::post('{params?}/cart/store', 'CartController@store');
     Route::get('/cart/billing-address', 'CartController@billing_index')->name('cart.bill');
     Route::post('/cart/update', 'CartController@update')->name('cart.update');
     Route::post('/cart/item/delete', 'CartController@destroy')->name('cart.item.delete');
@@ -50,10 +52,15 @@ Route::group(["namespace"=>"Frontend"],function() {
     //search product
     Route::get('search', 'HomeController@search');
     Route::get('{optional?}/search', 'HomeController@search');
-    Route::get('search-result/{search}', 'HomeController@search_result')->name("search");
+    Route::get('{params?}/search-result/{search}', 'HomeController@search_result')->name("search");
     Route::post('{params?}/search-data', 'HomeController@get_result');
     // Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
     Route::post('load/{item}', 'HomeController@load')->name('load');
+
+
+    //Subscriber
+    Route::post('check-subscriber-email','NewsletterController@checkSubscriber');
+    Route::post('add-subscriber','NewsletterController@addSubscriber');
 
 
 });
@@ -115,7 +122,10 @@ Route::group(["namespace"=>"Backend"],function() {
 
          //Brand
         //  Route::get('products', 'ProductController@index')->name('products');
-         Route::post('brand-create', 'BrandController@store')->name('brand.add');
+        Route::post('brand-create', 'BrandController@store')->name('brand.add');
+        Route::post('brand-list', 'BrandController@index')->name('brand.brand_list');
+
+
          Route::post('get-cat-subCat', 'BrandController@getCatSubCat')->name('get.cat.subCat');
          // Route::post('sub-sub-category-delete/{id}', 'SubChildCategoryController@destroy')->name('delete.sub.child');
 
@@ -183,6 +193,23 @@ Route::group(["namespace"=>"Backend"],function() {
 
         //table data search daily,weekly,monthly,yearly
         Route::post('product-sales-history', 'ProductController@table_search')->name('table-search');
+
+
+        //Subscription
+        Route::get('subscribers', 'SubscriberController@index')->name('subscribers');
+        Route::get('update-subscriber-status/{id}/{status}', 'SubscriberController@updateSubscriberStatus');
+        Route::get('delete-subscriber/{id}', 'SubscriberController@deleteSubscriber');
+        Route::get('export-subscriber-list','SubscriberController@exportSubscriber');
+
+
+        //Settings
+        Route::post('save-settings', 'SettingsController@store')->name('settings.save');
+        Route::get('setup-settings', 'SettingsController@index')->name('setup-settings');
+
+
+       
+
+
 
     });
 

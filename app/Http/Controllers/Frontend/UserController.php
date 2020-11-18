@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\WishList;
 use App\Models\Cart;
+use App\Models\Settings;
 use App\Models\Category;
 use App\Models\AdManager;
 use App\Models\Product;
@@ -32,6 +33,8 @@ class UserController extends Controller
         $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
         $orderDetails = OrderDetails::latest()->where('user_id',auth()->user()->id ?? '')->get();
 
+        $setting = Settings::first();
+
         return view('layouts.frontend.profile.user_profile',[
             'ads'=>$ads,
             'categories'=>$categories,
@@ -39,7 +42,8 @@ class UserController extends Controller
             'count1'=>$count1,
             'cart'=>$cart,
             'orders'=>$orders,
-            'orderDetails'=>$orderDetails
+            'orderDetails'=>$orderDetails,
+            'setting'=>$setting
         ]);
     }
 

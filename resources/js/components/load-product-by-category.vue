@@ -6,11 +6,11 @@
           <div class="products mb-3">
             <div class="row justify-content-center">
                 <div v-show="normalMode" class="row col-md-12">
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in categories.categories.get_product" :key="product.id">
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="product in categories.get_product" :key="product.id">
                         <div v-for="avtr in product.get_product_avatars" :key="avtr.id" class="product product-7 text-center">
 
                         <figure class="product-media">
-                            <a href="#">
+                            <a @click.prevent="quickView(product.slug)" href="#">
                             <img
                                 style="height: 203px !important"
                                 :src="ourImage(avtr.front)"
@@ -20,6 +20,7 @@
 
                             <div class="product-action-vertical">
                             <a
+                              @click.prevent="addWishList(product.slug)"
                                 href="#"
                                 class="btn-product-icon btn-wishlist btn-expandable"
                                 ><span>add to wishlist</span></a
@@ -27,7 +28,7 @@
                             </div>
 
                             <div class="product-action">
-                            <a href="#" class="btn-product btn-cart"
+                            <a href="#" @click="addToCart(product)" class="btn-product btn-cart"
                                 ><span>add to cart</span></a
                             >
                             </div>
@@ -185,7 +186,7 @@
               <div class="collapse show" id="widget-1" style="">
                 <div class="widget-body">
                   <div class="filter-items filter-items-count">
-                    <div v-for="child in categories.categories.get_child_category" :key="child.id" class="filter-item">
+                    <div v-for="child in categories.get_child_category" :key="child.id" class="filter-item">
                       <div class="custom-control custom-checkbox">
                         <input type="hidden" v-model="form.name">
                         <input type="hidden" v-model="form.col_name">
@@ -220,7 +221,7 @@
               <div class="collapse show" id="widget-4">
                 <div class="widget-body">
                   <div class="filter-items">
-                    <div v-for="pro in categories.products" :key="pro.id" class="filter-item">
+                    <div v-for="pro in products.products" :key="pro.id" class="filter-item">
                       <div class="custom-control custom-checkbox">
                         <input
                           type="checkbox"
@@ -252,7 +253,7 @@
               <div class="collapse show" id="widget-2">
                 <div class="widget-body">
                   <div class="filter-items">
-                    <div class="filter-item" v-for="pro1 in categories.products1" :key="pro1.id">
+                    <div class="filter-item" v-for="pro1 in products.products1" :key="pro1.id">
                       <div class="custom-control custom-checkbox">
                        <li style="cursor:pointer;" @click="productFilter(pro1.get_attribute_value_id_by_size.id,'size')">{{pro1.get_attribute_value_id_by_size.value}}</li>
                       </div>
@@ -277,7 +278,7 @@
 
               <div class="collapse show" id="widget-3">
                 <div class="widget-body" style="display: inline-flex;">
-                  <div class="filter-colors" v-for="pro2 in categories.products2" :key="pro2.id">
+                  <div class="filter-colors" v-for="pro2 in products.products2" :key="pro2.id">
                       <a @click="productFilter(pro2.get_attribute_value_id_by_color.id,'color')" href="#" :style="{background: pro2.get_attribute_value_id_by_color.value}"
                       ><span class="sr-only">Color Name</span></a
                     >
@@ -334,6 +335,7 @@ export default {
             bySize:false,
             normalMode:true,
             categories:"",
+            products:"",
             productByCat:"",
             productByBrand:"",
             productBySize:"",
@@ -343,8 +345,12 @@ export default {
                 max_range:"0",
                 min_range:"50",
                 name:"",
-                col_name:""
-            }
+                col_name:"",
+                slug:"",
+                id:"",
+                sale_price:""
+            },
+            
         }
     },
     mounted(){
@@ -352,7 +358,8 @@ export default {
         this.form.col_name = 'cat_name';
         axios.post('load-category',this.form)
         .then((response)=>{
-            this.categories = response.data;
+            this.categories = response.data.categories;
+            this.products = response.data;
         })
     },
     computed: {
@@ -389,6 +396,81 @@ export default {
             })
         },
 
+        
+
+        addWishList(slug){
+          this.form.slug = slug;
+            axios.post("wishlist/store",this.form)
+            .then((response)=>{
+              //  console.log(response.data.guest);
+                this.wishResult(response.data)
+            })
+        },
+        wishResult(data)
+        {
+             
+             if(data.guest == 'guest'){
+                $("#error").text('Opps!plese login first.');
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+                    $("#error").text();
+                },3000);
+            }else if(data.errors == 'match'){
+                $("#error").show();
+                setTimeout(() => {
+                    $("#error").hide();
+
+                },3000);
+            }else{
+                $("#count").text(data.count);
+            }
+            
+        }, 
+        addToCart(product){
+          this.form.slug = product.slug;
+          this.form.id = product.id;
+          this.form.sale_price = product.sale_price;
+          axios.post("cart/store",this.form)
+          .then((response)=>{
+            this.cartResult(response.data)
+          })
+        },
+        cartResult(data){
+          if(data.guest == 'guest'){
+              $("#error").text('Opps!plese login first.');
+              $("#error").show();
+              setTimeout(() => {
+                  $("#error").hide();
+                  $("#error").text();
+              },3000);
+          }else if(data.stockOut == 'stock out'){
+              $("#error").text('Stock Out');
+              $("#error").show();
+              setTimeout(() => {
+                  $("#error").hide();
+              },3000);
+          }else{
+              if(data.errors == 'error'){
+                  $("#cartError").show();
+                  setTimeout(() => {
+                      $("#cartError").hide();
+
+                  },2000);
+              }else{
+                  $("#count").text(data.count);
+                  $("#count1").text(data.count1);
+
+              }
+          }
+        },
+        quickView(product){
+            axios.get('/quick/view/')
+            .then((response)=>{
+                window.location.href = '/quick/view/'+product
+
+            })
+        },
         ourImage(img) {
             return "/images/" + img;
         },
