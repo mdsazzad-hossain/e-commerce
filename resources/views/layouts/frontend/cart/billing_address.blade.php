@@ -39,7 +39,7 @@
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
                                         <h6 class="my-0">{{$crt->get_product->product_name}}</h6>
-                                        <small class="text-muted">{{$crt->get_product->color}}/{{$crt->get_product->size}}</small>
+                                        <small class="text-muted">{{$crt->get_product->get_attribute_value_id_by_color->value}}/{{$crt->get_product->get_attribute_value_id_by_size->value}}</small>
                                     </div>
                                     <div>
                                         <h6 class="my-0">= {{$crt->total}} TK</h6>

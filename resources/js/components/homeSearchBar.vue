@@ -72,7 +72,7 @@ export default {
               this.showItems = false;
               this.clearShow = false;
             }else{
-              axios.get("search?q="+this.search)
+              axios.post("search?q="+this.search)
               .then((response)=>{
                   this.allItem = response.data.search;
                   this.showItems = true;

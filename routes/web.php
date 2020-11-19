@@ -50,10 +50,18 @@ Route::group(["namespace"=>"Frontend"],function() {
     //order refund
     Route::post('order-refund', 'HomeController@refund')->name('product.refund');
     //search product
-    Route::get('search', 'HomeController@search');
-    Route::get('{optional?}/search', 'HomeController@search');
-    Route::get('{params?}/search-result/{search}', 'HomeController@search_result')->name("search");
+    Route::post('search', 'HomeController@search');
+    Route::post('{optional?}/search', 'HomeController@search');
+    Route::post('{optional?}/{param?}/search', 'HomeController@search');
+    //
+    Route::get('search-result/{search}', 'HomeController@search_result')->name("search");
+    Route::get('{parm?}/search-result/{search}', 'HomeController@search_res')->name("search");
+    Route::get('{parm?}/{param1?}/search-result/{search}', 'HomeController@search_r')->name("search");
+    Route::get('{parm?}/{param1?}/{param2?}/search-result/{search}', 'HomeController@search_re')->name("search");
+    //
     Route::post('{params?}/search-data', 'HomeController@get_result');
+    Route::post('{params?}/{par?}/search-data', 'HomeController@get_result');
+    Route::post('{params?}/{par?}/{param1?}/search-data', 'HomeController@get_result');
     // Route::get('search-result/search-product-by-brand/{id}', 'HomeController@search_product_by_brand');
     Route::post('load/{item}', 'HomeController@load')->name('load');
 
@@ -72,6 +80,16 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('/register-store', 'LoginController@store')->name('user.store');
         Route::post('/login', 'LoginController@login')->name('user.login');
         Route::get('/verify/{token}', 'LoginController@user_verify')->name('verify');
+
+        //login with google account
+        Route::get('login/google', 'LoginController@redirect');
+        Route::get('callback/google', 'LoginController@callback');
+
+
+        //login with facebook account
+        Route::get('/login/facebook', 'LoginController@redirectToProvider');
+        Route::get('/login/facebook/callback', 'LoginController@handleProviderCallback');
+        
     });
 
 
@@ -227,3 +245,5 @@ Route::post('/cancel', 'SslCommerzPaymentController@cancel');
 
 Route::post('/ipn', 'SslCommerzPaymentController@ipn');
 //SSLCOMMERZ END
+
+

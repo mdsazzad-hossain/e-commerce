@@ -13,6 +13,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserVerification;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -157,5 +158,73 @@ class LoginController extends Controller
             return redirect()->route('home');
         }
 
+    }
+
+
+    //login with google account
+    public function redirect(){
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function callback(){
+        try {
+                $user = Socialite::driver('google')->user();
+                $checkUser = User::where('google_id', $user->id)->first();
+                if($checkUser){
+                    Auth::login($checkUser);
+                    return redirect()->route('home');
+                }else{
+                    $newUser = User::create([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'google_id'=> $user->id,
+                        'password' => encrypt('123456dummy'),
+                        'verified'=>1,
+                    ]);
+                    Auth::login($newUser);
+                    return redirect()->route('home');
+                }
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+   }
+
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('facebook')->stateless()->user();
+        $checkUser = User::where('facebook_id', $user->id)->first();
+
+        if($checkUser){
+            Auth::login($checkUser);
+            return redirect()->route('home');
+        }else{
+
+            if($user->email == null){
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => 'example@gmail.com',
+                    'facebook_id'=> $user->id,
+                    'password' => encrypt('123456dummy'),
+                    'verified'=>1,
+                ]);
+            }else{
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'facebook_id'=> $user->id,
+                    'password' => encrypt('123456dummy'),
+                    'verified'=>1,
+                ]);
+            }
+
+            Auth::login($newUser);
+            return redirect()->route('home');
+        }
     }
 }

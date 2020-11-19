@@ -73,8 +73,7 @@ class HomeController extends Controller
 
     public function search_result($search)
     {
-        
-        $search = Product::select('product_name')->where('slug',$search)->first();
+        $search = Product::select('product_name')->where('product_name',$search)->first();
 
         $categories = Category::with('get_child_category')->get();
         $ads = AdManager::all();
@@ -95,7 +94,76 @@ class HomeController extends Controller
         ]);
     }
 
-    public function get_result(Request $request)
+    public function search_res($parm=null,$search)
+    {
+        $search = Product::select('product_name')->where('product_name',$search)->first();
+
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $setting = Settings::first();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        return view('layouts.frontend.search-results',[
+            'categories'=>$categories,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'orders'=>$orders,
+            'ads'=>$ads,
+            'search'=>$search,
+            'setting'=>$setting
+        ]);
+    }
+
+    public function search_r($parm=null,$param1=null,$search)
+    {
+        $search = Product::select('product_name')->where('product_name',$search)->first();
+
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $setting = Settings::first();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        return view('layouts.frontend.search-results',[
+            'categories'=>$categories,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'orders'=>$orders,
+            'ads'=>$ads,
+            'search'=>$search,
+            'setting'=>$setting
+        ]);
+    }
+
+    public function search_re($parm=null,$param1=null,$param2=null,$search)
+    {
+        $search = Product::select('product_name')->where('product_name',$search)->first();
+
+        $categories = Category::with('get_child_category')->get();
+        $ads = AdManager::all();
+        $setting = Settings::first();
+        $count = WishList::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $count1 = Cart::select('id')->where('user_id',auth()->user()->id ?? '')->count();
+        $cart = Cart::where('user_id',auth()->user()->id ?? '')->get();
+        $orders = Orders::where('user_id',auth()->user()->id ?? '')->get();
+        return view('layouts.frontend.search-results',[
+            'categories'=>$categories,
+            'count'=>$count,
+            'count1'=>$count1,
+            'cart'=>$cart,
+            'orders'=>$orders,
+            'ads'=>$ads,
+            'search'=>$search,
+            'setting'=>$setting
+        ]);
+    }
+
+    public function get_result($test=null,$test1=null,$param1=null,Request $request)
     {
         if ($request->col_name === "sub_child_name") {
             $products = $this->bySubChild($request);
@@ -127,6 +195,7 @@ class HomeController extends Controller
             ],200);
         }elseif($request->col_name === "product_name"){
             $product = Product::select('sub_child_category_id')->where($request->col_name,$request->name)->first();
+            
             $sub_child = SubChildCategory::where('id',$product->sub_child_category_id)
             ->with('get_product','get_product.get_product_avatars')
             ->first();
