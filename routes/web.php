@@ -72,6 +72,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::post('/register-store', 'LoginController@store')->name('user.store');
         Route::post('/login', 'LoginController@login')->name('user.login');
         Route::get('/verify/{token}', 'LoginController@user_verify')->name('verify');
+
     });
 
 
@@ -207,7 +208,7 @@ Route::group(["namespace"=>"Backend"],function() {
         Route::get('setup-settings', 'SettingsController@index')->name('setup-settings');
 
 
-       
+
 
 
 
