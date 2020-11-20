@@ -13,19 +13,6 @@
                         }
                     }
                 }">
-
-            <!-- End .intro-slide -->
-
-
-            <!-- End .intro-slide -->
-
-
-            <!-- End .intro-slide -->
-
-
-
-
-            <!-- End .intro-slide -->
             <div class="owl-stage-outer">
                 <div class="owl-stage"
                     style="transform: translate3d(-2698px, 0px, 0px); transition: all 0s ease 0s; width: 10792px;">
@@ -38,17 +25,19 @@
                             <div class="container intro-content">
                                 <div class="row">
                                     <div class="col-auto offset-lg-3 intro-col">
-                                        <h3 class="intro-subtitle">{{ $banar->category_name }}</h3>
-                                        <!-- End .h3 intro-subtitle -->
                                         <h1 class="intro-title">{{ $banar->product_name }}
                                             <span>
-                                                <sup class="font-weight-light line-through">${{ $banar->promo_price }}</sup>
-                                                <span class="text-primary">${{ $banar->price }}<sup>,99</sup></span>
+                                                @foreach ($products as $pro)
+                                                    @if ($pro->product_name == $banar->product_name)
+                                                    <sup class="font-weight-light line-through">${{ $pro->promo_price }}</sup>
+                                                    <span class="text-primary">${{ $pro->sale_price }}<sup>,99</sup></span>
+                                                    @endif
+                                                @endforeach
                                             </span>
                                         </h1>
                                         <!-- End .intro-title -->
 
-                                        <a href="category.html" class="btn btn-outline-primary-2">
+                                        <a href="{{route('quick',$banar->slug)}}" class="btn btn-outline-primary-2">
                                             <span>Shop Now</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </a>
@@ -149,7 +138,7 @@
                 </div>
                 <!-- End .heading-left -->
 
-                
+
                 <!-- End .heading-right -->
             </div>
             <!-- End .heading -->
@@ -370,7 +359,7 @@
                 </div>
                 <!-- End .heading-left -->
 
-                
+
                 <!-- End .heading-right -->
             </div>
             <!-- End .heading -->
@@ -616,7 +605,7 @@
                                                 <span class="new-price">{{$product->sale_price}} TK</span>
                                                 <span class="old-price"><del>{{$product->promo_price}} TK</del></span>
                                             </div>
-                                            
+
                                         </div>
                                         <!-- End .product-body -->
                                     </div>

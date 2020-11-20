@@ -16,11 +16,8 @@ class CreateBanarsTable extends Migration
         Schema::create('banars', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->string('slug');
             $table->string('product_name')->nullable();
-            $table->string('category_name')->nullable();
-            $table->string('price')->nullable();
-            $table->string('promo_price')->nullable();
+            $table->string('slug');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

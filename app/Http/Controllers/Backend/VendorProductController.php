@@ -22,9 +22,11 @@ class VendorProductController extends Controller
     {
         $data = auth()->user();
         $vendor_products = VendorProduct::all();
+        $single_ven = SingleVendor::latest()->get();
         return view('layouts.backend.vendor.vendor_product_list',[
             'data'=>$data,
-            'vendor_products'=>$vendor_products
+            'vendor_products'=>$vendor_products,
+            'single_ven'=>$single_ven
         ]);
     }
 
@@ -33,11 +35,11 @@ class VendorProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
 
-    public function sales_refund()
+
+    public function vendor_sales_refund()
     {
-        //
+        return redirect()->back();
     }
     /**
      * Store a newly created resource in storage.
@@ -72,7 +74,7 @@ class VendorProductController extends Controller
                 'single_vendor_id'=>$request->single_vendor_id,
                 'vendor_id'=>$request->vendor_id,
                 'product_name'=>$request->product_name,
-                'slug'=> str_replace("‐"," ",$request->product_name),
+                'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
                 'color'=>$request->color,
                 'size'=>$request->size,
@@ -84,12 +86,12 @@ class VendorProductController extends Controller
                 'description'=>$request->description,
                 'total_price'=>$request->qty*$request->sale_price
             ]);
-    
+
             toast('Product Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
-    
+
             return redirect()->back();
         }
-        
+
     }
 
 
@@ -109,7 +111,7 @@ class VendorProductController extends Controller
         $data = auth()->user();
         $vendors = Vendor::select('id','brand_name')->get();
         $single_vendors = SingleVendor::select('id','brand_name')->get();
-        $product = VendorProduct::where('product_name',$slug)->with('get_vendor','get_single_vendor')->first();
+        $product = VendorProduct::where('slug',$slug)->with('get_vendor','get_single_vendor')->first();
         return view('layouts.backend.vendor.vendor_product_edit',[
             'data'=>$data,
             'product'=>$product,
@@ -156,7 +158,7 @@ class VendorProductController extends Controller
                 'single_vendor_id'=>$request->single_vendor_id,
                 'vendor_id'=>$request->vendor_id,
                 'product_name'=>$request->product_name,
-                'slug'=> $request->product_name,
+                'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
                 'color'=>$request->color,
                 'size'=>$request->size,
@@ -175,7 +177,7 @@ class VendorProductController extends Controller
                 'single_vendor_id'=>$request->single_vendor_id,
                 'vendor_id'=>$request->vendor_id,
                 'product_name'=>$request->product_name,
-                'slug'=> $request->product_name,
+                'slug'=> Str::slug($request->product_name),
                 'product_code'=>$request->product_code,
                 'color'=>$request->color,
                 'size'=>$request->size,

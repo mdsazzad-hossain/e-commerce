@@ -37,7 +37,6 @@
                                     <th>SI #</th>
                                     <th>Banner</th>
                                     <th>Product Name</th>
-                                    <th>Category</th>
                                     <th>Price</th>
                                     <th>Promo Price</th>
                                     <th>Action</th>
@@ -55,9 +54,8 @@
                                             {{ $banar->product_name }}
 
                                         </td>
-                                        <td>{{ $banar->category_name }}</td>
-                                        <td>{{ $banar->price }}</td>
-                                        <td>{{ $banar->promo_price }}</td>
+                                        <td>price</td>
+                                        <td>promo_price</td>
 
                                         <td style="display:inline-flex;">
 
@@ -95,7 +93,7 @@
                         <form id="banarUpload">
                             <input hidden type="text" value="{{ csrf_token() }}" class="form-control supp"/>
 
-                            <div class="col-md-6" style="float:left;">
+                            <div class="col-md-6 offset-3">
 
                                 <div class="form-group">
                                     <label for="banner-product" class="col-form-label">Product Name</label>
@@ -107,29 +105,9 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="banner-category" class="col-form-label">Category</label>
-                                    <select class="select2 form-control" name="category_name" style="width: 100%;">
-                                        <option value="" selected="selected" hidden>Select category</option>
-
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->cat_name }}">{{ $category->cat_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group" style="width: 48%; float:left;">
-                                    <label for="banner-price" class="col-form-label">Price</label>
-                                    <input type="text" name="price" placeholder="Banner Product Price" class="form-control supp"/>
-                                </div>
-                                <div class="form-group" style="width: 48%; float: right;"/>
-                                    <label for="banner-promo-price" class="col-form-label">Promo Price</label>
-                                    <input name="promo_price" type="text" placeholder="Promo Price" class="form-control supp"/>
-                                </div>
-
                             </div>
 
-                            <div class="col-md-6" style="float: right">
+                            <div class="col-md-6 offset-3">
                                 <div class="form-group">
                                     <label for="image" class="col-form-label">Banar Image</label>
                                     <div style="height: 9.5rem; border: dashed 1.5px blue;
@@ -144,7 +122,7 @@
 
                             </div>
 
-                            <div class="modal-footer col-md-6" style="float: right">
+                            <div class="modal-footer col-md-6 offset-3">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button onclick="uploadBanar()" class="btn btn-primary">Submit</button>
                             </div>
@@ -171,10 +149,9 @@
 
         <div class="modal-body">
             <form id="banarUpdate">
-                <input hidden type="text" value="{{ csrf_token() }}" class="form-control"/>
                 <input type="text" id="slug" name="slug" hidden>
 
-                <div class="col-md-6" style="float:left;">
+                <div class="col-md-6 offset-3">
 
                     <div class="form-group">
                         <label>Select Category</label>
@@ -194,37 +171,9 @@
                         </select>
                       </div>
 
-                      <div class="form-group">
-                        <label for="banner-category" class="col-form-label">Category</label>
-                        <select name="category_name" class="select2 form-control" data-placeholder="Select a State" style="width: 100%;">
-                        @foreach ($categories as $category)
-                          <option value="{{ $category->cat_name }}"
-                            @foreach ($banars as $banar)
-                              @if ($banar->category_name == $category->cat_name)
-
-                              selected
-
-                              @endif
-                            @endforeach
-                          >{{ $category->cat_name }}
-                        </option>
-                        @endforeach
-                        </select>
-                      </div>
-
-
-                    <div class="form-group" style="width: 48%; float:left;">
-                        <label for="banner-price" class="col-form-label">Price</label>
-                        <input type="text" id="price" name="price" placeholder="Banner Product Price" class="form-control"/>
-                    </div>
-                    <div class="form-group" style="width: 48%; float: right;"/>
-                        <label for="banner-promo-price" class="col-form-label">Promo Price</label>
-                        <input name="promo_price" id="promo_price" type="text" placeholder="Promo Price" class="form-control"/>
-                    </div>
-
                 </div>
 
-                <div class="col-md-6" style="float: right">
+                <div class="col-md-6 offset-3">
                     <div class="form-group">
                         <label for="image" class="col-form-label">Banar Image</label>
                         <div style="height: 9.5rem; border: dashed 1.5px blue;
@@ -275,17 +224,9 @@
 </script>
 
 <script type="text/javascript">
-
-
-
     function editBanar(banar) {
-       $("#banarUpdate").attr('id', 'banarUpdate');
-
-        $("#slug").val(banar.slug);
+        $("#slug").val(banar.image);
         $("#product_id").val(banar.product_name);
-        $("#category_id").val(banar.category_name);
-        $("#price").val(banar.price);
-        $("#promo_price").val(banar.promo_price);
 
         $("#image-edit").attr('src', "{{ asset('/images/') }}/" + banar.image);
     }
@@ -353,7 +294,7 @@
                         setTimeout('$("#imageError").hide()', 6000);
                     }
                 }else{
-                    window.location.reload();
+                    // window.location.reload();
                 }
             }
         })

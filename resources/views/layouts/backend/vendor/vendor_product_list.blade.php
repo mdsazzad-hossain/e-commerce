@@ -158,7 +158,7 @@
 
                 <form id="productInfo" action="{{route('vendor.product.store')}}" method="POST" style="display: none;">
                  @csrf
-                 
+
                   <div class="card-body row col-12">
                     <div class="form-group col-6">
                         <label class="mr-sm-2" for="inlineFormCustomSelect"
@@ -166,7 +166,7 @@
                         >
                         <select class="form-control" onclick="get_vendor_id()" name="vendor_id" id="ven_id">
                             <option value="" selected="selected" hidden>select</option>
-                            @foreach ($vendors as $ven)
+                            @foreach ($vendor_products as $ven)
                             @if($ven->status == 1)
                             <option value="{{ $ven->id }}">
                                 {{ $ven->brand_name }}
@@ -182,11 +182,14 @@
                         >
                         <select class="form-control" name="single_vendor_id" id="single_vendor_id">
                             <option value="" selected="selected" hidden>select</option>
-                            @foreach ($single_ven->get_single_vendor_ as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->brand_name }}
-                            </option>
-                            @endforeach
+                            @if ($single_ven)
+                                @foreach ($single_ven as $item)
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->brand_name }}
+                                    </option>
+                                @endforeach
+
+                            @endif
                         </select>
                     </div>
                     <div class="row col-12">
@@ -494,113 +497,92 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="dataTables_length" id="example1_length">
-                                <label>Show
-                                    <select name="example1_length" aria-controls="example1" class="custom-select custom-select-sm form-control form-control-sm">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select> entries</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div id="example1_filter" class="dataTables_filter">
-                                    <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row"><div class="col-sm-12">
-                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
-                    <thead>
-                    <tr role="row">
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Product Name
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Color
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Size
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Quantity
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Purchase/Price
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Sale/Price
-                        </th>
-                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 166px;">
-                            Promo/Price
-                        </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 204px;">
-                            Status
-                        </th>
-                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 99px;">
-                            Action
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting_asc" style="width: 166px;">
+                                Product Name
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Color
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Size
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Quantity
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Purchase/Price
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Sale/Price
+                            </th>
+                            <th class="sorting_asc" style="width: 166px;">
+                                Promo/Price
+                            </th>
+                            <th class="sorting" style="width: 204px;">
+                                Status
+                            </th>
+                            <th class="sorting" style="width: 99px;">
+                                Action
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                        @foreach ($vendor_products as $pro)
+                            @foreach ($vendor_products as $pro)
 
 
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">{{$pro->product_name}}</td>
-                                <td class="sorting_1">{{$pro->color}}</td>
-                                <td class="sorting_1">{{$pro->size}}</td>
-                                <td class="sorting_1">{{$pro->qty}}</td>
-                                <td class="sorting_1">{{$pro->pur_price}}</td>
-                                <td class="sorting_1">{{$pro->sale_price}}</td>
-                                <td class="sorting_1">{{$pro->promo_price}}</td>
-                                <td>
-                                    @if ($pro->status == 0)
-                                    <button class="badge badge-warning">Inactive</button>
-                                    @else
-                                    <button class="badge badge-success">Active</button>
-                                    @endif
-                                    <a href="{{route('vendor.product.avatars',$pro->slug)}}" class="badge badge-info">Images</a>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">{{$pro->product_name}}</td>
+                                    <td class="sorting_1">{{$pro->color}}</td>
+                                    <td class="sorting_1">{{$pro->size}}</td>
+                                    <td class="sorting_1">{{$pro->qty}}</td>
+                                    <td class="sorting_1">{{$pro->pur_price}}</td>
+                                    <td class="sorting_1">{{$pro->sale_price}}</td>
+                                    <td class="sorting_1">{{$pro->promo_price}}</td>
+                                    <td>
+                                        @if ($pro->status == 0)
+                                        <button class="badge badge-warning">Inactive</button>
+                                        @else
+                                        <button class="badge badge-success">Active</button>
+                                        @endif
+                                        <a href="{{route('vendor.product.avatars',$pro->slug)}}" class="badge badge-info">Images</a>
 
-                                </td>
-                                <td style="display: inline-flex;">
-                                <a href="{{route('vendor.product.edit',$pro->slug)}}" style="margin-right: 5px;" class="btn btn-primary">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                <form action="#" method="POST">
-                                        @csrf
-                                        <button class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    {{-- <tfoot>
-                    <tr>
-                        <th rowspan="1" colspan="1">Category Name</th>
-                        <th rowspan="1" colspan="1">SubCategory</th>
-                        <th rowspan="1" colspan="1">Sub SubCategory</th>
-                        <th rowspan="1" colspan="1">Status</th>
-                        <th rowspan="1" colspan="1">Action</th>
-                    </tr>
-                    </tfoot> --}}
-                </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                                    </td>
+                                    <td style="display: inline-flex;">
+                                    <a href="{{route('vendor.product.edit',$pro->slug)}}" style="margin-right: 5px;" class="btn btn-primary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    <form action="#" method="POST">
+                                            @csrf
+                                            <button class="btn btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        </div>
 
     @section('js')
 
       <script>
+           $(function() {
+                $("#example1").DataTable();
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                });
+            });
           function get_vendor_id(){
             data = $("#allVendor").val();
             data1 = JSON.parse(data);
@@ -612,7 +594,7 @@
                         $("#single_vendor_id").attr('disabled',true);
                     }
                 }
-               
+
             });
             // $("#banar").attr('disabled',false);
           }

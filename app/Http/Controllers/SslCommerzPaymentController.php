@@ -98,7 +98,9 @@ class SslCommerzPaymentController extends Controller
                 ]);
                 $orderData = DB::table('orders')->where('transaction_id', $post_data['tran_id'])->first();
 
-                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
+                    $carts = Cart::select('product_id','vendor_product_id','qty','total')
+                    ->where('user_id',auth()->user()->id)
+                    ->get();
                     
                     foreach ($carts as $key => $value) {
                         $product = Product::where('id',$value->product_id)->first();
@@ -277,12 +279,16 @@ class SslCommerzPaymentController extends Controller
                     ]);
 
                 if($update_product){
-                    $carts = Cart::select('product_id','vendor_product_id','qty','total')->get();
                     $id = Orders::orderBy('id','DESC')->first();
+
+                    $carts = Cart::select('product_id','vendor_product_id','qty','total')
+                    ->where('user_id',$id->user_id)
+                    ->get();
                     
                     foreach ($carts as $key => $value) {
                         $product = Product::where('id',$value->product_id)->first();
-                        if ($product->shipp_des == 'indoor') {
+                        
+                        if ($product!=null && $product->shipp_des == 'indoor') {
                             if ($value->qty<=3) {
                                $shipp_cost = $product->indoor_charge;
                             }elseif($value->qty>3 && $value->qty<=6){
@@ -292,7 +298,7 @@ class SslCommerzPaymentController extends Controller
                             }elseif($value->qty>9 && $value->qty<= 10){
                                $shipp_cost =4*$product->indoor_charge;
                             }
-                        }elseif($product->shipp_des == 'outdoor'){
+                        }elseif($product!=null && $product->shipp_des == 'outdoor'){
                            if ($value->qty<=3) {
                                $shipp_cost = $product->outdoor_charge;
                             }elseif($value->qty>3 && $value->qty<=6){
@@ -301,6 +307,28 @@ class SslCommerzPaymentController extends Controller
                                $shipp_cost =3*$product->outdoor_charge;
                             }elseif($value->qty>9 && $value->qty<= 10){
                                $shipp_cost =4*$product->outdoor_charge;
+                            }
+                        };
+                        $vend_product = VendorProduct::where('id',$value->vendor_product_id)->first();
+                        if ($vend_product!=null && $vend_product->shipp_des == 'indoor') {
+                            if ($value->qty<=3) {
+                               $shipp_cost = $vend_product->indoor_charge;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$vend_product->indoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$vend_product->indoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$vend_product->indoor_charge;
+                            }
+                        }elseif($vend_product!=null && $vend_product->shipp_des == 'outdoor'){
+                           if ($value->qty<=3) {
+                               $shipp_cost = $vend_product->outdoor_charge;
+                            }elseif($value->qty>3 && $value->qty<=6){
+                               $shipp_cost =2*$vend_product->outdoor_charge;
+                            }elseif($value->qty>6 && $value->qty<=9){
+                               $shipp_cost =3*$vend_product->outdoor_charge;
+                            }elseif($value->qty>9 && $value->qty<= 10){
+                               $shipp_cost =4*$vend_product->outdoor_charge;
                             }
                         };
                        if($value->vendor_product_id == null && $value->product_id != null){

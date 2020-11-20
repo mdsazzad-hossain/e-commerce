@@ -17,8 +17,10 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name',100);
             $table->string('email',100);
-            $table->string('phn',50);
-            $table->string('address');
+            $table->string('google_id')->nullable();
+            $table->string('facebook_id')->nullable();
+            $table->string('phn',50)->nullable();
+            $table->string('address')->nullable();
             $table->string('avatar')->nullable();
             $table->decimal('e_money',8,2)->default(0.00);
             $table->string('role')->default('user');

@@ -12,14 +12,15 @@ use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $data = auth()->user();
+        $brands = Brand::latest()->get();
+        return view('layouts.backend.brand.brand_list',[
+            'data'=>$data,
+            'brands'=>$brands
+        ]);
     }
 
     /**
@@ -58,7 +59,7 @@ class BrandController extends Controller
             }
         }else{
             Brand::create([
-                
+
                 'brand_name'=>$request->brand_name,
                 'slug'=> Str::slug($request->brand_name),
                 'br_description'=>$request->br_description
@@ -68,7 +69,7 @@ class BrandController extends Controller
 
 
         // if ($request->category_id && $request->child_category_id && $request->sub_child_category_id) {
-            
+
         // }elseif($request->category_id && !$request->child_category_id && !$request->sub_child_category_id){
         //     Brand::create([
         //         'category_id'=>$request->category_id,
@@ -85,7 +86,7 @@ class BrandController extends Controller
         //         'br_description'=>$request->br_description
         //     ]);
         // }
-        
+
 
         toast('Brand Upload successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
 
@@ -121,9 +122,17 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        Brand::where('slug',$request->slug)->update([
+            'brand_name'=>$request->brand_name,
+            'slug'=> Str::slug($request->brand_name),
+            'br_description'=>$request->brand_description
+        ]);
+
+        toast('Brand update successfully','success')->padding('10px')->width('270px')->timerProgressBar()->hideCloseButton();
+
+        return redirect()->back();
     }
 
     /**

@@ -35,8 +35,9 @@
                             @csrf
 
                             <div class="card-body row col-12">
-                                @if ($product->get_vendor != null)
-                                    <div class="form-group col-12">
+                                <div class="row col-12">
+                                    @if ($product->get_vendor != null)
+                                    <div class="form-group col-6">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Select Vendor</label>
                                         <select class="form-control" name="vendor_id" id="vendor_id" required>
                                             <option value="{{ $product->get_vendor->id }}" selected="selected" hidden>
@@ -50,12 +51,12 @@
                                     </div>
                                 @endif
                                 @if ($product->get_single_vendor != null)
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-6">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Select Single Vendor</label>
                                         <select class="form-control" name="single_vendor_id" id="single_vendor_id" required>
                                             <option value="{{ $product->get_single_vendor->id }}" selected="selected"
                                                 hidden>{{ $product->get_single_vendor->brand_name }}</option>
-                                            @foreach ($single_ven->get_single_vendor_  as $single)
+                                            @foreach ($single_vendors as $single)
                                                 <option value="{{ $single->id }}">
                                                     {{ $single->brand_name }}
                                                 </option>
@@ -63,6 +64,7 @@
                                         </select>
                                     </div>
                                 @endif
+                                </div>
                                 <div class="row col-12">
                                     <div class="form-group col-3">
                                         <label class="mr-sm-2" for="inlineFormCustomSelect">Product Name</label>

@@ -1983,7 +1983,7 @@ __webpack_require__.r(__webpack_exports__);
         this.showItems = false;
         this.clearShow = false;
       } else {
-        axios.get("search?q=" + this.search).then(function (response) {
+        axios.post("search?q=" + this.search).then(function (response) {
           _this.allItem = response.data.search;
           _this.showItems = true;
           _this.clearShow = true;

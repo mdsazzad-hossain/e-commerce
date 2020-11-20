@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('content')
+
 <main class="main">
     <search-result search="{{$search->product_name}}"></search-result>
 </main>

@@ -21,7 +21,7 @@
                                 <div class="col-md-6">
                                     <div class="product-gallery">
                                         @foreach ($product->get_product_avatars as $avatar)
-                                        
+
                                         <figure class="product-main-image">
                                             <span class="product-label label-top">Top</span>
                                             <img style="height: 426px !important;" id="product-zoom" src="{{ asset('/images/' . $avatar->front) }}"
@@ -92,11 +92,11 @@
                                                 <select name="size" id="size" class="form-control">
                                                     @if ($product->get_attribute_value_id_by_size->id == $product->size)
                                                     <option value="{{ $product->get_attribute_value_id_by_size->value }}" selected="selected" hidden>{{ $product->get_attribute_value_id_by_size->value }}</option>
-                                                        
+
                                                     @endif
                                                     @foreach ($products as $pro)
-                                                    @if ($pro->brand_id == $product->brand_id && $pro->sub_child_id == $product->sub_child_id)                                                    
-                                                        <option value="{{ $pro->get_attribute_value_id_by_size->value }}">{{ $pro->get_attribute_value_id_by_size->value }}</option>                                                                          
+                                                    @if ($pro->brand_id == $product->brand_id && $pro->sub_child_id == $product->sub_child_id)
+                                                        <option value="{{ $pro->get_attribute_value_id_by_size->value }}">{{ $pro->get_attribute_value_id_by_size->value }}</option>
                                                     @endif
                                                     @endforeach
                                                 </select>
@@ -110,7 +110,7 @@
                                                     <input type="number" id="qty" class="form-control" value="1" min="1"
                                                         max="10" step="1" data-decimals="0" required=""
                                                         style="display: none;">
-                                                    
+
                                                 </div>
                                             </div>
                                             <div class="details-action-wrapper">
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                    
+
 
                     </div><!-- End .col-lg-9 -->
 
@@ -141,14 +141,14 @@
 
                                 <div class="products">
                                     @foreach ($products as $pro)
-                                    @if ($pro->get_brand->id == $product->brand_id)
+                                    @if ($pro->get_brand->id == $product->brand_id && $pro->slug != $product->slug)
 
 
 
                                     <div class="product product-sm">
 
                                         @foreach ($pro->get_product_avatars as $avtr)
-                                        
+
                                         <figure class="product-media">
                                             <a href="{{route('quick',$pro->slug)}}">
                                                 <img style="width: 121px !important;
@@ -170,7 +170,7 @@
                                     <div class="product product-sm">
 
                                         @foreach ($pro->get_product_avatars as $avtr)
-                                        
+
                                         <figure class="product-media">
                                             <a href="{{route('quick',$pro->slug)}}">
                                                 <img style="width: 121px !important;
@@ -207,7 +207,7 @@
 
                         <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow owl-loaded owl-drag"
                             data-toggle="owl" data-owl-options="{
-                                &quot;nav&quot;: false, 
+                                &quot;nav&quot;: false,
                                 &quot;dots&quot;: true,
                                 &quot;margin&quot;: 20,
                                 &quot;loop&quot;: false,
@@ -236,12 +236,12 @@
                                 <div class="owl-stage"
                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 891px;">
                                     @foreach ($products as $pro)
-                                        @if ($pro->get_brand->category_id == $product->get_brand->category_id)
+                                        @if ($pro->sub_child_category_id == $product->sub_child_category_id && $pro->slug != $product->slug)
                                     <div class="owl-item active" style="width: 202.75px; margin-right: 20px;">
-                                        
+
                                         <div class="product product-7 text-center">
                                             @foreach ($pro->get_product_avatars as $avtr)
-                                           
+
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
                                                 <a href="{{route('quick',$pro->slug)}}">
@@ -262,16 +262,13 @@
                                             </figure><!-- End .product-media -->
                                             @endforeach
                                             <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#">Women</a>
-                                                </div><!-- End .product-cat -->
                                                 <h3 class="product-title"><a href="product.html">{{$pro->product_name}}</a></h3><!-- End .product-title -->
                                                 <div class="product-price">
                                                     {{$pro->sale_price}}
                                                 </div><!-- End .product-price -->
                                             </div><!-- End .product-body -->
                                         </div>
-                                        
+
                                     </div>
                                     @endif
                                     @endforeach
@@ -283,7 +280,7 @@
                             </div>
                             <div class="owl-dots disabled"></div>
                         </div><!-- End .owl-carousel -->
-                        
+
                     </div>
 
 

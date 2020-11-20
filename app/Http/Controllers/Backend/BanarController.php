@@ -14,11 +14,7 @@ use App\Models\Product;
 
 class BanarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $data = auth()->user();
@@ -62,11 +58,8 @@ class BanarController extends Controller
             if($new_name){
                 $data = Banar::create([
                     'image'=>$new_name,
-                    'slug'=>$new_name,
                     'product_name'=>$request->product_name,
-                    'category_name'=>$request->category_name,
-                    'price'=>$request->price,
-                    'promo_price'=>$request->promo_price,
+                    'slug'=>Str::slug($request->product_name)
                 ]);
                 if($data){
                     $img->save($upload_path.$new_name);
@@ -91,9 +84,9 @@ class BanarController extends Controller
 
     function update(Request $request)
     {
-        $banar = Banar::where('slug',$request->slug)->first();
+        $banar = Banar::where('image',$request->slug)->first();
 
-        if($request->file('image') != null){
+        if($request->file('image') != $banar->image){
 
             $image = $request->file('image');
             $new_name = rand() . '.' . $image->getClientOriginalExtension();
@@ -105,13 +98,10 @@ class BanarController extends Controller
 
             if($new_name)
             {
-                $data = Banar::where('slug',$request->slug)->update([
+                $data = Banar::where('image',$request->slug)->update([
                     'image'=>$new_name,
-                    'slug'=>$new_name,
                     'product_name'=>$request->product_name,
-                    'category_name'=>$request->category_name,
-                    'price'=>$request->price,
-                    'promo_price'=>$request->promo_price,
+                    'slug'=>Str::slug($request->product_name)
                 ]);
                 if($data){
                     $img->save($upload_path.$new_name);
@@ -127,9 +117,6 @@ class BanarController extends Controller
         }elseif($request->image == ''){
             $data = Banar::where('slug',$request->slug)->update([
                 'product_name'=>$request->product_name,
-                'category_name'=>$request->category_name,
-                'price'=>$request->price,
-                'promo_price'=>$request->promo_price,
             ]);
 
             toast('Banar update successfully','success')

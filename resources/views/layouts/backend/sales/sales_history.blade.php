@@ -21,7 +21,7 @@
                             margin-bottom: 0px;">Pending Orders
                                 <span style="float: left;
                             margin-left: 15px;" class="badge badge-warning">
-                                    
+
                                     @if ($count)
                                         {{ $count }}
                                     @else
@@ -81,7 +81,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example" class="table table-bordered table-striped">
+                        <table id="example3" class="table table-bordered table-striped">
                             <thead>
                                 <tr role="row">
                                     <th style="width: 166px;">
@@ -173,15 +173,6 @@
                                     @endif
                                 @endforeach
                             </tbody>
-                            {{-- <tfoot>
-                                <tr>
-                                    <th rowspan="1" colspan="1">Category Name</th>
-                                    <th rowspan="1" colspan="1">SubCategory</th>
-                                    <th rowspan="1" colspan="1">Sub SubCategory</th>
-                                    <th rowspan="1" colspan="1">Status</th>
-                                    <th rowspan="1" colspan="1">Action</th>
-                                </tr>
-                            </tfoot> --}}
                         </table>
                     </div>
                 </div>
@@ -190,7 +181,7 @@
                         <h3 class="card-title"><strong>Delivered History is here</strong></h3>
                             <div class="col-md-3" style="float: right;
                             display: inline-flex;position:relative;margin-right: -9px;">
-                                
+
                                 <form action="{{route('table-search')}}" method="POST">
                                     @csrf
                                     <button type="submit" class="badge badge-info"
@@ -210,7 +201,7 @@
                                         <strong><option value="yearly">yearly</option></strong>
                                     </select>
                                 </form>
-                                
+
                             </div>
                     </div>
                     <!-- /.card-header -->
@@ -282,12 +273,12 @@
                                             <td class="sorting_1">
                                                 @if ($sale->status == 1)
                                                     <p style="margin: 0px;" class="badge badge-info">Ready To Delivered</p>
-                                                    
+
                                                 @else
                                                     <p style="margin: 0px;" class="badge badge-success">Delivered</p>
 
                                                 @endif
-                                                @if ($sale->order_id == $order_status ? $order_status->order_id : null)
+                                                @if ($sale->order_id == $order_status->order_id)
                                                     @if ($order_status->status == 0)
                                                         <p style="margin: 0px;" class="badge badge-danger">Vendor Processing</p>
                                                     @else
@@ -395,9 +386,21 @@
        });
    });
 
+   $(function() {
+       $("#example3").DataTable();
+       $('#example4').DataTable({
+           "paging": true,
+           "lengthChange": false,
+           "searching": false,
+           "ordering": true,
+           "info": true,
+           "autoWidth": false,
+       });
+   });
+
 </script>
     <script>
-        
+
         window.onload = (function() {
             var sum = 0;
             var sum1 = 0;
@@ -407,7 +410,7 @@
                 $("#total").text(sum);
                 $("#sales_total1").text(sum1);
             });
-            
+
 
 
         })
@@ -463,7 +466,7 @@
                     }
                 });
             }
-            
+
         }
 
         function showPendingOrders() {

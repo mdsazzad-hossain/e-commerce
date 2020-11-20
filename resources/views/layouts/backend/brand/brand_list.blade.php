@@ -64,7 +64,7 @@
 
 
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="addNewLabel">Add Banner</h5>
@@ -76,46 +76,20 @@
                     <div class="modal-body">
                         @csrf
                         <div class="col-md-12">
-                        <div class="col-md-6" style="float: left">
-                            <div class="form-group">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Name</label>
-                                <input name="brand_name" type="text" class="form-control"
-                                    placeholder="Brand name" />
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Name</label>
+                                    <input name="brand_name" type="text" class="form-control"
+                                        placeholder="Brand name" />
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Child of Child-category</label>
-                                <select onchange="subChildId()" class="form-control" name="sub_child_category_id" id="sub_child_category_id">
-                                    <option value="" hidden selected="selected">Select Child of child-category</option>
-                                    @foreach ($sub_childs as $sub_child)
-                                        <option value="{{ $sub_child->id }}">
-                                            {{ $sub_child->sub_child_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="form-group col-md-12">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Description</label>
+                                <textarea name="br_description" type="text"
+                                class="form-control" placeholder="Enter brand description"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-6" style="float: right">
-                            <div class="form-group">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">Category</label>
-                                <input id="cat" type="text" class="form-control"
-                                placeholder="Enter category name" readonly required/>
-                                <input type="hidden" id="get_category_id" name="category_id" value="">
-                            </div>
-                            <div class="form-group">
-                                <label class="mr-sm-2" for="inlineFormCustomSelect">ChildCategory</label>
-                                <input id="child" type="text" class="form-control"
-                                placeholder="Enter child name" readonly required/>
-                                <input type="hidden" id="get_child_category_id" name="child_category_id" value="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="mr-sm-2" for="inlineFormCustomSelect">Brand Description</label>
-                            <textarea name="br_description" type="text"
-                            class="form-control" placeholder="Enter brand description"></textarea>
-                        </div>
-                    </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -141,8 +115,8 @@
         </div>
         <div class="modal-body">
             <form id="brandUpdate">
-                <input hidden type="text" value="{{ csrf_token() }}" class="form-control"/>
-                <input type="text" id="slug" name="slug" hidden>
+                {{-- <input hidden type="text" value="{{ csrf_token() }}" class="form-control"/> --}}
+                <input type="text" value="" id="slug" name="slug" hidden>
 
                 <div>
                     <div class="form-group">
@@ -184,30 +158,29 @@
 <script type="text/javascript">
 
     function editBrand(brand) {
-        $("#brandUpdate").attr('id', 'brandUpdate');
          $("#slug").val(brand.slug);
          $("#brand_name").val(brand.brand_name);
          $("#brand_description").val(brand.br_description);
      }
 
 
-    function subChildId(){
-        $.ajax({
-            url: "{{ route('get.cat.subCat') }}",
-            type: "POST",
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "id": $('#sub_child_category_id option:selected').val() ? $('#sub_child_category_id option:selected').val() : ''
-            },
-            success: function(response) {
-                $('#cat').val(response.datas.get_child_category.get_category.cat_name);
-                $('#child').val(response.datas.get_child_category.child_name);
-                $('#get_category_id').val(response.datas.category_id);
-                $('#get_child_category_id').val(response.datas.child_category_id);
+    // function subChildId(){
+    //     $.ajax({
+    //         url: "{{ route('get.cat.subCat') }}",
+    //         type: "POST",
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             "id": $('#sub_child_category_id option:selected').val() ? $('#sub_child_category_id option:selected').val() : ''
+    //         },
+    //         success: function(response) {
+    //             $('#cat').val(response.datas.get_child_category.get_category.cat_name);
+    //             $('#child').val(response.datas.get_child_category.child_name);
+    //             $('#get_category_id').val(response.datas.category_id);
+    //             $('#get_child_category_id').val(response.datas.child_category_id);
 
-            }
-        })
-    }
+    //         }
+    //     })
+    // }
 
 
     function updateBrand() {
@@ -226,7 +199,7 @@
             cache: false,
             processData: false,
             success: function(response) {
-                window.location.reload();
+                // window.location.reload();
             }
         })
     };
