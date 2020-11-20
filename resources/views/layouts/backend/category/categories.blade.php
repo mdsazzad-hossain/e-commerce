@@ -232,14 +232,11 @@
 
         function addCategory() {
             $("#loading").show();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $.ajax({
                 url: "{{ route('category.add') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 method: "POST",
                 data: new FormData(document.getElementById("addCategory")),
                 enctype: 'multipart/form-data',
@@ -280,13 +277,11 @@
 
         function updateCategory() {
             $("#update").prop('disabled', true);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $.ajax({
                 url: "{{ route('category.update') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 method: "POST",
                 data: new FormData(document.getElementById("updateCategory")),
                 enctype: 'multipart/form-data',
@@ -314,15 +309,11 @@
         function deleteCat(cat) {
             id = cat.id;
             status = cat.status;
-            console.log(id);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
             $.ajax({
                 url: "{{ route('category.delete') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 type: "POST",
                 data: {
                     id: id,
@@ -336,14 +327,11 @@
 
         function active(id){
           id = id;
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
             $.ajax({
                 url: "{{ route('category.active') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 type: "POST",
                 data: {
                     id: id
@@ -356,14 +344,11 @@
 
         function inactive(id){
           id = id;
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
             $.ajax({
                 url: "{{ route('category.inactive') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 type: "POST",
                 data: {
                     id: id
